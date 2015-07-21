@@ -8,6 +8,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Hashtable;
 import java.util.Locale;
 
 /**
@@ -30,15 +31,13 @@ public class ConnectionDB {
         if (instance != null) {
             return instance;
         } else {
-            InitialContext initContext = null;
-            Context context = null;
-            DataSource dataSource = null;
+            Hashtable ht = new Hashtable();
+            ht.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+            ht.put(Context.PROVIDER_URL, "t3://localhost:7701");
             try {
-                initContext = new InitialContext();
-                context = (Context) initContext.lookup("java:/comp/env");
-                dataSource = (DataSource) context.lookup("auction");
+                Context ctx = new InitialContext(ht);
+                DataSource dataSource = (DataSource) ctx.lookup("auction");
                 instance = dataSource.getConnection();
-                log.info("Get Connection - OK");
             } catch (NamingException e) {
                 log.error(e);
             } catch (SQLException e) {
