@@ -1,5 +1,122 @@
+<%@ page language="java" pageEncoding="UTF-8" session="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Auction</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/index.js"></script>
+</head>
 <body>
-<h2>Hello World!</h2>
+<div class="container">
+    <div class="form-top" align="right">
+
+        <tr>
+            <script>createForm();</script>
+        </tr>
+    </div>
+    <header>
+        <div id="block-logo"><img src="images/logo.png" width="80" height="80" alt="Logo"></div>
+        <div id="block-contact">
+            т. ХХХ ХХХ ХХ ХХ<br>
+            т. ХХХ ХХХ ХХ ХХ<br><br><br>
+            group7.3@sumy.ua
+        </div>
+        <div id="block-name-site">
+            <h1 align="center"><strong>АУКЦИОН</strong></h1>
+        </div>
+    </header>
+</div>
+
+
+<div class="container">
+
+    <section class="container-section-nav">
+        <header>
+            <div align="center">
+                <form>
+                    <br>
+                    <input type="text" id="find" size="7" maxlength="30" required>
+                    <button onclick="clickFind($('#find').val());">Поиск</button>
+                </form>
+            </div>
+        </header>
+        <nav>
+            <script>createCatalog();</script>
+        </nav>
+        <footer>
+            <h4 align="center">Критерии поиска:</h4>
+
+            <div align="center">
+                <form>
+                    Цена (грн):<br>
+                    <input type="text" id="min_price" size="3" maxlength="10">
+                    - <input type="text" id="max_price" size="3" maxlength="10"><br>
+
+                    <p><b>Состояние:</b><Br>
+                        <input type="radio" name="radio" value="new"> Новое<Br>
+                        <input type="radio" name="radio" value="uses"> б/у<Br>
+                    </p>
+                    <button on onclick="">Отсортировать</button>
+                </form>
+            </div>
+        </footer>
+    </section>
+
+
+    <aside class="container-section-lot">
+        <hesder>
+            <h2 align="center">Список лотов</h2>
+        </hesder>
+        <div align="center">
+            <article>
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+
+                <p>**************************************************************************
+                    *****************************************************************************</p>
+            </article>
+            <footer>
+                1.2.3.4.5 ... 15
+            </footer>
+        </div>
+    </aside>
+
+
+</div>
+
+<footer>
+    <div class="container" align="right">
+        <p>Group 7.3</p>
+    </div>
+</footer>
+
 </body>
 </html>
