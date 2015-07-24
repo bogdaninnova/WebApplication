@@ -2,22 +2,29 @@
  * Created by Created by Greenberg Dima <gdvdima2008@yandex.ru>.
  */
 
-var user_name = null;
+
+
+var url="user";
+
+function validData(login, password) {
+    if (login.length > 0 && password.length > 0) {
+        clickLogin(login, hex_md5(password));
+    }
+}
 
 function clickReister() {
-    var url="user";
     $.ajax({
         dataType: "xml",
         url: url,
         type: "POST",
         data: {
-            action: "register"
+            action: "registerForm"
         }
     });
+    window.location.replace("jsp/register.jsp")
 }
 
 function clickLogin(login, password) {
-    var url="user";
     $.ajax({
         dataType: "xml",
         url: url,
@@ -28,10 +35,12 @@ function clickLogin(login, password) {
             password: password
         }
     });
+    $("#login").val("");
+    $("#password").val("");
+    window.location.replace("index.jsp")
 }
 
 function clickFind(find) {
-    var url="user";
     $.ajax({
         dataType: "xml",
         url: url,
@@ -44,16 +53,17 @@ function clickFind(find) {
 }
 
 
-function createForm() {
-    if (user_name != null && user_name !="") {
+function createForm(user_name) {
+    if (user_name != null && user_name !="" && user_name != "null") {
         document.write("<td>");
         document.write(user_name);
+        document.write("")
         document.write("</td>")
     } else {
         document.write("<form>");
         document.write("<td><input type=\"text\" id=\"login\" size=\"5\" maxlength=\"15\" autofocus required></td>");
         document.write("<td><input type=\"password\" id=\"password\" size=\"5\" maxlength=\"15\" required></td>");
-        document.write("<td><label onclick=\"clickLogin($('#login').val(), $('#password').val());\">[ Login ]</label></td>");
+        document.write("<td><label onclick=\"validData($('#login').val(), $('#password').val());\">[ Login ]</label></td>");
         document.write("<td><label onclick=\"clickReister();\">[ Register ]</Label></td>");
         document.write("</form>");
     }

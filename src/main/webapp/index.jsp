@@ -3,19 +3,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Auction</title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/md5.js"></script>
     <script src="js/index.js"></script>
+    <title>Auction</title>
 </head>
 <body>
 <div class="container">
     <div class="form-top" align="right">
 
         <tr>
-            <script>createForm();</script>
+            <script>var user_name = '<%= session.getAttribute("username") %>'; createForm(user_name);</script>
         </tr>
     </div>
     <header>
