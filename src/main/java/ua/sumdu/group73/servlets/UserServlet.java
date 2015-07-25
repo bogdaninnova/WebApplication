@@ -2,7 +2,6 @@ package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,18 +27,36 @@ public class UserServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+//        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        if (session != null) {
+            log.info("HttpSession isn't null");
+        } else {
+            session = request.getSession();
+            log.info("Create HttpSession in UserServlet");
+        }
+
         log.info("Request - " + request.getParameter("action"));
 
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
+
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
         } else if ("login".equals(request.getParameter("action"))) {
-
             log.info("Click find with query - " + request.getParameter("login"));
             log.info("Click find with query - " + request.getParameter("password"));
+        } else if("outLogin".equals(request.getParameter("action"))) {
+            if (session.getAttribute("username") != null) {
+                session.setAttribute("username", null);
+            }
         }
-
+        PrintWriter pw = response.getWriter();
+        pw.println("<result>OK</result>");
+        pw.close();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -2,9 +2,8 @@
  * Created by Created by Greenberg Dima <gdvdima2008@yandex.ru>.
  */
 
-
-
 var url="user";
+
 
 function validData(login, password) {
     if (login.length > 0 && password.length > 0) {
@@ -19,9 +18,16 @@ function clickReister() {
         type: "POST",
         data: {
             action: "registerForm"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("jsp/register.jsp")
+            }
+        },
+        error: function () {
+            alert("Error while send register data.");
         }
     });
-    window.location.replace("jsp/register.jsp")
 }
 
 function clickLogin(login, password) {
@@ -33,12 +39,39 @@ function clickLogin(login, password) {
             action: "login",
             login: login,
             password: password
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                $("#login").val("");
+                $("#password").val("");
+                window.location.replace("index.jsp")
+            }
+        },
+        error: function () {
+            alert("Error while send register data.");
         }
     });
-    $("#login").val("");
-    $("#password").val("");
-    window.location.replace("index.jsp")
 }
+
+function clickOutLogin() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "outLogin"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("index.jsp")
+            }
+        },
+        error: function () {
+            alert("Error while send register data.");
+        }
+    });
+}
+
 
 function clickFind(find) {
     $.ajax({
@@ -57,6 +90,8 @@ function createForm(user_name) {
     if (user_name != null && user_name !="" && user_name != "null") {
         document.write("<td>");
         document.write(user_name);
+        document.write("<label onclick=\"\">[ Cabinet ]</Label>");
+        document.write("<label onclick=\"clickOutLogin();\">[ Out ]</Label>");
         document.write("")
         document.write("</td>")
     } else {

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../css/style-register.css"/>
     <script src="../js/bootstrap.js"></script>
     <script src="../js/jquery-2.1.3.js"></script>
@@ -22,32 +23,32 @@
             <tr>
                 <td><label>*</label></td>
                 <td>Password:</td>
-                <td><input type="password" id="password" size="10" maxlength="128" required></td>
+                <td><input type="password" id="password" size="10" maxlength="128"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Confirm:</td>
-                <td><input type="password" id="confirmPassword" size="10" maxlength="128" required></td>
+                <td><input type="password" id="confirmPassword" size="10" maxlength="128"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Name:</td>
-                <td><input type="text" id="firstName" size="10" maxlength="50" required></td>
+                <td><input type="text" id="firstName" size="10" maxlength="50"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Second Name:</td>
-                <td><input type="text" id="secondName" size="10" maxlength="50" required></td>
+                <td><input type="text" id="secondName" size="10" maxlength="50"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Date birthday:</td>
-                <td><input type="date" id="age" size="10" maxlength="50" required></td>
+                <td><input type="date" id="age" size="10" maxlength="50"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>E-mail:</td>
-                <td><input type="text" id="email" size="10" maxlength="50" required></td>
+                <td><input type="text" id="email" size="10" maxlength="50"></td>
             </tr>
             <tr>
                 <td></td>
@@ -58,13 +59,13 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val());">Зерегистрироваться</button>
+                    <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val());">Sign up</button>
                 </td>
             </tr>
 
         </table>
     </form>
-    <br><label>* - Обязательное заполнение поля</label>
+    <br><label>* - Required fields.</label>
 </div>
 </body>
 </html>

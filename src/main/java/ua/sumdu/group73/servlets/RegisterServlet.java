@@ -19,19 +19,16 @@ public class RegisterServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(RegisterServlet.class);
     private HttpSession session;
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in RegisterServlet");
-        }
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+//        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        session = request.getSession();
 
         if ("registerData".equals(request.getParameter("action"))) {
             session.setAttribute("username", request.getParameter("secondName"));
             // if (create row in BD = true) { + add data in session
-               PrintWriter pw = response.getWriter();
-               pw.println("<result>OK</result>");
-               pw.close();
+
             log.info("RegisterServlet action - " + request.getParameter("action"));
             log.info("RegisterServlet login - " + request.getParameter("login"));
             log.info("RegisterServlet password - " + request.getParameter("password"));
@@ -40,9 +37,14 @@ public class RegisterServlet extends HttpServlet {
             log.info("RegisterServlet age - " + request.getParameter("age"));
             log.info("RegisterServlet email - " + request.getParameter("email"));
             log.info("RegisterServlet phone - " + request.getParameter("phone"));
+            PrintWriter pw = response.getWriter();
+            pw.println("<result>OK</result>");
+            pw.close();
+
         } else {
             log.info("DON'T REGISTER");
         }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

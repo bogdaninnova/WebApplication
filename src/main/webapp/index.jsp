@@ -22,12 +22,12 @@
     <header>
         <div id="block-logo"><img src="images/logo.png" width="80" height="80" alt="Logo"></div>
         <div id="block-contact">
-            т. ХХХ ХХХ ХХ ХХ<br>
-            т. ХХХ ХХХ ХХ ХХ<br><br><br>
+            tel. XXX XXX XX XX<br>
+            tel. XXX XXX XX XX<br><br><br>
             group7.3@sumy.ua
         </div>
         <div id="block-name-site">
-            <h1 align="center"><strong>АУКЦИОН</strong></h1>
+            <h1 align="center"><strong>AUCTION</strong></h1>
         </div>
     </header>
 </div>
@@ -41,7 +41,7 @@
                 <form>
                     <br>
                     <input type="text" id="find" size="7" maxlength="30" required>
-                    <button onclick="clickFind($('#find').val());">Поиск</button>
+                    <button onclick="clickFind($('#find').val());">find</button>
                 </form>
             </div>
         </header>
@@ -49,19 +49,19 @@
             <script>createCatalog();</script>
         </nav>
         <footer>
-            <h4 align="center">Критерии поиска:</h4>
+            <h4 align="center">Options:</h4>
 
             <div align="center">
                 <form>
-                    Цена (грн):<br>
+                    Price ($):<br>
                     <input type="text" id="min_price" size="3" maxlength="10">
                     - <input type="text" id="max_price" size="3" maxlength="10"><br>
 
-                    <p><b>Состояние:</b><Br>
-                        <input type="radio" name="radio" value="new"> Новое<Br>
-                        <input type="radio" name="radio" value="uses"> б/у<Br>
+                    <p><b>Condition:</b><Br>
+                        <input type="radio" name="radio" value="new"> new<Br>
+                        <input type="radio" name="radio" value="uses"> used<Br>
                     </p>
-                    <button on onclick="">Отсортировать</button>
+                    <button on onclick="">Sort</button>
                 </form>
             </div>
         </footer>
@@ -70,7 +70,7 @@
 
     <aside class="container-section-lot">
         <hesder>
-            <h2 align="center">Список лотов</h2>
+            <h2 align="center">List of lots</h2>
         </hesder>
         <div align="center">
             <article>
