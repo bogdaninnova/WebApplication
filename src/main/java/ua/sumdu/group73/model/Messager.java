@@ -8,7 +8,7 @@ public class Messager {
 	
 	public static void sendEndAuctionMessage(int productID) {
 		
-		OracleDataBaseOLD database = OracleDataBaseOLD.getInstance();
+		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
 		
 		Product product = database.getProduct(productID);
@@ -53,7 +53,7 @@ public class Messager {
 	
 	public static void registrationMail(int userID) {
 		
-		OracleDataBaseOLD database = OracleDataBaseOLD.getInstance();
+		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
 		
 		User user = database.getUser(userID);
