@@ -2,7 +2,7 @@ package ua.sumdu.group73.model.interfaces;
 
 import java.util.*;
 
-import objects.*;
+import ua.sumdu.group73.model.objects.*;
 
 public interface CategoriesDBInterface {
 
