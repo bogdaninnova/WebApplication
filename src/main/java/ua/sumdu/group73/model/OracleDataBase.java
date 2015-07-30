@@ -1,11 +1,6 @@
 package ua.sumdu.group73.model;
 
-import interfaces.CategoriesDBInterface;
-import interfaces.FollowingDBInterface;
-import interfaces.PicturesDBInterface;
-import interfaces.ProductDBInterface;
-import interfaces.TransactionDBIinterface;
-import interfaces.UserDBInterface;
+import ua.sumdu.group73.model.interfaces.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,10 +17,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import objects.Category;
-import objects.Product;
-import objects.Transaction;
-import objects.User;
+import ua.sumdu.group73.model.objects.*;
 
 public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 										TransactionDBIinterface, ProductDBInterface,
