@@ -1,9 +1,9 @@
-package ua.sumdu.group73.model.interfaces;
+package interfaces;
 
 import java.util.Date;
 import java.util.List;
 
-import ua.sumdu.group73.model.objects.*;
+import objects.*;
 
 public interface UserDBInterface {
 
@@ -27,6 +27,13 @@ public interface UserDBInterface {
 	 * 
 	 * */
 	public int authorization(String login, String password);
+	
+	/**
+	 * Check login and password and do authorization.
+	 * @return id of authorizated user. If login or password is wrong - method returns -1.
+	 * 
+	 * */
+	public int authorizationByEmail(String eMail, String password);
 	
 	public boolean isAdmin(int id);
 	
