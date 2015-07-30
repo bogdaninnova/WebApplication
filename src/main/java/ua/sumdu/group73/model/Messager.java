@@ -1,7 +1,6 @@
 package ua.sumdu.group73.model;
 
-import objects.Product;
-import objects.User;
+import ua.sumdu.group73.model.objects.*;
 
 public class Messager {
 
