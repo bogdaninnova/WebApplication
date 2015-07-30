@@ -12,7 +12,7 @@ public interface UserDBInterface {
 	 * @return false if login or email is not free or happened some error.
 	 * */
 	public boolean addUser(String login, String password, String name, String secondName,
-			Date birthDate, String eMail, String phone, boolean isAdmin);
+			String birthDate, String eMail, String phone);
 	
 	public User getUser(int id);
 		

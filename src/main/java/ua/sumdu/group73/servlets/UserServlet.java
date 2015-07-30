@@ -22,7 +22,7 @@ public class UserServlet extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        log.info("INIT METHOD");
+        log.info("Init UserServlet");
 
     }
 

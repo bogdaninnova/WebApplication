@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -103,20 +106,24 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	 * @return false if login or email is not free or happened some error.
 	 * */
 	public boolean addUser(String login, String password, String name, String secondName,
-		Date birthDate, String eMail, String phone, boolean isAdmin) {
-		try(Connection connection = getConnection()) {
+		String birthDate, String eMail, String phone) {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		try (Connection connection = getConnection()) {
+			Date date = format.parse(birthDate);
 			PreparedStatement preparedStatement = connection.prepareStatement(ADD_USER_QUERY);
 			preparedStatement.setString(1, login);
 			preparedStatement.setString(2, password);
 			preparedStatement.setString(3, name);
 			preparedStatement.setString(4, secondName);
-			preparedStatement.setDate(5, new java.sql.Date(birthDate.getTime()));
+			preparedStatement.setDate(5, (java.sql.Date) date);
 			preparedStatement.setString(6, eMail);
 			preparedStatement.setString(7, phone);
-			preparedStatement.setString(8, isAdmin ? "user" : "admin");
+			preparedStatement.setString(8, "user");
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		return false;
