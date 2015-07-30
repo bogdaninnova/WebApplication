@@ -31,6 +31,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	public static final String IS_LOGIN_FREE_QUERY = "SELECT COUNT(*) as count FROM USERS WHERE LOGIN = ?";
 	public static final String IS_EMAIL_FREE_QUERY = "SELECT COUNT(*) as count FROM USERS WHERE EMAIL = ?";
 	public static final String AUTHORIZATION_QUERY = "SELECT PASSWORD, ID FROM USERS WHERE LOGIN = ?";
+	public static final String AUTHORIZATION_BY_EMAIL_QUERY = "SELECT PASSWORD, ID FROM USERS WHERE EMAIL = ?";
 	public static final String IS_USER_ADMIN_QUERY = "SELECT COUNT(*) as count FROM USERS WHERE ID = ? AND STATUS = 'admin'";
 	public static final String FOLLOW_PRODUCT_QUERY = "INSERT INTO FOLLOWINGS(ID, FOLLOWER_ID, PRODUCT_ID) VALUES (FOLLOWING_ID_S.NEXTVAL, ?, ?)";
 	public static final String IS_FOLLOW_QUERY = "SELECT COUNT(*) as count FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
@@ -206,6 +207,23 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 			PreparedStatement preparedStatement =
 					connection.prepareStatement(AUTHORIZATION_QUERY);
 			preparedStatement.setString(1, login);
+			ResultSet rs = preparedStatement.executeQuery();
+			rs.next();
+			if (rs.getString("PASSWORD").equals(password))
+				return rs.getInt("ID");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	@Override
+	public int authorizationByEmail(String eMail, String password) {
+		try {
+			Connection connection = getConnection();
+			PreparedStatement preparedStatement =
+					connection.prepareStatement(AUTHORIZATION_BY_EMAIL_QUERY);
+			preparedStatement.setString(1, eMail);
 			ResultSet rs = preparedStatement.executeQuery();
 			rs.next();
 			if (rs.getString("PASSWORD").equals(password))
@@ -759,7 +777,5 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
- 
+
 }
