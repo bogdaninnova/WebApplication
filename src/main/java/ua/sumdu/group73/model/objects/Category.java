@@ -1,4 +1,4 @@
-package ua.sumdu.group73.objects;
+package ua.sumdu.group73.model.objects;
 
 public class Category {
 
