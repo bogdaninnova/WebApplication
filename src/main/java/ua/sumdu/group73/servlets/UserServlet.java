@@ -44,26 +44,30 @@ public class UserServlet extends HttpServlet {
 
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
-            sendResponse(response, "OK");
+            sendResponse(response, "OK", null);
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
-            sendResponse(response, "OK");
+            sendResponse(response, "OK", null);
         } else if ("login".equals(request.getParameter("action"))) {
-            int res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
-            if (res != -1) {
-                session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
-                sendResponse(response, "OK");
+//            if (user is free) {
+                int res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
+                if (res != -1) {
+                    session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
+                    sendResponse(response, "OK", null);
+//                }
+//            } else {
+//                sendResponse(response, "Error", "This login is busy.");
             }
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             int res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != -1) {
                 session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
-                sendResponse(response, "OK");
+                sendResponse(response, "OK", null);
             }
         } else if("outLogin".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
-                sendResponse(response, "OK");
+                sendResponse(response, "OK", null);
             }
         }
 
@@ -73,11 +77,16 @@ public class UserServlet extends HttpServlet {
 
     }
 
-    private void sendResponse(HttpServletResponse response, String text) {
+    private void sendResponse(HttpServletResponse response, String text, String error) {
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
-            pw.println("<result>" + text + "</result>");
+            if ("error".equals(text)) {
+                pw.print("<result>" + text + "</result>");
+                pw.println("error>" + error.toUpperCase() + "</error>");
+            } else {
+                pw.println("<result>" + text + "</result>");
+            }
             pw.close();
         } catch (IOException e) {
             e.printStackTrace();

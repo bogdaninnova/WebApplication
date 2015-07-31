@@ -55,6 +55,9 @@ function clickLogin(login, password, loginAction) {
                 $("#login").val("");
                 $("#password").val("");
                 window.location.replace("index.jsp")
+            } else if ("error" === $(data).find("result").text().toLowerCase()) {
+                $("#password").val("");
+                alert("Error: This login is busy.");
             }
         },
         error: function () {
@@ -144,4 +147,8 @@ function createCatalog() {
     document.write("<ul class=\"navigation\">");
     document.write("<a class=\"main\" href=\"#url\">Каталог #4</a>");
     document.write("</ul>");
+}
+
+function alertMessage(text) {
+    alert(text);
 }
