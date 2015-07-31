@@ -217,7 +217,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return -1;
 	}
 	
-	@Override
+	
 	public int authorizationByEmail(String eMail, String password) {
 		try {
 			Connection connection = getConnection();
@@ -233,6 +233,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		}
 		return -1;
 	}
+	
 
 	public boolean isAdmin(int userID) {
 		int count = 0;
@@ -505,7 +506,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	//--------------------XXX:CATEGORY----------------------
 	//------------------------------------------------------
 	
-	@Override
 	public Category getCategory(int categoryID) {
 		try {
 			Connection connection = getConnection();
@@ -525,7 +525,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return null;
 	}
 
-	@Override
 	public boolean addCategory(int parentID, int productID, String name) {
 		try {
 			Connection connection = getConnection();
@@ -542,7 +541,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return false;
 	}
 	
-	@Override
 	public boolean addCategory(int productID, String name) {
 		try {
 			Connection connection = getConnection();
@@ -558,7 +556,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return false;
 	}
 	
-	@Override
 	public List<Integer> getAllCategoriesID() {
 		List<Integer> list = new ArrayList<Integer>();
 		try {
@@ -577,7 +574,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return list;
 	}
 	
-	@Override
 	public List<Integer> getProductsByCategory(int categoryID) {
 		List<Integer> list = new ArrayList<Integer>();
 		try {
@@ -598,7 +594,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return list;
 	}
 
-	@Override
 	public List<Integer> getSubcategories(int categoryID) {
 		List<Integer> list = new ArrayList<Integer>();
 		try {
@@ -624,7 +619,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	//------------------------------------------------------
 	
 	
-	@Override
+
 	public List<Integer> getSalersTransaction(int sellerID) {
 		List<Integer> list = new ArrayList<Integer>();
 		try {
@@ -645,7 +640,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return list;
 	}
 
-	@Override
 	public List<Integer> getBuyersTransaction(int buyerID) {
 		List<Integer> list = new ArrayList<Integer>();
 		try {
@@ -666,7 +660,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return list;
 	}
 
-	@Override
 	public boolean addTransaction(int buyerID, int sellerID, int productID, int price, Date saleDate) {
 		try {
 			Connection connection = getConnection();
@@ -685,7 +678,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return false;
 	}
 
-	@Override
 	public Transaction getTransaction(int transactionID) {
 		try {
 			Connection connection = getConnection();
@@ -713,7 +705,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	//------------------------------------------------------
 	
 	
-	@Override
 	public List<String> getPicturesURLs(int productID) {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -734,7 +725,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return list;
 	}
 
-	@Override
 	public boolean addPictures(int productID, String URL) {
 		try {
 			Connection connection = getConnection();
@@ -772,10 +762,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 	
 	
-	@Override
 	public List<Integer> getUsersProducts() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 
 }
