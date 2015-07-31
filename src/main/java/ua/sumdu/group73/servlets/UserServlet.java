@@ -67,6 +67,8 @@ public class UserServlet extends HttpServlet {
             if (res != null) {
                 session.setAttribute("username", res.getSecondName());
                 sendResponse(response, "OK", null);
+            } else {
+                sendResponse(response, "error", "Email incorrect.");
             }
         } else if("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
