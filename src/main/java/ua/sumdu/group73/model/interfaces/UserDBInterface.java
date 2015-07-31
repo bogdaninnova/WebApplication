@@ -28,6 +28,13 @@ public interface UserDBInterface {
 	 * */
 	public int authorization(String login, String password);
 	
+	/**
+	 * Check login and password and do authorization.
+	 * @return id of authorizated user. If login or password is wrong - method returns -1.
+	 * 
+	 * */
+	public int authorizationByEmail(String eMail, String password);
+	
 	public boolean isAdmin(int id);
 	
 	public List<Integer> getUsersProducts();
