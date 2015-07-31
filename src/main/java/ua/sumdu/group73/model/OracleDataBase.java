@@ -1,6 +1,6 @@
-package main;
+package ua.sumdu.group73.model;
 
-import interfaces.*;
+import ua.sumdu.group73.model.interfaces.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import objects.*;
+import ua.sumdu.group73.model.objects.*;
 
 public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 										TransactionDBIinterface, ProductDBInterface,
