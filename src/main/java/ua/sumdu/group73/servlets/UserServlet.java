@@ -2,7 +2,6 @@ package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.OracleDataBase;
-import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -45,31 +44,43 @@ public class UserServlet extends HttpServlet {
 
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
-
+            sendResponse(response, "OK");
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
+            sendResponse(response, "OK");
         } else if ("login".equals(request.getParameter("action"))) {
             int res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             if (res != -1) {
-                User user = OracleDataBase.getInstance().getUser(res);
-                session.setAttribute("username", user.getName());
+                session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
+                sendResponse(response, "OK");
             }
         } else if ("loginEmail".equals(request.getParameter("action"))) {
-            log.info("Click find with query - " + request.getParameter("login"));
-            log.info("Click find with query - " + request.getParameter("password"));
-            // todo authorization email and password
+            int res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
+            if (res != -1) {
+                session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
+                sendResponse(response, "OK");
+            }
         } else if("outLogin".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
+                sendResponse(response, "OK");
             }
         }
-        PrintWriter pw = response.getWriter();
-        pw.println("<result>OK</result>");
-        pw.close();
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
+    private void sendResponse(HttpServletResponse response, String text) {
+        PrintWriter pw = null;
+        try {
+            pw = response.getWriter();
+            pw.println("<result>" + text + "</result>");
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
