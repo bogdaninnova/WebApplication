@@ -33,7 +33,7 @@ public interface UserDBInterface {
 	 * @return id of authorizated user. If login or password is wrong - method returns -1.
 	 * 
 	 * */
-	public int authorizationByEmail(String eMail, String password);
+	public User authorizationByEmail(String eMail, String password);
 	
 	public boolean isAdmin(int id);
 	
