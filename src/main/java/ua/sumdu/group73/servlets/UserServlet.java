@@ -1,6 +1,8 @@
 package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
+import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -47,8 +49,15 @@ public class UserServlet extends HttpServlet {
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
         } else if ("login".equals(request.getParameter("action"))) {
+            int res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
+            if (res != -1) {
+                User user = OracleDataBase.getInstance().getUser(res);
+                session.setAttribute("username", user.getName());
+            }
+        } else if ("loginEmail".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("login"));
             log.info("Click find with query - " + request.getParameter("password"));
+            // todo authorization email and password
         } else if("outLogin".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
@@ -62,4 +71,5 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
+
 }

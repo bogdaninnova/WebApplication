@@ -154,7 +154,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		}
 		return null;
 	}
-		
+
 	public boolean isLoginFree(String login) {
 		int count = 0;
 		try(Connection connection = getConnection()) {
@@ -218,7 +218,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 	
 	
-	
+
 	//------------------------------------------------------
 	//----------------XXX:PRODUCT FOLLOWING-----------------
 	//------------------------------------------------------
@@ -237,7 +237,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		return false;
 
 	}
-	
+
 	public boolean isFollowProduct(int followerID, int productID) {
 		int count = 0;
 		try(Connection connection = getConnection()) {
@@ -252,7 +252,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		}
 		return count == 0;
 	}
-	
+
 	public boolean unfollowProduct(int productID, int followerID) {
 		try(Connection connection = getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(UNFOLLOW_QUERY);
@@ -354,7 +354,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		}
 		return false;
 	}
-	
+
 	public boolean isProductExist(int productID) {
 		int count = 0;
 		try(Connection connection = getConnection()) {
@@ -382,7 +382,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		}
 		return count != 0;
 	}
-	
+
 	public int getCurrentPrice(int productID) {
 		int price = -1;
 		try(Connection connection = getConnection()) {

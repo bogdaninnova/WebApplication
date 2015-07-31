@@ -3,12 +3,22 @@
  */
 
 var url="user";
-
+var loginAction;
 
 function validData(login, password) {
     if (login.length > 0 && password.length > 0) {
-        clickLogin(login, hex_md5(password));
+        if (validLogin(login)) {
+            loginAction = "loginEmail";
+        } else {
+            loginAction = "login";
+        }
+        clickLogin(login, hex_md5(password), loginAction);
     }
+}
+
+function validLogin(login) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(login);
 }
 
 function clickReister() {
@@ -30,13 +40,13 @@ function clickReister() {
     });
 }
 
-function clickLogin(login, password) {
+function clickLogin(login, password, loginAction) {
     $.ajax({
         dataType: "xml",
         url: url,
         type: "POST",
         data: {
-            action: "login",
+            action: loginAction,
             login: login,
             password: password
         },
