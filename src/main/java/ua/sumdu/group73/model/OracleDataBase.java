@@ -28,7 +28,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     private static final String ADD_USER_QUERY = "INSERT INTO USERS(ID, LOGIN, PASSWORD, NAME, SECOND_NAME, BIRTH, EMAIL, PHONE, STATUS) VALUES(USER_ID_S.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_USER_QUERY = "SELECT * FROM USERS WHERE ID = ?";
-    private static final String IS_LOGIN_FREE_QUERY = "SELEct LOGIN FROM USERS WHERE LOGIN = ?";
+    private static final String IS_LOGIN_FREE_QUERY = "SELECT * FROM USERS WHERE LOGIN = ?";
     private static final String IS_EMAIL_FREE_QUERY = "SELECT *  FROM USERS WHERE EMAIL = ?";
     private static final String AUTHORIZATION_QUERY = "SELECT PASSWORD, ID FROM USERS WHERE LOGIN = ?";
     private static final String AUTHORIZATION_BY_EMAIL_QUERY = "SELECT PASSWORD, ID FROM USERS WHERE EMAIL = ?";
@@ -160,22 +160,20 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isLoginFree(String login) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
+        try (
+        	Connection connection = getConnection();
             PreparedStatement preparedStatement =
-//					connection.prepareStatement(IS_LOGIN_FREE_QUERY);
-                    connection.prepareStatement("select * from users where name = ?");
-            preparedStatement.setString(1, login);
-            ResultSet rs = preparedStatement.executeQuery();
+            		connection.prepareStatement(IS_LOGIN_FREE_QUERY);
+  		) {
+        	preparedStatement.setString(1, login);
+        	ResultSet rs = preparedStatement.executeQuery();
 
-//			if(rs.hasNext)
-            rs.next();
-            count = rs.getInt(1);
+            return !rs.next();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count == 0;
+        return false;
     }
 
     public boolean isEmailFree(String login) {
