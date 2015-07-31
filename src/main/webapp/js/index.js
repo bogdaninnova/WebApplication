@@ -7,7 +7,7 @@ var loginAction;
 
 function validData(login, password) {
     if (login.length > 0 && password.length > 0) {
-        if (validLogin(login)) {
+        if (isEmail(login)) {
             loginAction = "loginEmail";
         } else {
             loginAction = "login";
@@ -16,12 +16,12 @@ function validData(login, password) {
     }
 }
 
-function validLogin(login) {
+function isEmail(login) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(login);
 }
 
-function clickReister() {
+function clickRegister() {
     $.ajax({
         dataType: "xml",
         url: url,
@@ -112,7 +112,7 @@ function createForm(user_name) {
         document.write("<td><input type=\"text\" id=\"login\" size=\"5\" maxlength=\"15\" autofocus required></td>");
         document.write("<td><input type=\"password\" id=\"password\" size=\"5\" maxlength=\"15\" required></td>");
         document.write("<td><label onclick=\"validData($('#login').val(), $('#password').val());\">[ Login ]</label></td>");
-        document.write("<td><label onclick=\"clickReister();\">[ Register ]</Label></td>");
+        document.write("<td><label onclick=\"clickRegister();\">[ Register ]</Label></td>");
         document.write("</form>");
     }
 }
