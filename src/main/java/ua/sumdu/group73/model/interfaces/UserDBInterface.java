@@ -26,7 +26,7 @@ public interface UserDBInterface {
 	 * @return id of authorizated user. If login or password is wrong - method returns -1.
 	 * 
 	 * */
-	public int authorization(String login, String password);
+	public User authorization(String login, String password);
 	
 	/**
 	 * Check login and password and do authorization.
