@@ -199,10 +199,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      * @return id of authorizated user. If login or password is wrong - method returns -1.
      */
     public User authorization(String login, String password) {
-        try {
+        try (
             Connection connection = getConnection();
             PreparedStatement preparedStatement =
                     connection.prepareStatement(AUTHORIZATION_QUERY);
+        ) {
+
             preparedStatement.setString(1, login);
             
             ResultSet rs = preparedStatement.executeQuery();
@@ -228,10 +230,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public User authorizationByEmail(String eMail, String password) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(AUTHORIZATION_BY_EMAIL_QUERY);
+        try (
+             Connection connection = getConnection();
+             PreparedStatement preparedStatement =
+            		 connection.prepareStatement(AUTHORIZATION_BY_EMAIL_QUERY);
+        ) {
+
             preparedStatement.setString(1, eMail);
             
             ResultSet rs = preparedStatement.executeQuery();
