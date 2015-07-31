@@ -2,6 +2,7 @@ package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
-//        response.setContentType("text/html; charset=UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         if (session != null) {
@@ -50,40 +51,43 @@ public class UserServlet extends HttpServlet {
             sendResponse(response, "OK", null);
         } else if ("login".equals(request.getParameter("action"))) {
 //            if (user is free) {
-                int res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
-                if (res != -1) {
-                    session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
+                User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
+                log.info("USER - " + res);
+                if (res != null) {
+                    session.setAttribute("username", res.getSecondName());
                     sendResponse(response, "OK", null);
-//                }
+                } else {
+                    sendResponse(response, "error", "Login incorrect.");
+                }
 //            } else {
 //                sendResponse(response, "Error", "This login is busy.");
-            }
+//            }
         } else if ("loginEmail".equals(request.getParameter("action"))) {
-            int res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
-            if (res != -1) {
-                session.setAttribute("username", OracleDataBase.getInstance().getUser(res).getName());
+            User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
+            if (res != null) {
+                session.setAttribute("username", res.getSecondName());
                 sendResponse(response, "OK", null);
             }
-        } else if("outLogin".equals(request.getParameter("action"))) {
+        } else if("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
                 sendResponse(response, "OK", null);
             }
         }
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
-    private void sendResponse(HttpServletResponse response, String text, String error) {
+    private void sendResponse(HttpServletResponse response, String text, String errorMessage) {
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
             if ("error".equals(text)) {
-                pw.print("<result>" + text + "</result>");
-                pw.println("error>" + error.toUpperCase() + "</error>");
+                pw.println("<error>");
+                pw.println("<text>" + errorMessage + "</text>");
+                pw.println("</error>");
             } else {
                 pw.println("<result>" + text + "</result>");
             }

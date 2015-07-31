@@ -55,24 +55,26 @@ function clickLogin(login, password, loginAction) {
                 $("#login").val("");
                 $("#password").val("");
                 window.location.replace("index.jsp")
-            } else if ("error" === $(data).find("result").text().toLowerCase()) {
+            } else {
+                $(data).find('error');
+                var text = $(data).find("text").text();
                 $("#password").val("");
-                alert("Error: This login is busy.");
+                alert(text);
             }
         },
         error: function () {
-            alert("Error while send register data.");
+            alert("Error while send login data.");
         }
     });
 }
 
-function clickOutLogin() {
+function logOut() {
     $.ajax({
         dataType: "xml",
         url: url,
         type: "POST",
         data: {
-            action: "outLogin"
+            action: "logOut"
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
@@ -104,7 +106,7 @@ function createForm(user_name) {
         document.write("<td>");
         document.write(user_name);
         document.write("<label onclick=\"\">[ Cabinet ]</Label>");
-        document.write("<label onclick=\"clickOutLogin();\">[ Out ]</Label>");
+        document.write("<label onclick=\"logOut();\">[ Out ]</Label>");
         document.write("")
         document.write("</td>")
     } else {
