@@ -78,10 +78,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         Connection connectionInstance = null;
         Hashtable ht = new Hashtable();
         ht.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
-        ht.put(Context.PROVIDER_URL, "t3://localhost:7701");
+        ht.put(Context.PROVIDER_URL, "t3://localhost:7001");
         try {
             Context ctx = new InitialContext(ht);
-            DataSource dataSource = (DataSource) ctx.lookup("auction");
+            DataSource dataSource = (DataSource) ctx.lookup("jdbc/JDBCDS");
             connectionInstance = dataSource.getConnection();
         } catch (NamingException e) {
             e.printStackTrace();
