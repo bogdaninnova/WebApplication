@@ -12,7 +12,7 @@ function validData(login, password, confirmPassword, firstName, secondName, age,
             alert("Check the input password confirmation.");
         } else if(firstName.length <= 3) {
             alert("Check the input password confirmation.");
-        } else if (!(validateEmail(email))) {
+        } else if (!(isEmail(email))) {
             alert("Incorrect Email address.");
         } else {
             sendRegisterData(login, password, firstName, secondName, age, email, phone);
@@ -20,7 +20,7 @@ function validData(login, password, confirmPassword, firstName, secondName, age,
     } else alert("Fill in all required fields.");
 }
 
-function validateEmail(checkEmail) {
+function isEmail(checkEmail) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(checkEmail);
 }
