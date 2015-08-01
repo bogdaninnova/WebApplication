@@ -2,6 +2,7 @@ package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.ServletConfig;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * This servlet working with index.jsp.
@@ -21,14 +23,18 @@ import java.io.PrintWriter;
 public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private HttpSession session;
+    private List<Category> categoryList;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         log.info("Init UserServlet");
-
+        categoryList = OracleDataBase.getInstance().getAllCategories();
+        log.info("Init categoryList" + categoryList);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("category", categoryList);
+        log.info("Category - " + categoryList.toString());
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setContentType("text/html; charset=UTF-8");
