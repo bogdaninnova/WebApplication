@@ -671,10 +671,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         ) {
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
 
             while (rs.next())
-                list.add(
+            	if (!isCategoryInList(rs.getString("NAME"), list))
+            		list.add(
                 		new Category(
                 				rs.getInt("ID"),
                 				rs.getInt("PARENT_ID"),
@@ -685,6 +685,13 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             log.error(CLASSNAME + "SQLException in getAllCategories()");
         }
         return list;
+    }
+    
+    private static boolean isCategoryInList(String categoriesName, List<Category> list) {
+    	for (Category category : list) 
+    		if (category.getName().equals(categoriesName))
+    			return true;
+    	return false;
     }
 
     public List<Product> getProductsByCategory(String categoryName) {
