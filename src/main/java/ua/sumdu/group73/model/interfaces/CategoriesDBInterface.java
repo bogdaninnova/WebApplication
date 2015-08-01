@@ -12,7 +12,7 @@ public interface CategoriesDBInterface {
 	
 	public Category getCategory(int categoryID);
 	
-	public List<Product> getProductsByCategory(int categoryID);
+	public List<Product> getProductsByCategory(String categoryName);
 
 	public List<Category> getAllCategories();
 

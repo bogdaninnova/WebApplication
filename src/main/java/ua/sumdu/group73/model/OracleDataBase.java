@@ -51,7 +51,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     private static final String ADD_SUBCATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, PRODUCT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, ?, ?, ?)";
     private static final String ADD_CATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, PRODUCT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, CATEGORY_ID_S.CURRVAL, ?, ?)";
     private static final String GET_ALL_CATEGORIES_QUERY = "SELECT * FROM CATEGORIES";
-    private static final String GET_PRODUCTS_BY_CATEGORY_QUERY = "SELECT PRODUCT_ID FROM CATEGORIES WHERE ID = ?";
+    private static final String GET_PRODUCTS_BY_CATEGORY_QUERY = "SELECT PRODUCT_ID FROM CATEGORIES WHERE NAME = ?";
     private static final String GET_SUBCATEGORY = "SELECT ID FROM CATEGORIES WHERE PARENT_ID = ?";
     private static final String GET_SALLERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
     private static final String GET_BUYERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
@@ -687,7 +687,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return list;
     }
 
-    public List<Product> getProductsByCategory(int categoryID) {
+    public List<Product> getProductsByCategory(String categoryName) {
     	log.info(CLASSNAME + "Method getProductsByCategory starts.....");
         List<Product> list = new ArrayList<Product>();
         try (
@@ -696,7 +696,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
                         connection.prepareStatement(GET_PRODUCTS_BY_CATEGORY_QUERY);
         ) {
 
-            preparedStatement.setInt(1, categoryID);
+            preparedStatement.setString(1, categoryName);
 
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
