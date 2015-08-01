@@ -12,9 +12,10 @@ public interface CategoriesDBInterface {
 	
 	public Category getCategory(int categoryID);
 	
-	public List<Integer> getProductsByCategory(int categoryID);
+	public List<Product> getProductsByCategory(int categoryID);
 
-	public List<Integer> getAllCategoriesID();
+	public List<Category> getAllCategories();
 
-	public List<Integer> getSubcategories(int categoryID);
+	@Deprecated
+	public List<Category> getSubcategories(int categoryID);
 }
