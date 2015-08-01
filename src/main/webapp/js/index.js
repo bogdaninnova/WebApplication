@@ -114,8 +114,8 @@ function createForm(user_name) {
         document.write("<form>");
         document.write("<td><input type=\"text\" id=\"login\" size=\"5\" maxlength=\"15\" autofocus required></td>");
         document.write("<td><input type=\"password\" id=\"password\" size=\"5\" maxlength=\"15\" required></td>");
-        document.write("<td><label onclick=\"validData($('#login').val(), $('#password').val());\">[ Login ]</label></td>");
-        document.write("<td><label onclick=\"clickRegister();\">[ Register ]</Label></td>");
+        document.write("<td><label onclick=\"validData($('#login').val(), $('#password').val());\">[ <b>Login</b> ]</label></td>");
+        document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
         document.write("</form>");
     }
 }
