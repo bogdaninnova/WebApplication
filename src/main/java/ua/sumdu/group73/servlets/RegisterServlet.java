@@ -29,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
 
         if ("registerData".equals(request.getParameter("action"))) {
             if (OracleDataBase.getInstance().addUser(request.getParameter("login"), request.getParameter("password"),
-                    request.getParameter("firstName"), request.getParameter("secondName"), request.getParameter("age"),
+                    request.getParameter("firstName"), request.getParameter("secondName"), Long.parseLong(request.getParameter("age")),
                     request.getParameter("email"), request.getParameter("phone"))) {
                 session.setAttribute("username", request.getParameter("secondName"));
                 PrintWriter pw = response.getWriter();

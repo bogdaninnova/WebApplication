@@ -39,7 +39,7 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
             password: hex_md5(password),
             firstName: firstName,
             secondName: secondName,
-            age: age,
+            age: Date.parse(age),
             email: email,
             phone: phone
         },
