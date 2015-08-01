@@ -37,6 +37,6 @@ public interface UserDBInterface {
 	
 	public boolean isAdmin(int id);
 	
-	public List<Integer> getUsersProducts();
+	public List<Product> getUsersProducts(int userID);
 		
 }

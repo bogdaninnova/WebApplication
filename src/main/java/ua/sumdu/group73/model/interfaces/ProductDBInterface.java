@@ -14,8 +14,6 @@ public interface ProductDBInterface {
 	
 	public boolean disactivateProduct(int productID);
 	
-	public boolean isProductExist(int productID);
-	
 	public boolean isProductActive(int productID);
 	
 	public int getCurrentPrice(int productID);

@@ -6,13 +6,19 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
+
 public class MailSender {
 
+	private static final Logger log = Logger.getLogger(ConnectionDB.class);
+	private static final String CLASSNAME = "MailSender: ";
 	
     private static MailSender instance;
     
     public static synchronized MailSender getInstance() {
+    	log.info(CLASSNAME + "Method MailSender starts.....");
         if (instance == null) {
+        	log.info(CLASSNAME + "Creates new instance.....");
         	instance = new MailSender();
         }
         return instance;
@@ -22,9 +28,8 @@ public class MailSender {
     private String password = "auction3";
     private Properties props;
 
-    
-
     private MailSender() {
+    	log.info(CLASSNAME + "Constructor starts.....");
         props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -33,6 +38,8 @@ public class MailSender {
     }
 
     public void send(String subject, String text, String toEmail){
+    	
+    	log.info(CLASSNAME + "Method send starts.....");
     	
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -49,7 +56,8 @@ public class MailSender {
 
             Transport.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            log.error(CLASSNAME + "MessagingException in send()");
         }
     }
 
