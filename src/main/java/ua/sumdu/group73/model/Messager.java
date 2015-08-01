@@ -1,12 +1,17 @@
 package ua.sumdu.group73.model;
 
+import org.apache.log4j.Logger;
+
 import ua.sumdu.group73.model.objects.*;
 
 public class Messager {
 
-	
+	private static final Logger log = Logger.getLogger(ConnectionDB.class);
+	private static final String CLASSNAME = "Messager: ";
 	
 	public static void sendEndAuctionMessage(int productID) {
+		
+		log.info(CLASSNAME + "Method sendEndAuctionMessage starts.....");
 		
 		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
@@ -52,6 +57,8 @@ public class Messager {
 	}
 	
 	public static void registrationMail(int userID) {
+		
+		log.info(CLASSNAME + "Method registrationMail starts.....");
 		
 		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
