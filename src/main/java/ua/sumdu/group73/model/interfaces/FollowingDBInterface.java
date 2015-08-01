@@ -2,6 +2,8 @@ package ua.sumdu.group73.model.interfaces;
 
 import java.util.List;
 
+import ua.sumdu.group73.model.objects.*;
+
 public interface FollowingDBInterface {
 
 
@@ -15,6 +17,6 @@ public interface FollowingDBInterface {
 	 * Returns list of products ID, that followed by user.
 	 * With this ID's we can restore objects "Product".
 	 * */
-	public List<Integer> getFollowingProductsID(int userID);
+	public List<Product> getFollowingProductsID(int userID);
 
 }
