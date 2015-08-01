@@ -123,33 +123,16 @@ function createForm(user_name) {
 
 function createCatalog() {
     // TODO нужно сделать получение массива каталогов
-    document.write("<ul class=\"navigation\">");
-    document.write("<a class=\"main\" href=\"#url\">Каталог #1</a>");
-    document.write("<li class=\"n1\"><a href=\"#\">item #1</a></li>");
-    document.write("<li class=\"n2\"><a href=\"#\">item #2</a></li>");
-    document.write("<li class=\"n3\"><a href=\"#\">item #3</a></li>");
-    document.write("<li class=\"n4\"><a href=\"#\">item #4</a></li>");
-    document.write("<li class=\"n5\"><a href=\"#\">item #5</a></li>")
-    document.write("</ul>");
-
-    document.write("<ul class=\"navigation\">");
-    document.write("<a class=\"main\" href=\"#url\">Каталог #2</a>");
-    document.write("<li class=\"n1\"><a href=\"#\">item #1</a></li>");
-    document.write("<li class=\"n2\"><a href=\"#\">item #2</a></li>");
-    document.write("</ul>");
-
-    document.write("<ul class=\"navigation\">");
-    document.write("<a class=\"main\" href=\"#url\">Каталог #3</a>");
-    document.write("<li class=\"n1\"><a href=\"#\">item #1</a></li>");
-    document.write("<li class=\"n2\"><a href=\"#\">item #2</a></li>");
-    document.write("<li class=\"n3\"><a href=\"#\">item #3</a></li>");
-    document.write("<li class=\"n4\"><a href=\"#\">item #4</a></li>");
-    document.write("<li class=\"n5\"><a href=\"#\">item #5</a></li>")
-    document.write("</ul>");
-
-    document.write("<ul class=\"navigation\">");
-    document.write("<a class=\"main\" href=\"#url\">Каталог #4</a>");
-    document.write("</ul>");
+    for (var i = 1; i < 5; i++) {
+        document.write("<ul class=\"navigation\">");
+        document.write("<a class=\"main\" href=\"#url\">Каталог " + i + "</a>");
+        document.write("<li class=\"n1\"><a href=\"#\">item #1</a></li>");
+        document.write("<li class=\"n2\"><a href=\"#\">item #2</a></li>");
+        document.write("<li class=\"n3\"><a href=\"#\">item #3</a></li>");
+        document.write("<li class=\"n4\"><a href=\"#\">item #4</a></li>");
+        document.write("<li class=\"n5\"><a href=\"#\">item #5</a></li>")
+        document.write("</ul>");
+    }
 }
 
 function alertMessage(text) {
