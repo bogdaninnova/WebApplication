@@ -218,7 +218,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             }
            } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } 
         return null;
     }
 
