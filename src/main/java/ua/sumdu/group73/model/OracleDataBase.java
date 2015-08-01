@@ -99,7 +99,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     
     /**
      * Creating of a new User.
-     *
+     * date is long
      * @return false if login or email is not free or happened some error.
      */
     public boolean addUser(String login, String password, String name, String secondName,
