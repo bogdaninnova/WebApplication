@@ -6,9 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -32,27 +29,27 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     private static final String IS_EMAIL_FREE_QUERY = "SELECT * FROM USERS WHERE EMAIL = ?";
     private static final String AUTHORIZATION_QUERY = "SELECT * FROM USERS WHERE LOGIN = ?";
     private static final String AUTHORIZATION_BY_EMAIL_QUERY = "SELECT * FROM USERS WHERE EMAIL = ?";
-    private static final String IS_USER_ADMIN_QUERY = "SELECT COUNT(*) as count FROM USERS WHERE ID = ? AND STATUS = 'admin'";
+    private static final String IS_USER_ADMIN_QUERY = "SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     private static final String FOLLOW_PRODUCT_QUERY = "INSERT INTO FOLLOWINGS(ID, FOLLOWER_ID, PRODUCT_ID) VALUES (FOLLOWING_ID_S.NEXTVAL, ?, ?)";
-    private static final String IS_FOLLOW_QUERY = "SELECT COUNT(*) as count FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
+    private static final String IS_FOLLOW_QUERY = "SELECT * FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
     private static final String UNFOLLOW_QUERY = "DELETE FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
     private static final String GET_FOLLOWING_PRODUCTS_QUERY = "SELECT PRODUCT_ID FROM FOLLOWINGS WHERE FOLLOWER_ID = ?";
     private static final String ADD_PRODUCT_QUERY = "INSERT INTO PRODUCTS(ID, SELLER_ID, NAME, DESCRIPTION, START_DATE, END_DATE, START_PRICE, BUYOUT_PRICE, CURRENT_PRICE, CURRENT_BUYER_ID, IS_ACTIVE) VALUES (PRODUCT_ID_S.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, 0, NULL, 'active')";
     private static final String GET_PRODUCT_QUERY = "SELECT * FROM PRODUCTS WHERE ID = ?";
     private static final String DISACTIVATE_PRODUCT_QUERY = "UPDATE PRODUCTS SET IS_ACTIVE = 'disactive' WHERE ID = ?";
-    private static final String IS_PRODUCT_EXIST_QUERY = "SELECT COUNT(*) as count FROM PRODUCTS WHERE ID = ?";
-    private static final String IS_PRODUCT_ACTIVE_QUERY = "SELECT COUNT(*) as count FROM PRODUCTS WHERE ID = ? AND IS_ACTIVE = 'active'";
+    private static final String IS_PRODUCT_EXIST_QUERY = "SELECT * FROM PRODUCTS WHERE ID = ?";
+    private static final String IS_PRODUCT_ACTIVE_QUERY = "SELECT * FROM PRODUCTS WHERE ID = ? AND IS_ACTIVE = 'active'";
     private static final String QET_CURRENT_PRICE_QUERY = "SELECT CURRENT_PRICE FROM PRODUCTS WHERE ID = ?";
     private static final String MAKE_A_BET_QUERY = "UPDATE PRODUCTS SET CURRENT_PRICE = ?, CURRENT_BUYER_ID = ? WHERE ID = ?";
-    private static final String FINISH_AUCTIONS_QUERY = "SELECT ID FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < ?";
+    private static final String FINISH_AUCTIONS_QUERY = "SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < ?";
     private static final String GET_CATEGORY_QUERY = "SELECT * FROM CATEGORIES WHERE ID = ?";
     private static final String ADD_SUBCATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, PRODUCT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, ?, ?, ?)";
     private static final String ADD_CATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, PRODUCT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, CATEGORY_ID_S.CURRVAL, ?, ?)";
-    private static final String GET_ALL_CATEGORIES_QUERY = "SELECT ID FROM CATEGORIES";
+    private static final String GET_ALL_CATEGORIES_QUERY = "SELECT * FROM CATEGORIES";
     private static final String GET_PRODUCTS_BY_CATEGORY_QUERY = "SELECT PRODUCT_ID FROM CATEGORIES WHERE ID = ?";
     private static final String GET_SUBCATEGORY = "SELECT ID FROM CATEGORIES WHERE PARENT_ID = ?";
-    private static final String GET_SALLERS_TRANSACTIONS_QUERY = "SELECT ID FROM TRANSACTIONS WHERE SELLER_ID = ?";
-    private static final String GET_BUYERS_TRANSACTIONS_QUERY = "SELECT ID FROM TRANSACTIONS WHERE BUYER_ID = ?";
+    private static final String GET_SALLERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
+    private static final String GET_BUYERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
     private static final String ADD_TRANSACTION_QUERY = "INSERT INTO TRANSACTIONS(ID, BUYER_ID, SELLER_ID, PRODUCT_ID, PRICE, SALE_DATE) VALUES(TRANSACTION_ID_S.NEXTVAL, ?, ?, ?, ?, ?)";
     private static final String GET_TRANSACTION_QUERY = "SELECT * FROM TRANSACTIONS WHERE ID = ?";
     private static final String GET_PICTURES_URL_QUERY = "SELECT URL FROM PICTURES WHERE PRODUCT_ID = ?";
@@ -81,10 +78,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         Connection connectionInstance = null;
         Hashtable ht = new Hashtable();
         ht.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
-        ht.put(Context.PROVIDER_URL, "t3://localhost:7701");
+        ht.put(Context.PROVIDER_URL, "t3://localhost:7001");
         try {
             Context ctx = new InitialContext(ht);
-            DataSource dataSource = (DataSource) ctx.lookup("auction");
+            DataSource dataSource = (DataSource) ctx.lookup("jdbc/JDBCDS");
             connectionInstance = dataSource.getConnection();
         } catch (NamingException e) {
             e.printStackTrace();
@@ -94,30 +91,29 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return connectionInstance;
     }
 
-
+    
     //------------------------------------------------------
     //-----------------------XXX:USER-----------------------
     //------------------------------------------------------
 
-
+    
     /**
      * Creating of a new User.
      *
      * @return false if login or email is not free or happened some error.
      */
     public boolean addUser(String login, String password, String name, String secondName,
-                           String birthDate, String eMail, String phone) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        try {
+                           long birthDate, String eMail, String phone) {
+        try (
             Connection connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_USER_QUERY);
-            Date date = format.parse(birthDate);
+            		connection.prepareStatement(ADD_USER_QUERY);
+        ) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, name);
             preparedStatement.setString(4, secondName);
-            preparedStatement.setDate(5, (java.sql.Date) date);
+            preparedStatement.setDate(5, new java.sql.Date(birthDate));
             preparedStatement.setString(6, eMail);
             preparedStatement.setString(7, phone);
             preparedStatement.setString(8, "user");
@@ -125,17 +121,16 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
         return false;
     }
 
     public User getUser(int id) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_USER_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(GET_USER_QUERY);
+   		) {
             preparedStatement.setLong(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -177,19 +172,18 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isEmailFree(String login) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(IS_EMAIL_FREE_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(IS_EMAIL_FREE_QUERY);
+        ) {
             preparedStatement.setString(1, login);
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            count = rs.getInt(1);
+            return !rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count == 0;
+        return false;
     }
 
 
@@ -204,25 +198,23 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             PreparedStatement preparedStatement =
                     connection.prepareStatement(AUTHORIZATION_QUERY);
         ) {
-
             preparedStatement.setString(1, login);
             
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                rs.next();
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
-                String secondName = rs.getString("SECOND_NAME");
-                Date birthDate = rs.getDate("BIRTH");
-                String eMail = rs.getString("EMAIL");
-                String phone = rs.getString("PHONE");
-                String status = rs.getString("STATUS");
+            rs.next();
 
-                byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
-
-                if (rs.getString("PASSWORD").equals(password))
-                    return new User(id, login, password, name, secondName, age, eMail, phone, status);
-            }
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            String secondName = rs.getString("SECOND_NAME");
+            Date birthDate = rs.getDate("BIRTH");
+            String eMail = rs.getString("EMAIL");
+            String phone = rs.getString("PHONE");
+            String status = rs.getString("STATUS");
+                 
+            byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
+            
+            if (rs.getString("PASSWORD").equals(password))
+            	return new User(id, login, password, name, secondName, age, eMail, phone, status);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -240,21 +232,20 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setString(1, eMail);
             
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                rs.next();
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
-                String secondName = rs.getString("SECOND_NAME");
-                Date birthDate = rs.getDate("BIRTH");
-                String login = rs.getString("LOGIN");
-                String phone = rs.getString("PHONE");
-                String status = rs.getString("STATUS");
+            rs.next();
 
-                byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
-
-                if (rs.getString("PASSWORD").equals(password))
-                    return new User(id, login, password, name, secondName, age, eMail, phone, status);
-            }
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            String secondName = rs.getString("SECOND_NAME");
+            Date birthDate = rs.getDate("BIRTH");
+            String login = rs.getString("LOGIN");
+            String phone = rs.getString("PHONE");
+            String status = rs.getString("STATUS");
+                 
+            byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
+            
+            if (rs.getString("PASSWORD").equals(password))
+            	return new User(id, login, password, name, secondName, age, eMail, phone, status);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -263,19 +254,18 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean isAdmin(int userID) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(IS_USER_ADMIN_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(IS_USER_ADMIN_QUERY);
+   		) {
             preparedStatement.setInt(1, userID);
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            count = rs.getInt(1);
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count != 0;
+        return false;
     }
 
 
@@ -285,10 +275,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean followProduct(int productID, int followerID) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(FOLLOW_PRODUCT_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(FOLLOW_PRODUCT_QUERY);
+        		) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             preparedStatement.executeUpdate();
@@ -301,27 +292,27 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isFollowProduct(int followerID, int productID) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(IS_FOLLOW_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(IS_FOLLOW_QUERY);
+        ) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            count = rs.getInt(1);
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count == 0;
+        return false;
     }
 
     public boolean unfollowProduct(int productID, int followerID) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(UNFOLLOW_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(UNFOLLOW_QUERY);
+   		) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             preparedStatement.executeUpdate();
@@ -336,19 +327,21 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      * Returns list of products ID, that followed by user.
      * With this ID's we can restore objects "Product".
      */
-    public List<Integer> getFollowingProductsID(int userID) {
+    public List<Product> getFollowingProductsID(int userID) {
 
-        List<Integer> list = new ArrayList<Integer>();
+        List<Product> list = new ArrayList<Product>();
 
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_FOLLOWING_PRODUCTS_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(GET_FOLLOWING_PRODUCTS_QUERY);
+        ) {
             preparedStatement.setInt(1, userID);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next())
-                list.add(rs.getInt("PRODUCT_ID"));
+                list.add(getProduct(rs.getInt("PRODUCT_ID")));
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -364,10 +357,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     public boolean addProduct(int sellerID, String name, String description,
                               Date startDate, Date endDate, int startPrice, int buyoutPrice) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_PRODUCT_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(ADD_PRODUCT_QUERY);
+        ) {
             preparedStatement.setInt(1, sellerID);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, description);
@@ -384,10 +378,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     public Product getProduct(int id) {
         Product product = null;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_PRODUCT_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(GET_PRODUCT_QUERY);	
+        ) {
             preparedStatement.setLong(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -414,10 +409,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean disactivateProduct(int productID) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(DISACTIVATE_PRODUCT_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(DISACTIVATE_PRODUCT_QUERY);
+        ) {
             preparedStatement.setInt(1, productID);
             preparedStatement.executeUpdate();
             return true;
@@ -428,43 +424,42 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isProductExist(int productID) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(IS_PRODUCT_EXIST_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+                		connection.prepareStatement(IS_PRODUCT_EXIST_QUERY);
+        ) {
             preparedStatement.setInt(1, productID);
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            count = rs.getInt(1);
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count != 0;
+        return false;
     }
 
     public boolean isProductActive(int productID) {
-        int count = 0;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(IS_PRODUCT_ACTIVE_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(IS_PRODUCT_ACTIVE_QUERY);
+   		) {
             preparedStatement.setInt(1, productID);
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            count = rs.getInt(1);
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count != 0;
+        return false;
     }
 
     public int getCurrentPrice(int productID) {
         int price = -1;
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(QET_CURRENT_PRICE_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(QET_CURRENT_PRICE_QUERY);
+        ) {
             preparedStatement.setLong(1, productID);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -477,10 +472,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean makeBet(int productID, int buyerID, int price) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(MAKE_A_BET_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+        				connection.prepareStatement(MAKE_A_BET_QUERY);
+        ) {
             preparedStatement.setInt(1, price);
             preparedStatement.setInt(2, buyerID);
             preparedStatement.setInt(3, productID);
@@ -494,35 +490,50 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     /**
      * @return list of products id, that was finished just now
      */
-    public ArrayList<Integer> finishAuctions() {
+    public ArrayList<Product> finishAuctions() {
         ArrayList<Product> list = new ArrayList<Product>();
-        ArrayList<Integer> listID = new ArrayList<Integer>();
 
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(FINISH_AUCTIONS_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+                		connection.prepareStatement(FINISH_AUCTIONS_QUERY);
+        		) {
+
             preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
             ResultSet rs = preparedStatement.executeQuery();
 
-            while (rs.next())
-                list.add(getProduct(rs.getInt("PRODUCT_ID")));
-
-            for (Product product : list) {
-                disactivateProduct(product.getId());
-                if (product.getCurrentPrice() != 0) {
-                    addTransaction(product.getCurrentBuyerID(),
-                            product.getSellerID(), product.getId(),
-                            product.getCurrentPrice(), product.getEndDate());
-                    listID.add(product.getId());
+            while (rs.next()) {
+                list.add(
+                		new Product(
+                				rs.getInt("PRODUCT_ID"),
+                				rs.getInt("SELLER_ID"),
+                				rs.getString("NAME"),
+                				rs.getString("DESCRIPTION"),
+                				rs.getDate("START_DATE"),
+                				rs.getDate("END_DATE"),
+                				rs.getInt("START_PRICE"),
+                				rs.getInt("BUYOUT_PRICE"),
+                				rs.getInt("CURRENT_PRICE"),
+                				rs.getInt("CURRENT_BUYER_ID"),
+                				rs.getString("IS_ACTIVE").equals("active")));
+                
+                disactivateProduct(rs.getInt("PRODUCT_ID"));
+                
+                if (rs.getInt("CURRENT_PRICE") != 0) {
+                    addTransaction(
+                    		rs.getInt("CURRENT_BUYER_ID"),
+                    		rs.getInt("SELLER_ID"),
+                            rs.getInt("PRODUCT_ID"),
+                            rs.getInt("CURRENT_PRICE"),
+                            rs.getDate("END_DATE"));
                 }
             }
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return listID;
+        return list;
     }
 
 
@@ -531,10 +542,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //------------------------------------------------------
 
     public Category getCategory(int categoryID) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_CATEGORY_QUERY);
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+                		connection.prepareStatement(GET_CATEGORY_QUERY);
+        		) {
             preparedStatement.setLong(1, categoryID);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -550,10 +562,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addCategory(int parentID, int productID, String name) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_SUBCATEGORY_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(ADD_SUBCATEGORY_QUERY);
+        ) {
             preparedStatement.setInt(1, parentID);
             preparedStatement.setInt(2, productID);
             preparedStatement.setString(3, name);
@@ -566,10 +579,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addCategory(int productID, String name) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_CATEGORY_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(ADD_CATEGORY_QUERY);
+        ) {
             preparedStatement.setInt(1, productID);
             preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
@@ -580,57 +594,71 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return false;
     }
 
-    public List<Integer> getAllCategoriesID() {
-        List<Integer> list = new ArrayList<Integer>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_ALL_CATEGORIES_QUERY);
+    public List<Category> getAllCategories() {
+        List<Category> list = new ArrayList<Category>();
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_ALL_CATEGORIES_QUERY);
+        ) {
+
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
 
             while (rs.next())
-                list.add(rs.getInt("ID"));
-            return list;
+                list.add(
+                		new Category(
+                				rs.getInt("ID"),
+                				rs.getInt("PARENT_ID"),
+                				rs.getInt("PRODUCT_ID"),
+                				rs.getString("NAME")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public List<Integer> getProductsByCategory(int categoryID) {
-        List<Integer> list = new ArrayList<Integer>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_PRODUCTS_BY_CATEGORY_QUERY);
+    public List<Product> getProductsByCategory(int categoryID) {
+        List<Product> list = new ArrayList<Product>();
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_PRODUCTS_BY_CATEGORY_QUERY);
+        ) {
+
             preparedStatement.setInt(1, categoryID);
 
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
 
             while (rs.next())
-                list.add(rs.getInt("PRODUCT_ID"));
-            return list;
+                list.add(getProduct(rs.getInt("PRODUCT_ID")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public List<Integer> getSubcategories(int categoryID) {
-        List<Integer> list = new ArrayList<Integer>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_SUBCATEGORY);
+    @Deprecated
+    public List<Category> getSubcategories(int categoryID) {
+        List<Category> list = new ArrayList<Category>();
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_SUBCATEGORY);
+        ) {
             preparedStatement.setInt(1, categoryID);
 
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
 
             while (rs.next())
-                list.add(rs.getInt("ID"));
+                list.add(
+                		new Category(
+                				rs.getInt("ID"),
+                				rs.getInt("PARENT_ID"),
+                				rs.getInt("PRODUCT_ID"),
+                				rs.getString("NAME")));
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -643,40 +671,57 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //------------------------------------------------------
 
 
-    public List<Integer> getSalersTransaction(int sellerID) {
-        List<Integer> list = new ArrayList<Integer>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_SALLERS_TRANSACTIONS_QUERY);
+    public List<Transaction> getSalersTransaction(int sellerID) {
+        List<Transaction> list = new ArrayList<Transaction>();
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_SALLERS_TRANSACTIONS_QUERY);
+        ) {
+
             preparedStatement.setInt(1, sellerID);
 
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
 
             while (rs.next())
-                list.add(rs.getInt("ID"));
-            return list;
+                list.add(
+                		new Transaction(
+                				rs.getInt("ID"),
+                				rs.getInt("BUYER_ID"),
+                				rs.getInt("SELLER_ID"),
+                				rs.getInt("PRODUCT_ID"),
+                				rs.getInt("PRICE"),
+                				rs.getDate("SALE_DATE")));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public List<Integer> getBuyersTransaction(int buyerID) {
-        List<Integer> list = new ArrayList<Integer>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_BUYERS_TRANSACTIONS_QUERY);
+    public List<Transaction> getBuyersTransaction(int buyerID) {
+        List<Transaction> list = new ArrayList<Transaction>();
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_BUYERS_TRANSACTIONS_QUERY);
+        ) {
+
             preparedStatement.setInt(1, buyerID);
 
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
 
             while (rs.next())
-                list.add(rs.getInt("ID"));
-            return list;
+                list.add(
+                		new Transaction(
+                				rs.getInt("ID"),
+                				rs.getInt("BUYER_ID"),
+                				rs.getInt("SELLER_ID"),
+                				rs.getInt("PRODUCT_ID"),
+                				rs.getInt("PRICE"),
+                				rs.getDate("SALE_DATE")));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -684,10 +729,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addTransaction(int buyerID, int sellerID, int productID, int price, Date saleDate) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_TRANSACTION_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(ADD_TRANSACTION_QUERY);
+        ) {
             preparedStatement.setInt(1, buyerID);
             preparedStatement.setInt(2, sellerID);
             preparedStatement.setInt(3, productID);
@@ -702,10 +748,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public Transaction getTransaction(int transactionID) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_TRANSACTION_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_TRANSACTION_QUERY);
+        ) {
+
             preparedStatement.setLong(1, transactionID);
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
@@ -730,10 +778,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     public List<String> getPicturesURLs(int productID) {
         List<String> list = new ArrayList<String>();
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(GET_PICTURES_URL_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(GET_PICTURES_URL_QUERY);
+        ) {
+
             preparedStatement.setInt(1, productID);
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -741,7 +791,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
             while (rs.next())
                 list.add(rs.getString("URL"));
-            return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -749,10 +798,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addPictures(int productID, String URL) {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(ADD_PICTURE_QUERY);
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(ADD_PICTURE_QUERY);
+        ) {
+
             preparedStatement.setInt(1, productID);
             preparedStatement.setString(2, URL);
             preparedStatement.executeUpdate();
