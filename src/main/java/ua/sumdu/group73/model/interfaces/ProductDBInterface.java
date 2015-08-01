@@ -22,6 +22,6 @@ public interface ProductDBInterface {
 		
 	public boolean makeBet(int productID, int buyerID, int price);
 	
-	public ArrayList<Integer> finishAuctions();
+	public ArrayList<Product> finishAuctions();
 	
 }
