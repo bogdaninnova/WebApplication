@@ -706,7 +706,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setString(1, categoryName);
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
 
             while (rs.next())
                 list.add(getProduct(rs.getInt("PRODUCT_ID")));
@@ -729,7 +728,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, categoryID);
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
 
             while (rs.next())
                 list.add(
@@ -763,7 +761,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, sellerID);
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
 
             while (rs.next())
                 list.add(
@@ -793,7 +790,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, buyerID);
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
 
             while (rs.next())
                 list.add(
@@ -876,8 +872,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, productID);
 
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-
             while (rs.next())
                 list.add(rs.getString("URL"));
         } catch (SQLException e) {
