@@ -104,9 +104,10 @@ function clickFind(find) {
 function createForm(user_name) {
     if (user_name != null && user_name !="" && user_name != "null") {
         document.write("<td>");
+        document.write("Welcome ,");
         document.write(user_name);
-        document.write("<label onclick=\"\">[ Cabinet ]</Label>");
-        document.write("<label onclick=\"logOut();\">[ Out ]</Label>");
+        document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
+        document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");
         document.write("")
         document.write("</td>")
     } else {
