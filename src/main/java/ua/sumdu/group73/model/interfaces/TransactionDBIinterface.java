@@ -7,9 +7,9 @@ import ua.sumdu.group73.model.objects.*;
 
 public interface TransactionDBIinterface {
 
-	public List<Integer> getSalersTransaction(int sellerID);
+	public List<Transaction> getSalersTransaction(int sellerID);
 	
-	public List<Integer> getBuyersTransaction(int buyerID);
+	public List<Transaction> getBuyersTransaction(int buyerID);
 	
 	public Transaction getTransaction(int transactionID);
 	
