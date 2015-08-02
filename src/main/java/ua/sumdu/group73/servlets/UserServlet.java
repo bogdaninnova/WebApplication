@@ -28,13 +28,9 @@ public class UserServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         log.info("Init UserServlet");
-        categoryList = OracleDataBase.getInstance().getAllCategories();
-        log.info("Init categoryList" + categoryList);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.setAttribute("category", categoryList);
-//        log.info("Category - " + categoryList.toString());
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setContentType("text/html; charset=UTF-8");
@@ -61,15 +57,21 @@ public class UserServlet extends HttpServlet {
             log.info("USER - " + res);
             if (res != null) {
                 session.setAttribute("username", res.getSecondName());
+                session.setAttribute("userId", res.getId());
                 sendResponse(response, "<result>OK</result>", null);
             } else {
                 sendResponse(response, "message", "Login incorrect.");
             }
 //            } else {
-//                sendResponse(response, "Error", "This login is busy.");
+//                sendResponse(response, "message", "This login is busy.");
 //            }
         } else if ("getCatalog".equals(request.getParameter("action"))) {
+            categoryList = OracleDataBase.getInstance().getAllCategories();
+            log.info("Init categoryList" + categoryList);
             sendResponse(response, createHtmlList(), null);
+        } else if ("getLots".equals(request.getParameter("action"))) {
+
+            sendResponse(response, createHtmlLots(), null);
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
@@ -81,6 +83,7 @@ public class UserServlet extends HttpServlet {
         } else if("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
+                session.setAttribute("userId" , null);
                 sendResponse(response, "<result>OK</result>", null);
             }
         }
@@ -108,7 +111,7 @@ public class UserServlet extends HttpServlet {
     }
 
     /**
-     * This method created html.
+     * This method created html code.
      *
      * @return String
      */
@@ -146,4 +149,23 @@ public class UserServlet extends HttpServlet {
         log.info("HTML List - " + htmlList.toString());
         return htmlList.toString();
     }
+
+    /**
+     * This method created html code.
+     *
+     * @return String
+     */
+    private String createHtmlLots() {
+        StringBuilder htmlLots = new StringBuilder();
+        for (int i = 1; i <= 5; i++) {
+            htmlLots.append("<div class = \"container-lots\">test" + i + "</div>");
+
+
+            htmlLots.append("<br>");
+        }
+        htmlLots.append("<br><br>");
+        htmlLots.append("<footer> 1_2_3_4_5 ... 10 </footer>");
+        return htmlLots.toString();
+    }
+
 }

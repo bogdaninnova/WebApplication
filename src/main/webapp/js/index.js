@@ -6,7 +6,7 @@ var url="user";
 var loginAction;
 
 
-function getData() {
+function getCategory() {
     $.ajax({
         dataType: "html",
         url: url,
@@ -19,6 +19,23 @@ function getData() {
         },
         error: function () {
             alert("Error can not get catalog");
+        }
+    });
+}
+
+function getLots() {
+    $.ajax({
+        dataType: "html",
+        url: url,
+        type: "POST",
+        data: {
+            action: "getLots"
+        },
+        success: function (html) {
+            $('#lots').append(html).html();
+        },
+        error: function () {
+            alert("Error can not get lots");
         }
     });
 }

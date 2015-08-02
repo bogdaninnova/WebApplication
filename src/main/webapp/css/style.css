@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-    width: 100%
+    width: 100%;
     position: relative;
     background-color: white;
     border-top-style: solid;
@@ -68,5 +68,21 @@ label:hover {
 .container-section-lot {
     margin-left: 25%;
     width: 75%;
+    min-height: 70%;
     position: relative;
+}
+
+.container-lots {
+    width: 80%;
+    min-height: 100px;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
