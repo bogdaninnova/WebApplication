@@ -33,8 +33,8 @@ public class UserServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("category", categoryList);
-        log.info("Category - " + categoryList.toString());
+//        request.setAttribute("category", categoryList);
+//        log.info("Category - " + categoryList.toString());
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         response.setContentType("text/html; charset=UTF-8");
@@ -51,35 +51,37 @@ public class UserServlet extends HttpServlet {
 
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
-            sendResponse(response, "OK", null);
+            sendResponse(response, "<result>OK</result>", null);
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
-            sendResponse(response, "OK", null);
+            sendResponse(response, "<result>OK</result>", null);
         } else if ("login".equals(request.getParameter("action"))) {
 //            if (user is free) {
-                User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
-                log.info("USER - " + res);
-                if (res != null) {
-                    session.setAttribute("username", res.getSecondName());
-                    sendResponse(response, "OK", null);
-                } else {
-                    sendResponse(response, "error", "Login incorrect.");
-                }
+            User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
+            log.info("USER - " + res);
+            if (res != null) {
+                session.setAttribute("username", res.getSecondName());
+                sendResponse(response, "<result>OK</result>", null);
+            } else {
+                sendResponse(response, "message", "Login incorrect.");
+            }
 //            } else {
 //                sendResponse(response, "Error", "This login is busy.");
 //            }
+        } else if ("getCatalog".equals(request.getParameter("action"))) {
+            sendResponse(response, createHtmlList(), null);
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
                 session.setAttribute("username", res.getSecondName());
-                sendResponse(response, "OK", null);
+                sendResponse(response, "<result>OK</result>", null);
             } else {
                 sendResponse(response, "error", "Email incorrect.");
             }
         } else if("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("username") != null) {
                 session.setAttribute("username", null);
-                sendResponse(response, "OK", null);
+                sendResponse(response, "<result>OK</result>", null);
             }
         }
     }
@@ -88,20 +90,60 @@ public class UserServlet extends HttpServlet {
 
     }
 
-    private void sendResponse(HttpServletResponse response, String text, String errorMessage) {
+    private void sendResponse(HttpServletResponse response, String text, String message) {
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
-            if ("error".equals(text)) {
-                pw.println("<error>");
-                pw.println("<text>" + errorMessage + "</text>");
-                pw.println("</error>");
+            if ("message".equals(text)) {
+                pw.println("<result>");
+                pw.println("<text>" + message + "</text>");
+                pw.println("</result>");
             } else {
-                pw.println("<result>" + text + "</result>");
+                pw.println(text);
             }
             pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method created html.
+     *
+     * @return String
+     */
+    private String createHtmlList() {
+        StringBuilder htmlList = new StringBuilder();
+        for (Category cat : categoryList) {
+            if (cat.getParentID() == 0) {
+                htmlList.append("<ul class=\"navigation\">");
+                int id = cat.getId();
+                htmlList.append("<a class=\"main\" href=\"#url\">");
+                htmlList.append(cat.getName());
+                htmlList.append("\"</a>\"");
+                for (Category subDirectory : categoryList) {
+                    int count = 0;
+                    if (subDirectory.getId() == id) {
+                        count += 1;
+                        htmlList.append("<li class=\"n");
+                        htmlList.append(count);
+                        htmlList.append("\"><a href=\"#\">");
+                        htmlList.append(subDirectory);
+                        htmlList.append("</a></li>");
+                    }
+                }
+                htmlList.append("</ul>");
+            }
+        }
+        for (int i = 1; i < 5; i++) {
+            htmlList.append("<ul class=\"navigation\">");
+            htmlList.append("<a class=\"main\" href=\"#url\">Catalog " + i + "</a>");
+            htmlList.append("<li class=\"n1\"><a href=\"#\">SubDirectory #1</a></li>");
+            htmlList.append("<li class=\"n2\"><a href=\"#\">SubDirectory #2</a></li>");
+            htmlList.append("<li class=\"n3\"><a href=\"#\">SubDirectory #3</a></li>");
+            htmlList.append("</ul>");
+        }
+        log.info("HTML List - " + htmlList.toString());
+        return htmlList.toString();
     }
 }

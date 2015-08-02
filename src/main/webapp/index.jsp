@@ -45,8 +45,8 @@
                 </form>
             </div>
         </header>
-        <nav>
-            <script>createCatalog();</script>
+        <nav id = "navigate">
+            <script>getData();</script>
         </nav>
         <footer>
             <h4 align="center">Options:</h4>

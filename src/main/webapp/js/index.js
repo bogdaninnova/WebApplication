@@ -5,6 +5,24 @@
 var url="user";
 var loginAction;
 
+
+function getData() {
+    $.ajax({
+        dataType: "html",
+        url: url,
+        type: "POST",
+        data: {
+            action: "getCatalog"
+        },
+        success: function (html) {
+            $('#navigate').append(html).html();
+        },
+        error: function () {
+            alert("Error can not get catalog");
+        }
+    });
+}
+
 function validData(login, password) {
     if (login.length > 0 && password.length > 0) {
         if (isEmail(login)) {
@@ -118,23 +136,4 @@ function createForm(user_name) {
         document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
         document.write("</form>");
     }
-}
-
-
-function createCatalog() {
-    // TODO нужно сделать получение массива каталогов
-    for (var i = 1; i < 5; i++) {
-        document.write("<ul class=\"navigation\">");
-        document.write("<a class=\"main\" href=\"#url\">Каталог " + i + "</a>");
-        document.write("<li class=\"n1\"><a href=\"#\">item #1</a></li>");
-        document.write("<li class=\"n2\"><a href=\"#\">item #2</a></li>");
-        document.write("<li class=\"n3\"><a href=\"#\">item #3</a></li>");
-        document.write("<li class=\"n4\"><a href=\"#\">item #4</a></li>");
-        document.write("<li class=\"n5\"><a href=\"#\">item #5</a></li>")
-        document.write("</ul>");
-    }
-}
-
-function alertMessage(text) {
-    alert(text);
 }
