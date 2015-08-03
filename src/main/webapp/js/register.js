@@ -46,7 +46,9 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 window.location.replace("../index.jsp");
-            } // else if ("error") then parses error and displays her.
+            } else {
+                alert($(data).find("result").text());
+            }
         },
         error: function () {
             alert("Error while send register data.");

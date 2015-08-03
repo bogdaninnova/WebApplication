@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 
 /**
  * This servlet working with register.jsp.
- *
+ * <p/>
  * Created by Greenberg Dima <gdvdima2008@yandex.ru>
  */
 public class RegisterServlet extends HttpServlet {
@@ -28,20 +28,30 @@ public class RegisterServlet extends HttpServlet {
         session = request.getSession();
 
         if ("registerData".equals(request.getParameter("action"))) {
-            if (OracleDataBase.getInstance().addUser(request.getParameter("login"), request.getParameter("password"),
-                    request.getParameter("firstName"), request.getParameter("secondName"), Long.parseLong(request.getParameter("age")),
-                    request.getParameter("email"), request.getParameter("phone"))) {
-                session.setAttribute("username", request.getParameter("secondName"));
-                PrintWriter pw = response.getWriter();
-                pw.println("<result>OK</result>");
-                pw.close();
+            if (!OracleDataBase.getInstance().isLoginFree(request.getParameter("login"))) {
+                sendResponse(response, "<result>This login is busy</result>");
+            } else if (!OracleDataBase.getInstance().isEmailFree(request.getParameter("email"))) {
+                sendResponse(response, "<result>This email is busy</result>");
+            } else {
+                if (OracleDataBase.getInstance().addUser(request.getParameter("login"), request.getParameter("password"),
+                        request.getParameter("firstName"), request.getParameter("secondName"), Long.parseLong(request.getParameter("age")),
+                        request.getParameter("email"), request.getParameter("phone"))) {
+                    session.setAttribute("username", request.getParameter("secondName"));
+                    sendResponse(response, "<result>OK</result>");
+                }
             }
-        } else {
-            log.info("DON'T REGISTER");
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    }
+
+    private void sendResponse(HttpServletResponse response, String text) {
+        try (PrintWriter pw = response.getWriter()) {
+            pw.println(text);
+        } catch (IOException e) {
+            log.error(e);
+        }
     }
 }
