@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 public class MailSender {
 
-	private static final Logger log = Logger.getLogger(ConnectionDB.class);
+	private static final Logger log = Logger.getLogger(MailSender.class);
 	private static final String CLASSNAME = "MailSender: ";
 	
     private static MailSender instance;

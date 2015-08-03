@@ -1,7 +1,6 @@
 package ua.sumdu.group73.model.interfaces;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 import ua.sumdu.group73.model.objects.*;
 
@@ -21,5 +20,7 @@ public interface ProductDBInterface {
 	public boolean makeBet(int productID, int buyerID, int price);
 	
 	public ArrayList<Product> finishAuctions();
+	
+	public List<Product> getAllProducts();
 	
 }
