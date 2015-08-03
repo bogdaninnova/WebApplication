@@ -25,7 +25,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         TransactionDBIinterface, ProductDBInterface,
         FollowingDBInterface, CategoriesDBInterface {
 
-	private static final Logger log = Logger.getLogger(ConnectionDB.class);
+	private static final Logger log = Logger.getLogger(OracleDataBase.class);
 	private static final String CLASSNAME = "OracleDataBase: ";
 	
     private static final String ADD_USER_QUERY = "INSERT INTO USERS(ID, LOGIN, PASSWORD, NAME, SECOND_NAME, BIRTH, EMAIL, PHONE, STATUS) VALUES(USER_ID_S.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";

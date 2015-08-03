@@ -6,7 +6,7 @@ import ua.sumdu.group73.model.objects.*;
 
 public class Messager {
 
-	private static final Logger log = Logger.getLogger(ConnectionDB.class);
+	private static final Logger log = Logger.getLogger(Messager.class);
 	private static final String CLASSNAME = "Messager: ";
 	
 	public static void sendEndAuctionMessage(int productID) {
