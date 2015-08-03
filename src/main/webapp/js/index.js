@@ -40,15 +40,17 @@ function getLots() {
     });
 }
 
-function validData(login, password) {
-    if (login.length > 0 && password.length > 0) {
-        if (isEmail(login)) {
-            loginAction = "loginEmail";
-        } else {
-            loginAction = "login";
-        }
-        clickLogin(login, hex_md5(password), loginAction);
-    }
+function checkLoginForm(login, password) {
+    if (login.length > 0) {
+         if (password.length > 0) {
+            if (isEmail(login)) {
+                loginAction = "loginEmail";
+            } else {
+                loginAction = "login";
+            }
+            clickLogin(login, hex_md5(password), loginAction);
+        } else alert("Please enter password");
+    } else alert("Please enter login");
 }
 
 function isEmail(login) {
@@ -149,7 +151,7 @@ function createForm(user_name) {
         document.write("<form>");
         document.write("<td><input type=\"text\" id=\"login\" size=\"5\" maxlength=\"15\" autofocus required></td>");
         document.write("<td><input type=\"password\" id=\"password\" size=\"5\" maxlength=\"15\" required></td>");
-        document.write("<td><label onclick=\"validData($('#login').val(), $('#password').val());\">[ <b>Login</b> ]</label></td>");
+        document.write("<td><label onclick=\"checkLoginForm($('#login').val(), $('#password').val());\">[ <b>Login</b> ]</label></td>");
         document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
         document.write("</form>");
     }
