@@ -94,9 +94,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void sendResponse(HttpServletResponse response, String text, String message) {
-        PrintWriter pw = null;
-        try {
-            pw = response.getWriter();
+        try (PrintWriter pw = response.getWriter()) {
             if ("message".equals(text)) {
                 pw.println("<result>");
                 pw.println("<text>" + message + "</text>");
@@ -104,7 +102,6 @@ public class UserServlet extends HttpServlet {
             } else {
                 pw.println(text);
             }
-            pw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
