@@ -1,6 +1,5 @@
 package ua.sumdu.group73.model.interfaces;
 
-import java.util.Date;
 import java.util.List;
 
 import ua.sumdu.group73.model.objects.*;

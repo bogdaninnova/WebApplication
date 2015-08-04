@@ -1,7 +1,6 @@
 package ua.sumdu.group73.model.objects;
 
 import java.util.Date;
-import java.util.List;
 
 public class Product {
 
@@ -16,9 +15,6 @@ public class Product {
     private int currentPrice;
     private int currentBuyerID;
     private boolean isActive;
-    
-    private List<String> pictures;
-    private List<Category> categories;
 	
     
     public Product(int id, int sellerID, String name, String description,

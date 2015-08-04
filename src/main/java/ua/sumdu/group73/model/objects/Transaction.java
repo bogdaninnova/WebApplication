@@ -13,12 +13,12 @@ public class Transaction {
 	
 	
 	public Transaction(int id, int buyerID, int sellerID, int productID, int price, Date saleDate) {
-		this.setId(id);
-		this.setBuyerID(buyerID);
-		this.setSellerID(sellerID);
-		this.setProductID(productID);
-		this.setPrice(price);
-		this.setSaleDate(saleDate);
+		setId(id);
+		setBuyerID(buyerID);
+		setSellerID(sellerID);
+		setProductID(productID);
+		setPrice(price);
+		setSaleDate(saleDate);
 	}
 
 
