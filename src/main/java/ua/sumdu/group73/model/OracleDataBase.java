@@ -42,6 +42,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     private static final String MAKE_A_BET_QUERY = "UPDATE PRODUCTS SET CURRENT_PRICE = ?, CURRENT_BUYER_ID = ? WHERE ID = ?";
     private static final String FINISH_AUCTIONS_QUERY = "SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < ?";
     private static final String GET_ALL_PRODUCTS_QUERY = "SELECT * FROM PRODUCTS";
+    private static final String FIND_PRODUCTS_QUERY = "SELECT * FROM PRODUCTS WHERE upper(DESCRIPTION) LIKE upper(?) OR upper(NAME) LIKE upper(?)";
     private static final String GET_CATEGORY_QUERY = "SELECT * FROM CATEGORIES WHERE ID = ?";
     private static final String ADD_CATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, ?, ?)";
     private static final String GET_ALL_CATEGORIES_QUERY = "SELECT * FROM CATEGORIES";
@@ -603,6 +604,42 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             
         } catch (SQLException e) {
             log.error(CLASSNAME + "SQLException in finishAuctions()" + e.getStackTrace());
+        }
+
+        return list;
+    }
+    
+	@Override
+	public List<Product> findProducts(String substring) {
+    	log.info(CLASSNAME + "Method findProducts starts.....");
+        ArrayList<Product> list = new ArrayList<Product>();
+        try (
+        		Connection connection = getConnection();
+        		PreparedStatement preparedStatement =
+                		connection.prepareStatement(FIND_PRODUCTS_QUERY);
+        		) {
+        	preparedStatement.setString(1, "%" + substring + "%");
+        	preparedStatement.setString(2, "%" + substring + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                list.add(
+                		new Product(
+                				rs.getInt("ID"),
+                				rs.getInt("SELLER_ID"),
+                				rs.getString("NAME"),
+                				rs.getString("DESCRIPTION"),
+                				rs.getDate("START_DATE"),
+                				rs.getDate("END_DATE"),
+                				rs.getInt("START_PRICE"),
+                				rs.getInt("BUYOUT_PRICE"),
+                				rs.getInt("CURRENT_PRICE"),
+                				rs.getInt("CURRENT_BUYER_ID"),
+                				rs.getString("IS_ACTIVE").equals("active")));
+            }
+            
+        } catch (SQLException e) {
+            log.error(CLASSNAME + "SQLException in findProducts()" + e.getStackTrace());
         }
 
         return list;

@@ -23,4 +23,6 @@ public interface ProductDBInterface {
 	
 	public List<Product> getAllProducts();
 	
+	public List<Product> findProducts(String substring);
+	
 }
