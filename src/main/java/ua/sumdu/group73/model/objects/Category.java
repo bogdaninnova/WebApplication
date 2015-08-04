@@ -4,19 +4,24 @@ public class Category {
 
 	private int id;
 	private int parentID;
-	private int productID;
 	private String name;
 	
-	public Category(int id, int parentID, int productID, String name) {
+	public Category(int id, int parentID, String name) {
 		setId(id);
 		setParentID(parentID);
-		setProductID(productID);
+		setName(name);
+	}
+	
+	public Category(int id, String name) {
+		setId(id);
+		setParentID(0);
 		setName(name);
 	}
 	
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -33,11 +38,4 @@ public class Category {
 		this.name = name;
 	}
 
-	public int getProductID() {
-		return productID;
-	}
-
-	public void setProductID(int productID) {
-		this.productID = productID;
-	}
 }
