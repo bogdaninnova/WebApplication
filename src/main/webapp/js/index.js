@@ -132,8 +132,8 @@ function createForm(user_name) {
         document.write("</td>")
     } else {
         document.write("<form>");
-        document.write("<td><input type=\"text\" id=\"login\" size=\"5\" maxlength=\"15\" autofocus required></td>");
-        document.write("<td><input type=\"password\" id=\"password\" size=\"5\" maxlength=\"15\" required></td>");
+        document.write("<td><input type=\"text\" id=\"login\" size=\"10\" maxlength=\"15\" autofocus required placeholder='login or email'></td>");
+        document.write("<td><input type=\"password\" id=\"password\" size=\"10\" maxlength=\"15\" required placeholder='password'></td>");
         document.write("<td><label onclick=\"checkLoginForm($('#login').val(), $('#password').val());\">[ <b>Login</b> ]</label></td>");
         document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
         document.write("</form>");

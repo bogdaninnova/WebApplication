@@ -56,7 +56,7 @@ label:hover {
 }
 
 .container-section-nav {
-    width: 18%;
+    width: 20%;
     min-width: 100px;
     position: relative;
     border-right-style: solid;
@@ -68,12 +68,13 @@ label:hover {
 .container-section-lot {
     margin-left: 25%;
     width: 75%;
-    min-height: 70%;
+    min-height: 90%;
     position: relative;
+    border:1px solid red;
 }
 
 .container-lots {
-    width: 80%;
+    width: 90%;
     min-height: 100px;
     position: relative;
     background-color: white;

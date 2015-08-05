@@ -1,126 +1,61 @@
-
-a {
-    display: block;
-    text-decoration: none;
-    width: 100%;
-    height: 100%;
-    color: #999;
+.topnav {
+    font-family: "CenturyGothicRegular","Century Gothic",Arial,Helvetica,sans-serif;
+    padding: 40px 28px 25px 0;
+    width: 150px;
+    text-align: left;
 }
-
-a:hover { color: #777; }
-
-/* NAVIGATION */
-.navigation {
-    list-style: none;
+ul.topnav {
+    font-size: 1em;
+    line-height: 0.5em;
+    list-style: none outside none;
+    margin: 0;
     padding: 0;
-    width: 120px;
-    height: 30px;
-    margin: 2px auto;
-    background: lightgray;
 }
-
-.navigation, .navigation a.main {
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
+ul.topnav li {
 }
-
-.navigation:hover, .navigation:hover a.main {
-    border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-}
-
-.navigation a.main {
+ul.topnav li a {
+    color: #000;
     display: block;
-    height: 30px;
-    font: bold 15px/40px arial, sans-serif;
-    text-align: center;
+    font-size: 11px;
+    font-weight: bolder;
+    line-height: 10px;
+    padding: 10px 5px;
     text-decoration: none;
-    color: black;
-    -webkit-transition: 0.2s ease-in-out;
-    -o-transition: 0.2s ease-in-out;
-    transition: 0.2s ease-in-out;
+    background: #f2f2f2;
+    border-bottom: 1px solid #D3D3D3;
 }
-
-.navigation:hover a.main {
-    color: rgba(255,255,255,0.6);
-    background: rgba(0,0,0,0.04);
+ul.topnav li a:hover {
+    background-color: #7D7D7D;
+    color: white;
 }
-
-.navigation li {
-    width: 120px;
-    height: 30px;
-    background: #F7F7F7;
-    font: normal 12px/40px arial, sans-serif !important;
-    color: #999;
-    text-align: center;
-    margin-left: 120px;
-    -webkit-transform-origin: 50% 0%;
-    -o-transform-origin: 50% 0%;
-    transform-origin: 50% 0%;
-    -webkit-transform: perspective(120px) rotateX(-90deg);
-    -o-transform: perspective(120px) rotateX(-90deg);
-    transform: perspective(120px) rotateX(-90deg);
-    box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
-    -webkit-box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
-    -moz-box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
+ul.topnav ul {
+    display: none;
+    margin: 0;
+    padding: 0;
 }
-
-.navigation li:nth-child(even) { background: #F5F5F5; }
-.navigation li:nth-child(odd) { background: #EFEFEF; }
-
-.navigation li.n1 {
-    -webkit-transition: 0.2s linear 0.8s;
-    -o-transition: 0.2s linear 0.8s;
-    transition: 0.2s linear 0.8s;
+ul.topnav ul li {
+    clear: both;
+    margin: 0;
+    padding: 0;
 }
-.navigation li.n2 {
-    -webkit-transition: 0.2s linear 0.6s;
-    -o-transition: 0.2s linear 0.6s;
-    transition: 0.2s linear 0.6s;
+ul.topnav ul li a {
+    font-size: 10px;
+    font-weight: normal;
+    outline: 0 none;
+    padding-left: 20px;
 }
-.navigation li.n3 {
-    -webkit-transition: 0.2s linear 0.4s;
-    -o-transition: 0.2s linear 0.4s;
-    transition: 0.2s linear 0.4s;
+ul.topnav ul li a:hover {
+    background-color: #DCDCDC;
+    color: #555;
 }
-.navigation li.n4 {
-    -webkit-transition:0.2s linear 0.2s;
-    -o-transition:0.2s linear 0.2s;
-    transition:0.2s linear 0.2s;
+ul.topnav ul ul li a {
+    color: silver;
+    padding-left: 40px;
 }
-.navigation li.n5 {
-    border-radius: 0px 0px 4px 4px;
-    -webkit-transition: 0.2s linear 0s;
-    -o-transition: 0.2s linear 0s;
-    transition: 0.2s linear 0s;
+ul.topnav ul ul li a:hover {
+    background-color: #D7D7D7;
+    color: #555555;
 }
-
-.navigation:hover li {
-    -webkit-transform: perspective(120px) rotateX(0deg);
-    -o-transform: perspective(120px) rotateX(0deg);
-    transform: perspective(120px) rotateX(0deg);
-    -webkit-transition:0.2s linear 0s;
-    -o-transition:0.2s linear 0s;
-    transition:0.2s linear 0s;
-}
-.navigation:hover .n2 {
-    -webkit-transition-delay: 0.1s;
-    -o-transition-delay: 0.1s;
-    transition-delay: 0.1s;
-}
-.navigation:hover .n3 {
-    -webkit-transition-delay: 0.2s;
-    -o-transition-delay: 0.2s;
-    transition-delay: 0.2s;
-}
-.navigation:hover .n4 {
-    transition-delay: 0.3s;
-    -o-transition-delay: 0.3s;
-    transition-delay: 0.3s;
-}
-.navigation:hover .n5 {
-    -webkit-transition-delay: 0.4s;
-    -o-transition-delay: 0.4s;
+ul.topnav span {
+    float: right;
 }

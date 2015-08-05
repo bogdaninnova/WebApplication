@@ -9,8 +9,21 @@
     <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/menu.js"></script>
+
     <script src="js/md5.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".topnav").accordion({
+                accordion:false,
+                speed: 100,
+                closedSign: '[+]',
+                openedSign: '[-]'
+            });
+        });
+    </script>
     <script src="js/index.js"></script>
+
     <title>Auction</title>
 </head>
 <body>
@@ -47,16 +60,50 @@
                 </form>
             </div>
         </header>
-        <nav id = "navigate">
+        <%--<nav id = "navigate">--%>
+            <ul class="topnav">
+                <li><a href="user">Home</a></li>
+                <li><a href="#">CATALOG 1</a>
+                    <ul>
+                        <li><a href="#">SubCatalog 1</a></li>
+                        <li><a href="#">SubCatalog 2</a></li>
+                        <li><a href="#">SubCatalog 3</a></li>
+                        <li><a href="#">SubCatalog 4</a></li>
+                        <li><a href="#">SubCatalog 5</a></li>
+                        <li><a href="#">SubCatalog 6</a>
+                            <ul>
+                                <li><a href="#">Directory 1</a></li>
+                                <li><a href="#">Directory 1</a></li>
+                                <li><a href="#">Directory 1</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">SubCatalog 7</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <nav id = "navigate">
+                <div align="center">
+                    <ul class="topnav">
+                        <li><a href="user">Home</a></li>
             <% List<Category> cat = (List<Category>) request.getAttribute("list");%>
             <% if (cat != null) { %>
             <% for (Category category : cat) { %>
-            <%= category.getId()%>
-            <%= category.getParentID()%>
-            <%= category.getName()%>
-            <br>
-            <% }} %>
-        </nav>
+            <% if (category.getParentID() == 0) { %>
+                        <li><a href="#"><%= category.getName() %></a>
+                            <ul>
+                        <% for (Category subCategory : cat) { %>
+                            <% if (category.getId() == subCategory.getParentID()) { %>
+                                <li><a href="#"><%= subCategory.getName()%></a>
+                                </li>
+                            <% } %>
+                        <% } %>
+                            </ul>
+                        </li>
+            <% }}} %>
+                </ul>
+                </div>
+            </nav>
         <footer>
             <h4 align="center">Options:</h4>
 
