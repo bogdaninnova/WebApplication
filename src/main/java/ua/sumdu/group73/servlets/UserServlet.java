@@ -5,6 +5,7 @@ import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.User;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -66,12 +67,12 @@ public class UserServlet extends HttpServlet {
 //                sendResponse(response, "message", "This login is busy.");
 //            }
         } else if ("getCatalog".equals(request.getParameter("action"))) {
-            categoryList = OracleDataBase.getInstance().getAllCategories();
-            log.info("Init categoryList" + categoryList);
-            sendResponse(response, createHtmlList(), null);
+//            categoryList = OracleDataBase.getInstance().getAllCategories();
+//            log.info("Init categoryList" + categoryList);
+//            sendResponse(response, createHtmlList(), null);
         } else if ("getLots".equals(request.getParameter("action"))) {
 
-            sendResponse(response, createHtmlLots(), null);
+//            sendResponse(response, createHtmlLots(), null);
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
@@ -90,7 +91,11 @@ public class UserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        categoryList = OracleDataBase.getInstance().getAllCategories();
+        log.info("Init categoryList" + categoryList);
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        request.setAttribute("list", categoryList);
+        rd.forward(request, response);
     }
 
     private void sendResponse(HttpServletResponse response, String text, String message) {

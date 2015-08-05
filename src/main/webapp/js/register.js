@@ -28,7 +28,7 @@ function isEmail(checkEmail) {
 
 
 function sendRegisterData(login, password, firstName, secondName, age, email, phone) {
-    var url = "../register";
+    var url = "register";
     $.ajax({
         dataType: "xml",
         url: url,
@@ -45,7 +45,7 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("../index.jsp");
+                window.location.replace("user");
             } else {
                 alert($(data).find("result").text());
             }

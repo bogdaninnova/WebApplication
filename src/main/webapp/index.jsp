@@ -1,3 +1,5 @@
+<%@ page import="ua.sumdu.group73.model.objects.Category" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -46,7 +48,14 @@
             </div>
         </header>
         <nav id = "navigate">
-            <script>getCategory();</script>
+            <% List<Category> cat = (List<Category>) request.getAttribute("list");%>
+            <% if (cat != null) { %>
+            <% for (Category category : cat) { %>
+            <%= category.getId()%>
+            <%= category.getParentID()%>
+            <%= category.getName()%>
+            <br>
+            <% }} %>
         </nav>
         <footer>
             <h4 align="center">Options:</h4>

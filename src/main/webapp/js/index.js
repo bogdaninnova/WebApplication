@@ -6,23 +6,6 @@ var url="user";
 var loginAction;
 
 
-function getCategory() {
-    $.ajax({
-        dataType: "html",
-        url: url,
-        type: "POST",
-        data: {
-            action: "getCatalog"
-        },
-        success: function (html) {
-            $('#navigate').append(html).html();
-        },
-        error: function () {
-            alert("Error can not get catalog");
-        }
-    });
-}
-
 function getLots() {
     $.ajax({
         dataType: "html",
@@ -68,7 +51,7 @@ function clickRegister() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("jsp/register.jsp")
+                window.location.replace("register")
             }
         },
         error: function () {
@@ -91,7 +74,7 @@ function clickLogin(login, password, loginAction) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 $("#login").val("");
                 $("#password").val("");
-                window.location.replace("index.jsp")
+                window.location.replace("user")
             } else {
                 $(data).find('error');
                 var text = $(data).find("text").text();
@@ -115,7 +98,7 @@ function logOut() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("index.jsp")
+                window.location.replace("user")
             }
         },
         error: function () {
