@@ -22,40 +22,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	private static final Logger log = Logger.getLogger(OracleDataBase.class);
 	private static final String CLASSNAME = "OracleDataBase: ";
 	
-    private static final String ADD_USER_QUERY = "INSERT INTO USERS(ID, LOGIN, PASSWORD, NAME, SECOND_NAME, BIRTH, EMAIL, PHONE, STATUS) VALUES(USER_ID_S.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String GET_USER_QUERY = "SELECT * FROM USERS WHERE ID = ?";
-    private static final String IS_LOGIN_FREE_QUERY = "SELECT * FROM USERS WHERE LOGIN = ?";
-    private static final String IS_EMAIL_FREE_QUERY = "SELECT * FROM USERS WHERE EMAIL = ?";
-    private static final String AUTHORIZATION_QUERY = "SELECT * FROM USERS WHERE LOGIN = ?";
-    private static final String AUTHORIZATION_BY_EMAIL_QUERY = "SELECT * FROM USERS WHERE EMAIL = ?";
-    private static final String GET_USERS_PRODUCTS = "SELECT * FROM PRODUCTS WHERE SELLER_ID = ?";
-    private static final String IS_USER_ADMIN_QUERY = "SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
-    private static final String FOLLOW_PRODUCT_QUERY = "INSERT INTO FOLLOWINGS(ID, FOLLOWER_ID, PRODUCT_ID) VALUES (FOLLOWING_ID_S.NEXTVAL, ?, ?)";
-    private static final String IS_FOLLOW_QUERY = "SELECT * FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
-    private static final String UNFOLLOW_QUERY = "DELETE FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
-    private static final String GET_FOLLOWING_PRODUCTS_QUERY = "SELECT PRODUCT_ID FROM FOLLOWINGS WHERE FOLLOWER_ID = ?";
-    private static final String ADD_PRODUCT_QUERY = "INSERT INTO PRODUCTS(ID, SELLER_ID, NAME, DESCRIPTION, START_DATE, END_DATE, START_PRICE, BUYOUT_PRICE, CURRENT_PRICE, CURRENT_BUYER_ID, IS_ACTIVE) VALUES (PRODUCT_ID_S.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, 0, NULL, 'active')";
-    private static final String GET_PRODUCT_QUERY = "SELECT * FROM PRODUCTS WHERE ID = ?";
-    private static final String DISACTIVATE_PRODUCT_QUERY = "UPDATE PRODUCTS SET IS_ACTIVE = 'disactive' WHERE ID = ?";
-    private static final String IS_PRODUCT_ACTIVE_QUERY = "SELECT * FROM PRODUCTS WHERE ID = ? AND IS_ACTIVE = 'active'";
-    private static final String QET_CURRENT_PRICE_QUERY = "SELECT CURRENT_PRICE FROM PRODUCTS WHERE ID = ?";
-    private static final String MAKE_A_BET_QUERY = "UPDATE PRODUCTS SET CURRENT_PRICE = ?, CURRENT_BUYER_ID = ? WHERE ID = ?";
-    private static final String FINISH_AUCTIONS_QUERY = "SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < ?";
-    private static final String GET_ALL_PRODUCTS_QUERY = "SELECT * FROM PRODUCTS";
-    private static final String FIND_PRODUCTS_QUERY = "SELECT * FROM PRODUCTS WHERE upper(DESCRIPTION) LIKE upper(?) OR upper(NAME) LIKE upper(?)";
-    private static final String GET_CATEGORY_QUERY = "SELECT * FROM CATEGORIES WHERE ID = ?";
-    private static final String ADD_CATEGORY_QUERY = "INSERT INTO CATEGORIES(ID, PARENT_ID, NAME) VALUES (CATEGORY_ID_S.NEXTVAL, ?, ?)";
-    private static final String GET_ALL_CATEGORIES_QUERY = "SELECT * FROM CATEGORIES";
-    private static final String GET_PRODUCTS_BY_CATEGORY_QUERY = "SELECT PRODUCTS.* FROM PRODUCT_CATEGORY LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE CATEGORIES.ID = ?";
-    private static final String GET_CATEGORIES_OF_PRODUCT_QUERY = "SELECT CATEGORIES.* FROM PRODUCT_CATEGORY LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
-    private static final String GET_SALLERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
-    private static final String GET_BUYERS_TRANSACTIONS_QUERY = "SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
-    private static final String ADD_TRANSACTION_QUERY = "INSERT INTO TRANSACTIONS(ID, BUYER_ID, SELLER_ID, PRODUCT_ID, PRICE, SALE_DATE) VALUES(TRANSACTION_ID_S.NEXTVAL, ?, ?, ?, ?, ?)";
-    private static final String GET_TRANSACTION_QUERY = "SELECT * FROM TRANSACTIONS WHERE ID = ?";
-    private static final String GET_PICTURES_URL_QUERY = "SELECT URL FROM PICTURES WHERE PRODUCT_ID = ?";
-    private static final String ADD_PICTURE_QUERY = "INSERT INTO PICTURES(ID, PRODUCT_ID, URL) VALUES(PICTURE_ID_S.NEXTVAL, ?, ?)";
-
-
     private static OracleDataBase instance;
     
     
@@ -121,7 +87,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method addUser starts.....");
     	boolean result = false;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(ADD_USER_QUERY)) {    		
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_USER)) {    		
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, name);
@@ -144,7 +110,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getUser starts.....");
     	User user = null;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(GET_USER_QUERY)) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER)) {
             preparedStatement.setLong(1, id);
             try (ResultSet rs = preparedStatement.executeQuery()) {
 	            rs.next();
@@ -172,7 +138,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method isLoginFree starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(IS_LOGIN_FREE_QUERY)) {	
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_LOGIN_FREE)) {	
         	preparedStatement.setString(1, login);
         	try(ResultSet rs = preparedStatement.executeQuery()) {
         		result = !rs.next();
@@ -189,7 +155,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method isEmailFree starts.....");
     	boolean result = false;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(IS_EMAIL_FREE_QUERY)) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_EMAIL_FREE)) {
             preparedStatement.setString(1, login);
             try(ResultSet rs = preparedStatement.executeQuery()) {
             	result = !rs.next();
@@ -212,7 +178,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method authorization starts.....");
     	User user = null;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(AUTHORIZATION_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.AUTHORIZATION)) {
             preparedStatement.setString(1, login);
             try(ResultSet rs = preparedStatement.executeQuery()) {
 	            if (rs.next()) {
@@ -243,7 +209,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method authorizationByEmail starts.....");
     	User user = null;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(AUTHORIZATION_BY_EMAIL_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.AUTHORIZATION_BY_EMAIL)) {
             preparedStatement.setString(1, eMail);
             
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -275,7 +241,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method isAdmin starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(IS_USER_ADMIN_QUERY)){
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_USER_ADMIN)){
         	preparedStatement.setInt(1, userID);
             try(ResultSet rs = preparedStatement.executeQuery()) {
             	result = rs.next();
@@ -292,7 +258,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getUsersProducts starts.....");
         List<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_USERS_PRODUCTS)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USERS_PRODUCTS)) {
             preparedStatement.setInt(1, userID);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) 
@@ -328,7 +294,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method followProduct starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(FOLLOW_PRODUCT_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FOLLOW_PRODUCT)) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             preparedStatement.executeUpdate();
@@ -346,7 +312,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method isFollowProduct starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(IS_FOLLOW_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_FOLLOW)) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -364,7 +330,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method unfollowProduct starts.....");
     	boolean result = false;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(UNFOLLOW_QUERY)) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.UNFOLLOW)) {
             preparedStatement.setInt(1, followerID);
             preparedStatement.setInt(2, productID);
             preparedStatement.executeUpdate();
@@ -385,7 +351,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getFollowingProductsID starts.....");
         List<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_FOLLOWING_PRODUCTS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_FOLLOWING_PRODUCTS)) {
             preparedStatement.setInt(1, userID);
             try(ResultSet rs = preparedStatement.executeQuery()){
             	while (rs.next())
@@ -411,7 +377,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	boolean result = false;
     	initConnection();
     	try (
-        	PreparedStatement preparedStatement = conn.prepareStatement(ADD_PRODUCT_QUERY);
+        	PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_PRODUCT);
         ) {
             preparedStatement.setInt(1, sellerID);
             preparedStatement.setString(2, name);
@@ -434,7 +400,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getProduct starts.....");
     	Product product = null;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_PRODUCT_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PRODUCT)) {
             preparedStatement.setLong(1, id);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            rs.next();
@@ -466,7 +432,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method disactivateProduct starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(DISACTIVATE_PRODUCT_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.DISACTIVATE_PRODUCT)) {
             preparedStatement.setInt(1, productID);
             preparedStatement.executeUpdate();
             result = true;
@@ -482,7 +448,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method isProductActive starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(IS_PRODUCT_ACTIVE_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_PRODUCT_ACTIVE)) {
             preparedStatement.setInt(1, productID);
             try(ResultSet rs = preparedStatement.executeQuery()){
             	result = rs.next();
@@ -499,7 +465,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getCurrentPrice starts.....");
     	initConnection();
     	int result = -1;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(QET_CURRENT_PRICE_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.QET_CURRENT_PRICE)) {
             preparedStatement.setLong(1, productID);
             try(ResultSet rs = preparedStatement.executeQuery()) {
 	            rs.next();
@@ -518,7 +484,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method makeBet starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(MAKE_A_BET_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.MAKE_A_BET)) {
             preparedStatement.setInt(1, price);
             preparedStatement.setInt(2, buyerID);
             preparedStatement.setInt(3, productID);
@@ -539,7 +505,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method finishAuctions starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(FINISH_AUCTIONS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FINISH_AUCTIONS)) {
             preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
             
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -582,7 +548,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getAllProducts starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_ALL_PRODUCTS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_PRODUCTS)) {
            
         	try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) {
@@ -614,7 +580,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method findProducts starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(FIND_PRODUCTS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FIND_PRODUCTS)) {
         	preparedStatement.setString(1, "%" + substring + "%");
         	preparedStatement.setString(2, "%" + substring + "%");
             
@@ -652,7 +618,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getCategory starts.....");
     	Category category = null;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_CATEGORY_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_CATEGORY)) {
             preparedStatement.setLong(1, categoryID);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            rs.next();
@@ -672,7 +638,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method addCategory(int, String) starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(ADD_CATEGORY_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_CATEGORY)) {
             preparedStatement.setInt(1, parentID);
             preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
@@ -689,7 +655,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method addCategory(String) starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(ADD_CATEGORY_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_CATEGORY)) {
         	preparedStatement.setInt(1, 0);
             preparedStatement.setString(2, name);
             preparedStatement.executeUpdate();
@@ -706,7 +672,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getAllCategories starts.....");
         List<Category> list = new ArrayList<Category>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_ALL_CATEGORIES_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_CATEGORIES)) {
         	 try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) 
 	        		list.add(
@@ -728,7 +694,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getAllCategories starts.....");
         List<Category> list = new ArrayList<Category>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_CATEGORIES_OF_PRODUCT_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_CATEGORIES_OF_PRODUCT)) {
         	preparedStatement.setInt(1, productID);
 
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -752,7 +718,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getProductsByCategory starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_PRODUCTS_BY_CATEGORY_QUERY)) {	
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PRODUCTS_BY_CATEGORY)) {	
         	preparedStatement.setInt(1, categoryID);
             
         	try(ResultSet rs = preparedStatement.executeQuery()){
@@ -790,7 +756,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getSalersTransaction starts.....");
         List<Transaction> list = new ArrayList<Transaction>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_SALLERS_TRANSACTIONS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_SALLERS_TRANSACTIONS)) {
             preparedStatement.setInt(1, sellerID);
 
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -816,7 +782,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getBuyersTransaction starts.....");
         List<Transaction> list = new ArrayList<Transaction>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_BUYERS_TRANSACTIONS_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_BUYERS_TRANSACTIONS)) {
             preparedStatement.setInt(1, buyerID);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next())
@@ -841,7 +807,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method addTransaction starts.....");
     	boolean result = false;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(ADD_TRANSACTION_QUERY)) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_TRANSACTION)) {
             preparedStatement.setInt(1, buyerID);
             preparedStatement.setInt(2, sellerID);
             preparedStatement.setInt(3, productID);
@@ -861,7 +827,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getTransaction starts.....");
     	Transaction transaction = null;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_TRANSACTION_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_TRANSACTION)) {
             preparedStatement.setLong(1, transactionID);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            rs.next();
@@ -890,7 +856,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method getPicturesURLs starts.....");
         List<String> list = new ArrayList<String>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(GET_PICTURES_URL_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PICTURES_URL)) {
             preparedStatement.setInt(1, productID);
 
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -909,7 +875,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info(CLASSNAME + "Method addPictures starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(ADD_PICTURE_QUERY)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_PICTURE)) {
             preparedStatement.setInt(1, productID);
             preparedStatement.setString(2, URL);
             preparedStatement.executeUpdate();

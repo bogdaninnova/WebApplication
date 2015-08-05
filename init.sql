@@ -23,12 +23,12 @@ CREATE SEQUENCE TRANSACTION_ID_S START WITH 1 INCREMENT BY 1 NOMAXVALUE;
 CREATE TABLE USERS 
 (
   ID INT NOT NULL PRIMARY KEY,
-  LOGIN VARCHAR2(30) NOT NULL,
+  LOGIN VARCHAR2(30) NOT NULL UNIQUE,
   PASSWORD VARCHAR2(128) NOT NULL,
   NAME VARCHAR2(50) NOT NULL,
   SECOND_NAME VARCHAR2(50) NOT NULL,
   BIRTH DATE NOT NULL,
-  EMAIL VARCHAR2(50) NOT NULL,
+  EMAIL VARCHAR2(50) NOT NULL UNIQUE,
   PHONE VARCHAR2(20),
   STATUS VARCHAR2(5) CHECK (STATUS IN ('user', 'admin')) NOT NULL
 );
@@ -109,8 +109,8 @@ INSERT INTO USERS(
     STATUS
 )VALUES(
     USER_ID_S.NEXTVAL,
-    'Innova',
-    '0660915033',
+    'innova',
+    '75e0793dd6d0c2bea73c9453b82101d0',
     'bohdan',
     'pedchenko',
     TO_DATE('1975/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
@@ -131,8 +131,8 @@ INSERT INTO USERS(
     STATUS
 )VALUES(
     0,
-    'ADMIN',
-    'ADMIN',
+    'admin',
+    '73acd9a5972130b75066c82595a1fae3',
     'admin',
     'admin',
     TO_DATE('2000/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
@@ -153,8 +153,8 @@ INSERT INTO USERS(
     STATUS
 )VALUES(
     USER_ID_S.NEXTVAL,
-    'R2D2',
-    '095500000',
+    '123',
+    '202cb962ac59075b964b07152d234b70',
     'alex',
     'smith',
     TO_DATE('2000/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
@@ -258,27 +258,15 @@ INSERT INTO CATEGORIES(
     NAME
 )VALUES(
     CATEGORY_ID_S.NEXTVAL,
-    'antiqua'
+    '1'
 );
 
 INSERT INTO CATEGORIES(
     ID,
-    PARENT_ID,
     NAME
 )VALUES(
     CATEGORY_ID_S.NEXTVAL,
-    1,
-    'Chinese antiqua'
-);
-
-INSERT INTO CATEGORIES(
-    ID,
-    PARENT_ID,
-    NAME
-)VALUES(
-    CATEGORY_ID_S.NEXTVAL,
-    1,
-    'Old stuff'
+    '2'
 );
 
 INSERT INTO CATEGORIES(
@@ -288,8 +276,39 @@ INSERT INTO CATEGORIES(
 )VALUES(
     CATEGORY_ID_S.NEXTVAL,
     2,
-    'Oldest stuff'
+    '2.1'
 );
+
+INSERT INTO CATEGORIES(
+    ID,
+    PARENT_ID,
+    NAME
+)VALUES(
+    CATEGORY_ID_S.NEXTVAL,
+    2,
+    '2.2'
+);
+
+INSERT INTO CATEGORIES(
+    ID,
+    PARENT_ID,
+    NAME
+)VALUES(
+    CATEGORY_ID_S.NEXTVAL,
+    2,
+    '2.3'
+);
+
+INSERT INTO CATEGORIES(
+    ID,
+    PARENT_ID,
+    NAME
+)VALUES(
+    CATEGORY_ID_S.NEXTVAL,
+    4,
+    '2.2.1'
+);
+
 
 INSERT INTO PRODUCT_CATEGORY(
     PRODUCT_ID,
