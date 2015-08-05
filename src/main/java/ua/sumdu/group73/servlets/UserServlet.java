@@ -56,6 +56,7 @@ public class UserServlet extends HttpServlet {
             User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             log.info("USER - " + res);
             if (res != null) {
+                session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
                 session.setAttribute("username", res.getSecondName());
                 session.setAttribute("userId", res.getId());
                 sendResponse(response, "<result>OK</result>", null);
@@ -65,15 +66,19 @@ public class UserServlet extends HttpServlet {
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
+                session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
                 session.setAttribute("username", res.getSecondName());
+                session.setAttribute("userId", res.getId());
                 sendResponse(response, "<result>OK</result>", null);
             } else {
                 sendResponse(response, "error", "Email incorrect.");
             }
         } else if("logOut".equals(request.getParameter("action"))) {
-            if (session.getAttribute("username") != null) {
-                session.setAttribute("username", null);
-                session.setAttribute("userId" , null);
+            if (session.getAttribute("user") != null || session.getAttribute("username") != null
+                    || session.getAttribute("userId") != null) {
+                session.removeAttribute("user");
+                session.removeAttribute("username");
+                session.removeAttribute("userId");
                 sendResponse(response, "<result>OK</result>", null);
             }
         }
