@@ -19,14 +19,12 @@ import java.io.PrintWriter;
  */
 public class RegisterServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(RegisterServlet.class);
-    private HttpSession session;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
-//        response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        session = request.getSession();
+
 
         if ("registerData".equals(request.getParameter("action"))) {
             if (!OracleDataBase.getInstance().isLoginFree(request.getParameter("login"))) {

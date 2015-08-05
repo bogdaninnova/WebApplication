@@ -53,7 +53,6 @@ public class UserServlet extends HttpServlet {
             log.info("Click find with query - " + request.getParameter("text"));
             sendResponse(response, "<result>OK</result>", null);
         } else if ("login".equals(request.getParameter("action"))) {
-//            if (user is free) {
             User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             log.info("USER - " + res);
             if (res != null) {
@@ -63,16 +62,6 @@ public class UserServlet extends HttpServlet {
             } else {
                 sendResponse(response, "message", "Login incorrect.");
             }
-//            } else {
-//                sendResponse(response, "message", "This login is busy.");
-//            }
-        } else if ("getCatalog".equals(request.getParameter("action"))) {
-//            categoryList = OracleDataBase.getInstance().getAllCategories();
-//            log.info("Init categoryList" + categoryList);
-//            sendResponse(response, createHtmlList(), null);
-        } else if ("getLots".equals(request.getParameter("action"))) {
-
-//            sendResponse(response, createHtmlLots(), null);
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
@@ -111,63 +100,4 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-    /**
-     * This method created html code.
-     *
-     * @return String
-     */
-    private String createHtmlList() {
-        StringBuilder htmlList = new StringBuilder();
-        for (Category cat : categoryList) {
-            if (cat.getParentID() == 0) {
-                htmlList.append("<ul class=\"navigation\">");
-                int id = cat.getId();
-                htmlList.append("<a class=\"main\" href=\"#url\">");
-                htmlList.append(cat.getName());
-                htmlList.append("\"</a>\"");
-                for (Category subDirectory : categoryList) {
-                    int count = 0;
-                    if (subDirectory.getId() == id) {
-                        count += 1;
-                        htmlList.append("<li class=\"n");
-                        htmlList.append(count);
-                        htmlList.append("\"><a href=\"#\">");
-                        htmlList.append(subDirectory);
-                        htmlList.append("</a></li>");
-                    }
-                }
-                htmlList.append("</ul>");
-            }
-        }
-        for (int i = 1; i < 5; i++) {
-            htmlList.append("<ul class=\"navigation\">");
-            htmlList.append("<a class=\"main\" href=\"#url\">Catalog " + i + "</a>");
-            htmlList.append("<li class=\"n1\"><a href=\"#\">SubDirectory #1</a></li>");
-            htmlList.append("<li class=\"n2\"><a href=\"#\">SubDirectory #2</a></li>");
-            htmlList.append("<li class=\"n3\"><a href=\"#\">SubDirectory #3</a></li>");
-            htmlList.append("</ul>");
-        }
-        log.info("HTML List - " + htmlList.toString());
-        return htmlList.toString();
-    }
-
-    /**
-     * This method created html code.
-     *
-     * @return String
-     */
-    private String createHtmlLots() {
-        StringBuilder htmlLots = new StringBuilder();
-        for (int i = 1; i <= 5; i++) {
-            htmlLots.append("<div class = \"container-lots\">test" + i + "</div>");
-
-
-            htmlLots.append("<br>");
-        }
-        htmlLots.append("<br><br>");
-        htmlLots.append("<footer> 1_2_3_4_5 ... 10 </footer>");
-        return htmlLots.toString();
-    }
-
 }
