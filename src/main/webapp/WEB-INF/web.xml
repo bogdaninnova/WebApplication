@@ -4,6 +4,27 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <filter>
+  	<filter-name>AuthFilter</filter-name>
+  	<display-name>AuthFilter</display-name>
+  	<description></description>
+  	<filter-class>ua.sumdu.group73.servlets.filters.AuthFilter</filter-class>
+  </filter>
+  <filter>
+  	<filter-name>AdminFilter</filter-name>
+  	<display-name>AdminFilter</display-name>
+  	<description></description>
+  	<filter-class>ua.sumdu.group73.servlets.filters.AdminFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+	<url-pattern>/AuthFilter</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>AdminFilter</filter-name>
+  	<url-pattern>/AdminFilter</url-pattern>
+  </filter-mapping>
+  
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.UserServlet</servlet-class>
