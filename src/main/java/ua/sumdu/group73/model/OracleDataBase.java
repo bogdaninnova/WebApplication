@@ -152,7 +152,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String password = rs.getString("PASSWORD");
 	            String name = rs.getString("NAME");
 	            String secondName = rs.getString("SECOND_NAME");
-	            Date birthDate = rs.getDate("BIRTH");
+	            Date birthDate = rs.getTimestamp("BIRTH");
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
@@ -219,7 +219,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int id = rs.getInt("ID");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            Date birthDate = rs.getDate("BIRTH");
+		            Date birthDate = rs.getTimestamp("BIRTH");
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
@@ -251,7 +251,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int id = rs.getInt("ID");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            Date birthDate = rs.getDate("BIRTH");
+		            Date birthDate = rs.getTimestamp("BIRTH");
 		            String login = rs.getString("LOGIN");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
@@ -302,8 +302,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getDate("START_DATE"),
-	                				rs.getDate("END_DATE"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -442,8 +442,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            int sellerID = rs.getInt("SELLER_ID");
 	            String name = rs.getString("NAME");
 	            String description = rs.getString("DESCRIPTION");
-	            Date startDate = rs.getDate("START_DATE");
-	            Date endDate = rs.getDate("END_DATE");
+	            Date startDate = rs.getTimestamp("START_DATE");
+	            Date endDate = rs.getTimestamp("END_DATE");
 	            int startPrice = rs.getInt("START_PRICE");
 	            int buyoutPrice = rs.getInt("BUYOUT_PRICE");
 	            int currentPrice = rs.getInt("CURRENT_PRICE");
@@ -550,8 +550,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getDate("START_DATE"),
-	                				rs.getDate("END_DATE"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -592,8 +592,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getDate("START_DATE"),
-	                				rs.getDate("END_DATE"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -626,8 +626,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getDate("START_DATE"),
-	                				rs.getDate("END_DATE"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -763,8 +763,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getDate("START_DATE"),
-	                				rs.getDate("END_DATE"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -802,7 +802,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getInt("PRODUCT_ID"),
 	                				rs.getInt("PRICE"),
-	                				rs.getDate("SALE_DATE")));
+	                				rs.getTimestamp("SALE_DATE")));
             }
         } catch (SQLException e) {
             log.error(CLASSNAME + "SQLException in getSalersTransaction()" + e.getStackTrace());
@@ -827,7 +827,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getInt("PRODUCT_ID"),
 	                				rs.getInt("PRICE"),
-	                				rs.getDate("SALE_DATE")));
+	                				rs.getTimestamp("SALE_DATE")));
             }
         } catch (SQLException e) {
             log.error(CLASSNAME + "SQLException in getBuyersTransaction()" + e.getStackTrace());
@@ -869,7 +869,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            int sellerID = rs.getInt("SELLER_ID");
 	            int productID = rs.getInt("PRODUCT_ID");
 	            int price = rs.getInt("PRICE");
-	            Date saleDate = rs.getDate("SALE_DATE");
+	            Date saleDate = rs.getTimestamp("SALE_DATE");
 	            transaction = new Transaction(transactionID, buyerID, sellerID, productID, price, saleDate);
             }
         } catch (SQLException e) {
