@@ -20,7 +20,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         FollowingDBInterface, CategoriesDBInterface {
 
 	private static final Logger log = Logger.getLogger(OracleDataBase.class);
-	private static final String CLASSNAME = "OracleDataBase: ";
 	
     private static OracleDataBase instance;
     
@@ -31,41 +30,40 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     
     private void initConnection() {
-    	log.info(CLASSNAME + "Method initConnection starts.....");
+    	log.info("Method initConnection starts.....");
         if (conn == null) 
             conn = getConnection();
     }
     
     private void closeConnection() {
-    	log.info(CLASSNAME + "Method closeConnection starts.....");
+    	log.info("Method closeConnection starts.....");
     	try {
 			conn.close();
 			conn = null;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("SQLException in closeConnection()", e);
 		}
     }
     
     
     public static synchronized OracleDataBase getInstance() {
-    	log.info(CLASSNAME + "Method getInstance starts.....");
+    	log.info("Method getInstance starts.....");
         if (instance == null) 
             instance = new OracleDataBase();
         return instance;
     }
     
     private Connection getConnection() {
-    	log.info(CLASSNAME + "Method getConnection starts.....");
+    	log.info("Method getConnection starts.....");
         Locale.setDefault(Locale.ENGLISH);
         try {
             Context ctx = new InitialContext();
             DataSource dataSource = (DataSource) ctx.lookup("jdbc/JDBCDS");
             return dataSource.getConnection();
         } catch (NamingException e) {
-            log.error(CLASSNAME + "NamingException in getConnection()" + e.getStackTrace());
+            log.error("NamingException in getConnection()", e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            log.error(CLASSNAME + "SQLException in getConnection()" + e.getStackTrace());
+            log.error("SQLException in getConnection()", e);
         }
         return null;
     }
@@ -84,7 +82,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      */
     public boolean addUser(String login, String password, String name, String secondName,
                            long birthDate, String eMail, String phone) {
-    	log.info(CLASSNAME + "Method addUser starts.....");
+    	log.info("Method addUser starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_USER)) {    		
@@ -99,7 +97,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addUser()" + e.getStackTrace());
+            log.error("SQLException in addUser()", e);
         } finally {
         	closeConnection();
         }
@@ -107,7 +105,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public User getUser(int id) {
-    	log.info(CLASSNAME + "Method getUser starts.....");
+    	log.info("Method getUser starts.....");
     	User user = null;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER)) {
@@ -118,16 +116,15 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String password = rs.getString("PASSWORD");
 	            String name = rs.getString("NAME");
 	            String secondName = rs.getString("SECOND_NAME");
-	            Date birthDate = rs.getTimestamp("BIRTH");
+	            byte age = rs.getByte("AGE");
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
 
-	            byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
 	            user = new User(id, login, password, name, secondName, age, eMail, phone, status);
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getUser()" + e.getStackTrace());
+            log.error("SQLException in getUser()", e);
         } finally {
         	closeConnection();
         }
@@ -135,7 +132,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isLoginFree(String login) {
-    	log.info(CLASSNAME + "Method isLoginFree starts.....");
+    	log.info("Method isLoginFree starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_LOGIN_FREE)) {	
@@ -144,7 +141,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         		result = !rs.next();
         	}
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in isLoginFree()" + e.getStackTrace());
+            log.error("SQLException in isLoginFree()", e);
         } finally {
         	closeConnection();
         }
@@ -152,7 +149,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isEmailFree(String login) {
-    	log.info(CLASSNAME + "Method isEmailFree starts.....");
+    	log.info("Method isEmailFree starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_EMAIL_FREE)) {
@@ -161,7 +158,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	result = !rs.next();
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in isEmailFree()" + e.getStackTrace());
+            log.error("SQLException in isEmailFree()", e);
         } finally {
         	closeConnection();
         }
@@ -175,7 +172,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      * @return id of authorizated user. If login or password is wrong - method returns -1.
      */
     public User authorization(String login, String password) {
-    	log.info(CLASSNAME + "Method authorization starts.....");
+    	log.info("Method authorization starts.....");
     	User user = null;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.AUTHORIZATION)) {
@@ -185,19 +182,17 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int id = rs.getInt("ID");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            Date birthDate = rs.getTimestamp("BIRTH");
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		                 
-		            byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
-		            
+		            byte age = rs.getByte("AGE");
+
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
 	            }
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in authorization()" + e.getStackTrace());
+            log.error("SQLException in authorization()", e);
         } finally {
         	closeConnection();
         }
@@ -206,30 +201,27 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public User authorizationByEmail(String eMail, String password) {
-    	log.info(CLASSNAME + "Method authorizationByEmail starts.....");
+    	log.info("Method authorizationByEmail starts.....");
     	User user = null;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.AUTHORIZATION_BY_EMAIL)) {
-            preparedStatement.setString(1, eMail);
-            
+        	preparedStatement.setString(1, eMail);
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            if (rs.next()) {
 		            int id = rs.getInt("ID");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            Date birthDate = rs.getTimestamp("BIRTH");
 		            String login = rs.getString("LOGIN");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		                 
-		            byte age = (byte) ((new Date().getTime() - birthDate.getTime()) / 365 / 24 / 60 / 60 / 1000);
+		            byte age = rs.getByte("AGE");
 		            
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
 	            }
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in authorizationByEmail()" + e.getStackTrace());
+            log.error("SQLException in authorizationByEmail()", e);
         } finally {
         	closeConnection();
         }
@@ -238,7 +230,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean isAdmin(int userID) {
-    	log.info(CLASSNAME + "Method isAdmin starts.....");
+    	log.info("Method isAdmin starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_USER_ADMIN)){
@@ -247,7 +239,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	result = rs.next();
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in isAdmin()" + e.getStackTrace());
+            log.error("SQLException in isAdmin()", e);
         } finally {
         	closeConnection();
         }
@@ -255,7 +247,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
     
     public List<Product> getUsersProducts(int userID) {
-    	log.info(CLASSNAME + "Method getUsersProducts starts.....");
+    	log.info("Method getUsersProducts starts.....");
         List<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USERS_PRODUCTS)) {
@@ -277,7 +269,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getString("IS_ACTIVE").equals("active")));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getUsersProducts()" + e.getStackTrace());
+            log.error("SQLException in getUsersProducts()", e);
         } finally {
         	closeConnection();
         }
@@ -291,7 +283,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean followProduct(int productID, int followerID) {
-    	log.info(CLASSNAME + "Method followProduct starts.....");
+    	log.info("Method followProduct starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FOLLOW_PRODUCT)) {
@@ -300,7 +292,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in followProduct()" + e.getStackTrace());
+            log.error("SQLException in followProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -309,7 +301,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isFollowProduct(int followerID, int productID) {
-    	log.info(CLASSNAME + "Method isFollowProduct starts.....");
+    	log.info("Method isFollowProduct starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_FOLLOW)) {
@@ -319,7 +311,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	result = rs.next();
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in isFollowProduct()" + e.getStackTrace());
+            log.error("SQLException in isFollowProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -327,7 +319,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean unfollowProduct(int productID, int followerID) {
-    	log.info(CLASSNAME + "Method unfollowProduct starts.....");
+    	log.info("Method unfollowProduct starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.UNFOLLOW)) {
@@ -336,7 +328,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in unfollowProduct()" + e.getStackTrace());
+            log.error("SQLException in unfollowProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -348,7 +340,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      * With this ID's we can restore objects "Product".
      */
     public List<Product> getFollowingProductsID(int userID) {
-    	log.info(CLASSNAME + "Method getFollowingProductsID starts.....");
+    	log.info("Method getFollowingProductsID starts.....");
         List<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_FOLLOWING_PRODUCTS)) {
@@ -358,7 +350,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             		list.add(getProduct(rs.getInt("PRODUCT_ID")));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getFollowingProductsID()" + e.getStackTrace());
+            log.error("SQLException in getFollowingProductsID()", e);
         } finally {
         	closeConnection();
         }
@@ -373,7 +365,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     public boolean addProduct(int sellerID, String name, String description,
                               Date startDate, Date endDate, int startPrice, int buyoutPrice) {
-    	log.info(CLASSNAME + "Method addProduct starts.....");
+    	log.info("Method addProduct starts.....");
     	boolean result = false;
     	initConnection();
     	try (
@@ -389,7 +381,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addProduct()" + e.getStackTrace());
+            log.error("SQLException in addProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -397,7 +389,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public Product getProduct(int id) {
-    	log.info(CLASSNAME + "Method getProduct starts.....");
+    	log.info("Method getProduct starts.....");
     	Product product = null;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PRODUCT)) {
@@ -421,7 +413,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                    currentPrice, currentBuyerID, activity.equals("active"));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getProduct()" + e.getStackTrace());
+            log.error("SQLException in getProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -429,7 +421,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean disactivateProduct(int productID) {
-    	log.info(CLASSNAME + "Method disactivateProduct starts.....");
+    	log.info("Method disactivateProduct starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.DISACTIVATE_PRODUCT)) {
@@ -437,7 +429,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in disactivateProduct()" + e.getStackTrace());
+            log.error("SQLException in disactivateProduct()", e);
         } finally {
         	closeConnection();
         }
@@ -445,7 +437,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean isProductActive(int productID) {
-    	log.info(CLASSNAME + "Method isProductActive starts.....");
+    	log.info("Method isProductActive starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_PRODUCT_ACTIVE)) {
@@ -454,7 +446,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	result = rs.next();
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in isProductActive()" + e.getStackTrace());
+            log.error("SQLException in isProductActive()", e);
         } finally {
         	closeConnection();
         }
@@ -462,7 +454,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public int getCurrentPrice(int productID) {
-    	log.info(CLASSNAME + "Method getCurrentPrice starts.....");
+    	log.info("Method getCurrentPrice starts.....");
     	initConnection();
     	int result = -1;
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.QET_CURRENT_PRICE)) {
@@ -472,7 +464,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            result = rs.getInt("CURRENT_PRICE");
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getCurrentPrice()" + e.getStackTrace());
+            log.error("SQLException in getCurrentPrice()", e);
         } finally {
         	closeConnection();
         }
@@ -481,7 +473,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean makeBet(int productID, int buyerID, int price) {
-    	log.info(CLASSNAME + "Method makeBet starts.....");
+    	log.info("Method makeBet starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.MAKE_A_BET)) {
@@ -491,7 +483,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in makeBet()" + e.getStackTrace());
+            log.error("SQLException in makeBet()", e);
         } finally {
         	closeConnection();
         }
@@ -502,7 +494,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
      * @return list of products id, that was finished just now
      */
     public ArrayList<Product> finishAuctions() {
-    	log.info(CLASSNAME + "Method finishAuctions starts.....");
+    	log.info("Method finishAuctions starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FINISH_AUCTIONS)) {
@@ -537,7 +529,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in finishAuctions()" + e.getStackTrace());
+            log.error("SQLException in finishAuctions()", e);
         } finally {
         	closeConnection();
         }
@@ -545,7 +537,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
     
     public List<Product> getAllProducts() {
-    	log.info(CLASSNAME + "Method getAllProducts starts.....");
+    	log.info("Method getAllProducts starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_PRODUCTS)) {
@@ -568,7 +560,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
         	}            
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in finishAuctions()" + e.getStackTrace());
+            log.error("SQLException in finishAuctions()", e);
         } finally {
         	closeConnection();
         }
@@ -577,7 +569,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     
 	@Override
 	public List<Product> findProducts(String substring) {
-    	log.info(CLASSNAME + "Method findProducts starts.....");
+    	log.info("Method findProducts starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FIND_PRODUCTS)) {
@@ -602,7 +594,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
         	}
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in findProducts()" + e.getStackTrace());
+            log.error("SQLException in findProducts()", e);
         } finally {
         	closeConnection();
         }
@@ -615,7 +607,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //------------------------------------------------------
 
     public Category getCategory(int categoryID) {
-    	log.info(CLASSNAME + "Method getCategory starts.....");
+    	log.info("Method getCategory starts.....");
     	Category category = null;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_CATEGORY)) {
@@ -627,7 +619,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            category = new Category(categoryID, parentID, name);
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getCategory()" + e.getStackTrace());
+            log.error("SQLException in getCategory()", e);
         } finally {
         	closeConnection();
         }
@@ -635,7 +627,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addCategory(int parentID, String name) {
-    	log.info(CLASSNAME + "Method addCategory(int, String) starts.....");
+    	log.info("Method addCategory(int, String) starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_CATEGORY)) {
@@ -644,7 +636,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addCategory()" + e.getStackTrace());
+            log.error("SQLException in addCategory()", e);
         } finally {
         	closeConnection();
         }      
@@ -652,7 +644,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addCategory(String name) {
-    	log.info(CLASSNAME + "Method addCategory(String) starts.....");
+    	log.info("Method addCategory(String) starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_CATEGORY)) {
@@ -661,7 +653,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addCategory(int, String)" + e.getStackTrace());
+            log.error("SQLException in addCategory(int, String)", e);
         } finally {
         	closeConnection();
         }
@@ -669,7 +661,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public List<Category> getAllCategories() {
-    	log.info(CLASSNAME + "Method getAllCategories starts.....");
+    	log.info("Method getAllCategories starts.....");
         List<Category> list = new ArrayList<Category>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_CATEGORIES)) {
@@ -682,7 +674,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getString("NAME")));
         	 }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getAllCategories()" + e.getStackTrace());
+            log.error("SQLException in getAllCategories()", e);
         } finally {
         	closeConnection();
         }
@@ -691,7 +683,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     
 	@Override
 	public List<Category> getCategoriesOfProduct(int productID) {
-    	log.info(CLASSNAME + "Method getAllCategories starts.....");
+    	log.info("Method getAllCategories starts.....");
         List<Category> list = new ArrayList<Category>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_CATEGORIES_OF_PRODUCT)) {
@@ -706,7 +698,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getString("NAME")));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getAllCategories()" + e.getStackTrace());
+            log.error("SQLException in getAllCategories()", e);
         } finally {
         	closeConnection();
         }
@@ -715,7 +707,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 	@Override
 	public List<Product> getProductsByCategory(int categoryID) {
-    	log.info(CLASSNAME + "Method getProductsByCategory starts.....");
+    	log.info("Method getProductsByCategory starts.....");
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PRODUCTS_BY_CATEGORY)) {	
@@ -739,7 +731,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getProductsByCategory()" + e.getStackTrace());
+            log.error("SQLException in getProductsByCategory()", e);
         } finally {
         	closeConnection();
         }
@@ -753,7 +745,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public List<Transaction> getSalersTransaction(int sellerID) {
-    	log.info(CLASSNAME + "Method getSalersTransaction starts.....");
+    	log.info("Method getSalersTransaction starts.....");
         List<Transaction> list = new ArrayList<Transaction>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_SALLERS_TRANSACTIONS)) {
@@ -771,7 +763,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getTimestamp("SALE_DATE")));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getSalersTransaction()" + e.getStackTrace());
+            log.error("SQLException in getSalersTransaction()", e);
         } finally {
         	closeConnection();
         }
@@ -779,7 +771,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public List<Transaction> getBuyersTransaction(int buyerID) {
-    	log.info(CLASSNAME + "Method getBuyersTransaction starts.....");
+    	log.info("Method getBuyersTransaction starts.....");
         List<Transaction> list = new ArrayList<Transaction>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_BUYERS_TRANSACTIONS)) {
@@ -796,7 +788,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getTimestamp("SALE_DATE")));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getBuyersTransaction()" + e.getStackTrace());
+            log.error("SQLException in getBuyersTransaction()", e);
         } finally {
         	closeConnection();
         }
@@ -804,7 +796,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addTransaction(int buyerID, int sellerID, int productID, int price, Date saleDate) {
-    	log.info(CLASSNAME + "Method addTransaction starts.....");
+    	log.info("Method addTransaction starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_TRANSACTION)) {
@@ -816,7 +808,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addTransaction()" + e.getStackTrace());
+            log.error("SQLException in addTransaction()", e);
         } finally {
         	closeConnection();
         }
@@ -824,7 +816,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public Transaction getTransaction(int transactionID) {
-    	log.info(CLASSNAME + "Method getTransaction starts.....");
+    	log.info("Method getTransaction starts.....");
     	Transaction transaction = null;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_TRANSACTION)) {
@@ -839,7 +831,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            transaction = new Transaction(transactionID, buyerID, sellerID, productID, price, saleDate);
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getTransaction()" + e.getStackTrace());
+            log.error("SQLException in getTransaction()", e);
         } finally {
         	closeConnection();
         }
@@ -853,7 +845,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public List<String> getPicturesURLs(int productID) {
-    	log.info(CLASSNAME + "Method getPicturesURLs starts.....");
+    	log.info("Method getPicturesURLs starts.....");
         List<String> list = new ArrayList<String>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PICTURES_URL)) {
@@ -864,7 +856,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                list.add(rs.getString("URL"));
             }
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in getPicturesURLs()" + e.getStackTrace());
+            log.error("SQLException in getPicturesURLs()", e);
         } finally {
         	closeConnection();
         }
@@ -872,7 +864,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
 
     public boolean addPictures(int productID, String URL) {
-    	log.info(CLASSNAME + "Method addPictures starts.....");
+    	log.info("Method addPictures starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_PICTURE)) {
@@ -881,7 +873,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            log.error(CLASSNAME + "SQLException in addPictures()" + e.getStackTrace());
+            log.error("SQLException in addPictures()", e);
         } finally {
         	closeConnection();
         }

@@ -25,7 +25,16 @@ public class Queries {
 					+ "?)";
 	
 	public static final String GET_USER =
-			"SELECT * FROM USERS WHERE ID = ?";
+			"SELECT"
+					+ " LOGIN,"
+					+ " PASSWORD,"
+					+ " NAME,"
+					+ " SECOND_NAME,"
+					+ " EMAIL,"
+					+ " PHONE,"
+					+ " STATUS,"
+					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
+			+ " FROM USERS WHERE ID = ?";
 	
 	public static final String IS_LOGIN_FREE =
 			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
@@ -34,10 +43,30 @@ public class Queries {
 			"SELECT * FROM USERS WHERE EMAIL = LOWER(?)";
     
 	public static final String AUTHORIZATION =
-			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
+			"SELECT"
+					+ " ID,"
+					+ " LOGIN,"
+					+ " PASSWORD,"
+					+ " NAME,"
+					+ " SECOND_NAME,"
+					+ " EMAIL,"
+					+ " PHONE,"
+					+ " STATUS,"
+					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
+			+ " FROM USERS WHERE LOGIN = LOWER(?)";
     
 	public static final String AUTHORIZATION_BY_EMAIL =
-			"SELECT * FROM USERS WHERE EMAIL = LOWER(?)";
+			"SELECT"
+					+ " ID,"
+					+ " LOGIN,"
+					+ " PASSWORD,"
+					+ " NAME,"
+					+ " SECOND_NAME,"
+					+ " EMAIL,"
+					+ " PHONE,"
+					+ " STATUS,"
+					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
+			+ " FROM USERS WHERE EMAIL = LOWER(?)";
     
 	public static final String GET_USERS_PRODUCTS =
 			"SELECT * FROM PRODUCTS WHERE SELLER_ID = ?";
