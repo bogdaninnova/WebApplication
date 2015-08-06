@@ -32,10 +32,6 @@
     <div class="form-top" align="right">
 
         <tr>
-<<<<<<< HEAD
-            <script>var user_name = '<%= session.getAttribute("username") %>';
-            createForm(user_name);</script>
-=======
             <% User user = (User)session.getAttribute("user");
                 String userName = "";
                 if (user != null) {
@@ -44,7 +40,7 @@
             %>
 
             <script>var user_name = '<%= userName %>'; createForm(user_name);</script>
->>>>>>> 15122f3ae9daba7f2f9a366c06e78731f7224f45
+
         </tr>
     </div>
     <header>
