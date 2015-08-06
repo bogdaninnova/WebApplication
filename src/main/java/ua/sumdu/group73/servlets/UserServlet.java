@@ -3,6 +3,7 @@ package ua.sumdu.group73.servlets;
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
+import ua.sumdu.group73.model.objects.Product;
 import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.RequestDispatcher;
@@ -25,6 +26,7 @@ public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private HttpSession session;
     private List<Category> categoryList;
+    private List<Product> products;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -78,10 +80,17 @@ public class UserServlet extends HttpServlet {
             session = request.getSession();
             log.info("Create HttpSession in UserServlet");
         }
+        categoryList = null;
+        products = null;
         categoryList = OracleDataBase.getInstance().getAllCategories();
         log.info("Init categoryList" + categoryList);
+        products = OracleDataBase.getInstance().getAllProducts();
+        log.info("Init products");
+
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
+        request.setAttribute("products", products);
+
         rd.forward(request, response);
     }
 

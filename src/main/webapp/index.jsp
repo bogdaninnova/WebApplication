@@ -1,6 +1,7 @@
 <%@ page import="ua.sumdu.group73.model.objects.Category" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ua.sumdu.group73.model.objects.User" %>
+<%@ page import="ua.sumdu.group73.model.objects.Product" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -139,19 +140,55 @@
 
     <aside class="container-section-lot">
         <hesder>
-            <h2 align="center">List of lots</h2>
+            <div align="center">
+                <% List<Product> products = (List<Product>)request.getAttribute("products");
+                    if (products != null) { %>
+                        <% for (Product product : products) { %>
+                            <div class="container-lots" onclick="document.write("Click");">
+                                <div class ="container-lots-image">
 
+                                </div>
+                                <div class="container-lots-price">
+                                    <% if (product.getCurrentPrice() != 0) { %>
+                                        <%=product.getCurrentPrice()%> $
+                                    <% } else {%>
+                                        <%=product.getStartPrice()%> $
+                                    <% } %>
+                                </div>
+                                <header>
+                                    <%=product.getName()%>
+                                </header>
+                                <assaid>
+                                    <div class="container-lots-description" align="left">
+                                        <%=product.getDescription()%>
+                                    </div>
+                                </assaid>
+                                <footer>
+                                    <div class="container-lots-time">
+                                        Close: <%=product.getEndDate()%>
+                                    </div>
+                                    <div class="container-lots-buyer">
+                                        <% if (product.getCurrentBuyerID() != 0) { %>
+                                            <%=product.getCurrentBuyerID()%> //todo get userName
+                                        <% } %>
+                                    </div>
+                                </footer>
+                                <br><br>
+                            </div>
+
+                        <% } %>
+                    <%}
+                %>
+            </div>
         </hesder>
-        <div align="center">
-            <article id="lots">
-                <script>getLots();</script>
-
-            </article>
-
-        </div>
+        <footer>
+            <div align="center">
+                <% if (products != null && products.size() > 10) { %>
+                    //todo display page numbers
+                <% } %>
+            </div>
+        </footer>
     </aside>
-
-
 </div>
 
 <footer>

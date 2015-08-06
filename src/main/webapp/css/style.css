@@ -66,15 +66,16 @@ label:hover {
 }
 
 .container-section-lot {
-    margin-left: 25%;
-    width: 75%;
+    margin-left: 22%;
+    width: 78%;
     min-height: 90%;
     position: relative;
 }
 
 .container-lots {
     width: 90%;
-    min-height: 100px;
+    margin-top: 20px;
+    min-height: 120px;
     position: relative;
     background-color: white;
     border-top-style: solid;
@@ -85,4 +86,37 @@ label:hover {
     border-right-width: 1px;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+}
+
+.container-lots-image{
+    background-color: lightgray;
+    border :1px solid black;
+    width : 150px;
+    height : 100px;
+    margin: 20px;
+    float: left;
+}
+
+.container-lots-price{
+    background-color: white;
+    margin: 40px 10px;
+    width : 100px;
+    height : 40px;
+    font-size: 150%;
+    color : green;
+    float:right;
+}
+
+.container-lots-time {
+    font-size: 80%;
+    float: left;
+}
+
+.container-lots-buyer {
+    font-size: 80%;
+    float: right;
+}
+
+.container-lots-description {
+    height : 80px;
 }
