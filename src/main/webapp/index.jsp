@@ -1,5 +1,6 @@
 <%@ page import="ua.sumdu.group73.model.objects.Category" %>
 <%@ page import="java.util.List" %>
+<%@ page import="ua.sumdu.group73.model.objects.User" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -31,8 +32,19 @@
     <div class="form-top" align="right">
 
         <tr>
+<<<<<<< HEAD
             <script>var user_name = '<%= session.getAttribute("username") %>';
             createForm(user_name);</script>
+=======
+            <% User user = (User)session.getAttribute("user");
+                String userName = "";
+                if (user != null) {
+                    userName = user.getName();
+                }
+            %>
+
+            <script>var user_name = '<%= userName %>'; createForm(user_name);</script>
+>>>>>>> 15122f3ae9daba7f2f9a366c06e78731f7224f45
         </tr>
     </div>
     <header>
