@@ -37,13 +37,6 @@ public class UserServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in UserServlet");
-        }
-
         log.info("Request - " + request.getParameter("action"));
 
         if ("registerForm".equals(request.getParameter("action"))) {
@@ -56,9 +49,7 @@ public class UserServlet extends HttpServlet {
             User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             log.info("USER - " + res);
             if (res != null) {
-                session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
-                session.setAttribute("username", res.getSecondName());
-                session.setAttribute("userId", res.getId());
+                session.setAttribute("user", res);
                 sendResponse(response, "<result>OK</result>", null);
             } else {
                 sendResponse(response, "message", "Login incorrect.");
@@ -67,8 +58,6 @@ public class UserServlet extends HttpServlet {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
                 session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
-                session.setAttribute("username", res.getSecondName());
-                session.setAttribute("userId", res.getId());
                 sendResponse(response, "<result>OK</result>", null);
             } else {
                 sendResponse(response, "error", "Email incorrect.");
@@ -77,14 +66,18 @@ public class UserServlet extends HttpServlet {
             if (session.getAttribute("user") != null || session.getAttribute("username") != null
                     || session.getAttribute("userId") != null) {
                 session.removeAttribute("user");
-                session.removeAttribute("username");
-                session.removeAttribute("userId");
                 sendResponse(response, "<result>OK</result>", null);
             }
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (session != null) {
+            log.info("HttpSession isn't null");
+        } else {
+            session = request.getSession();
+            log.info("Create HttpSession in UserServlet");
+        }
         categoryList = OracleDataBase.getInstance().getAllCategories();
         log.info("Init categoryList" + categoryList);
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
