@@ -12,6 +12,7 @@ ul.topnav {
     padding: 0;
 }
 ul.topnav li {
+    list-style: none;
 }
 ul.topnav li a {
     color: #000;
