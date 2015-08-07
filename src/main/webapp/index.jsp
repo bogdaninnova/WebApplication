@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="ua.sumdu.group73.model.objects.User" %>
 <%@ page import="ua.sumdu.group73.model.objects.Product" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Iterator" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -71,52 +73,153 @@
             </div>
         </header>
 
-        <%--<ul class="topnav">--%>
-        <%--<li><a href="user">Home</a></li>--%>
-        <%--<li><a href="#">CATALOG 1</a>--%>
-        <%--<ul>--%>
-        <%--<li><a href="#">SubCatalog 1</a></li>--%>
-        <%--<li><a href="#">SubCatalog 2</a></li>--%>
-        <%--<li><a href="#">SubCatalog 3</a></li>--%>
-        <%--<li><a href="#">SubCatalog 4</a></li>--%>
-        <%--<li><a href="#">SubCatalog 5</a></li>--%>
-        <%--<li><a href="#">SubCatalog 6</a>--%>
-        <%--<ul>--%>
-        <%--<li><a href="#">Directory 1</a></li>--%>
-        <%--<li><a href="#">Directory 1</a></li>--%>
-        <%--<li><a href="#">Directory 1</a></li>--%>
-        <%--</ul>--%>
-        <%--</li>--%>
-        <%--<li><a href="#">SubCatalog 7</a></li>--%>
-        <%--</ul>--%>
-        <%--</li>--%>
-        <%--</ul>--%>
-
+        <ul class="topnav">
+            <li><a href="user">Home</a></li>
+            <li><a href="#">CATALOG 1</a>
+                <ul>
+                    <li><a href="#">SubCatalog 1</a></li>
+                    <li><a href="#">SubCatalog 2</a></li>
+                    <li><a href="#">SubCatalog 3</a></li>
+                    <li><a href="#">SubCatalog 4</a></li>
+                    <li><a href="#">SubCatalog 5</a></li>
+                    <li><a href="#">SubCatalog 6</a>
+                        <ul>
+                            <li><a href="#">Directory 1</a></li>
+                            <li><a href="#">Directory 1</a></li>
+                            <li><a href="#">Directory 1</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">SubCatalog 7</a></li>
+                </ul>
+            </li>
+        </ul>
+        <%--<script>getCategoryList();</script>--%>
         <nav id="navigate">
 
-            <div align="center">
-                <ul class="topnav">
-                    <li><a href="user">Home</a></li>
-                    <% List<Category> cat = (List<Category>) request.getAttribute("list");%>
-                    <% if (cat != null) { %>
-                    <% for (Category category : cat) { %>
-                    <% if (category.getParentID() == 0) { %>
-                    <li><a href="#"><%= category.getName()%>
-                    </a>
-                        <% for (Category subCategory : cat) { %>
-                        <% if (category.getId() == subCategory.getParentID()) { %>
-                        <ul>
-                            <li><a href="#"><%= subCategory.getName()%>
-                            </a></li>
-                        </ul>
-                        <% } %>
-                        <% } %>
-                    </li>
-                    <% } %>
-                    <% }
-                    } %>
-                </ul>
-            </div>
+                <%--<ul class="topnav">--%>
+
+
+
+                 <%--<% List<Category> allCategories = (List<Category>) request.getAttribute("list");%>--%>
+                 <%--<% List<Category> rootCategories = new ArrayList<Category>(); %>--%>
+                 <%--<% StringBuilder menu = new StringBuilder(); %>--%>
+                 <%--<% if (allCategories != null) {--%>
+                    <%--for(Category c : allCategories) {--%>
+                       <%--if(c.getParentID() == 0) {--%>
+                            <%--rootCategories.add(c);--%>
+                        <%--}--%>
+                    <%--}--%>
+                    <%--int level =0;--%>
+                    <%--List<Category> childsList = rootCategories; %>--%>
+                    <%--<% if (level == 0) {--%>
+                        <%--menu.append("<ul class=\"topnav\">");--%>
+                        <%--menu.append("<li><a href=\"user\">Home</a></li>");--%>
+                    <%--} else {--%>
+                        <%--menu.append("<ul>");--%>
+                    <%--}--%>
+                     <%--for (Category currentCat : childsList) {--%>
+                         <%--menu.append("<li>");--%>
+                         <%--menu.append("<a href=\"#\">" + currentCat.getName() + "</a>");--%>
+                         <%--List<Category> listOfChildrens = new ArrayList<Category>();--%>
+                         <%--Iterator<Category> iterCat = childsList.iterator();--%>
+                         <%--while (iterCat.hasNext()) {--%>
+                             <%--Category current = iterCat.next();--%>
+                             <%--if (currentCat.getId() == current.getParentID()) {--%>
+                                 <%--listOfChildrens.add(current);--%>
+                                 <%--iterCat.remove();--%>
+                             <%--}--%>
+                         <%--}--%>
+                         <%--if(!listOfChildrens.isEmpty()) {--%>
+                             <%--++level;--%>
+                             <%--childsList = listOfChildrens;--%>
+                             <%--// Sub Menu--%>
+
+                            <%----%>
+
+
+                         <%--}--%>
+                         <%--menu.append("</li>");--%>
+                     <%--}--%>
+                     <%--menu.append("</ul>");--%>
+                     <%--} %>--%>
+                    <%--<%=menu.toString()%>--%>
+
+
+
+                <%--<ul>--%>
+
+
+                    <% List<Category> cat = (List<Category>) request.getAttribute("list");
+                        StringBuilder menu = new StringBuilder();
+                        List<Category> rootCategory = new ArrayList<Category>();
+                        int level = 0;
+                        for (Category c : cat) {
+                            if (c.getParentID() == 0){
+                                rootCategory.add(c);
+                            }
+                        }
+                    %>
+                    <%if (level == 0) {
+                        menu.append("<ul class = \"topnav\">");
+                        menu.append("<li><a href=\"user\">Home</a></li>");
+                    } else {
+                        menu.append("<ul>");
+                    }
+                        for (Category currentCat : rootCategory) {
+                            menu.append("<li>");
+                            menu.append("<a href=\"#\">" + currentCat.getName() + "</a>");
+                            List<Category> listOfChildrens = new ArrayList<Category>();
+                            Iterator<Category> iterCat = rootCategory.iterator();
+                            while (iterCat.hasNext()) {
+                                Category current = iterCat.next();
+                                if(currentCat.getId() == current.getParentID()) {
+                                    listOfChildrens.add(current);
+                                    iterCat.remove();
+                                }
+                            }
+                            if(!listOfChildrens.isEmpty()) {
+                                ++level;
+                               // categoryListToHTML(++level, listOfChildrens);
+                                //level 1
+
+                    %>
+
+
+                           <% }
+                            menu.append("</li>");
+                        }
+                        menu.append("</ul>");
+                    %>
+                    <%=menu.toString()%>
+
+                    <%--<% List<Category> cat = (List<Category>) request.getAttribute("list");--%>
+                       <%--List<Category> rootCategory = new ArrayList<Category>();--%>
+                     <%--StringBuilder menu = new StringBuilder();--%>
+                     <%--if (cat != null) {--%>
+                         <%--int level = 0;--%>
+                         <%--if (level == 0) {--%>
+                             <%--menu.append("<ul class = \"topnav\">");--%>
+                             <%--menu.append("<li><a href=\"user\">Home</a></li>");--%>
+                             <%--++level;--%>
+                         <%--} else {--%>
+                             <%--menu.append("<ul>");--%>
+                         <%--}--%>
+                         <%--// 1--%>
+                         <%--for (Category category : cat) {--%>
+                             <%--if (category.getParentID() == 0) {--%>
+                                 <%--rootCategory.add(category);--%>
+                                 <%--menu.append("<li><a href=\"#\">" + category.getName() + "</a>");--%>
+                                 <%--// 2--%>
+
+                             <%--}menu.append("</li>");--%>
+
+                         <%--}menu.append("</ul>");--%>
+
+                      <%--}--%>
+                    <%--%>--%>
+
+                    <%--<%= menu.toString()%>--%>
+
         </nav>
         <footer>
             <h4 align="center">Options:</h4>
@@ -144,7 +247,7 @@
                 <% List<Product> products = (List<Product>)request.getAttribute("products");
                     if (products != null) { %>
                         <% for (Product product : products) { %>
-                            <div class="container-lots" onclick="document.write("Click");">
+                            <div class="container-lots">
                                 <div class ="container-lots-image">
 
                                 </div>

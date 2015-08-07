@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class UserServlet extends HttpServlet {
     private HttpSession session;
     private List<Category> categoryList;
     private List<Product> products;
+    private StringBuilder menuHTML;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -65,11 +68,12 @@ public class UserServlet extends HttpServlet {
                 sendResponse(response, "error", "Email incorrect.");
             }
         } else if("logOut".equals(request.getParameter("action"))) {
-            if (session.getAttribute("user") != null || session.getAttribute("username") != null
-                    || session.getAttribute("userId") != null) {
+            if (session.getAttribute("user") != null) {
                 session.removeAttribute("user");
                 sendResponse(response, "<result>OK</result>", null);
             }
+        } else if("getCategoryList".equals(request.getParameter("action"))) {
+            sendResponse(response, getCategoryList(), null);
         }
     }
 
@@ -106,5 +110,46 @@ public class UserServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getCategoryList() {
+
+        List<Category> rootCategories = new ArrayList<>();
+        menuHTML = new StringBuilder();
+        for(Category c : categoryList) {
+            if(c.getParentID() == 0) {
+                rootCategories.add(c);
+            }
+        }
+
+        return categoryListToHTML(0, categoryList);
+    }
+
+    private String categoryListToHTML(int level, List<Category> childsList) {
+        if (level == 0) {
+            menuHTML.append("<ul class = \"topnav\">");
+            menuHTML.append("<li><a href=\"user\">Home</a></li>");
+        } else {
+            menuHTML.append("<ul>");
+        }
+        for (Category currentCat : childsList) {
+            menuHTML.append("<li>");
+            menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
+            List<Category> listOfChildrens = new ArrayList<>();
+            Iterator<Category> iterCat = categoryList.iterator();
+            while (iterCat.hasNext()) {
+                Category current = iterCat.next();
+                if(currentCat.getId() == current.getParentID()) {
+                    listOfChildrens.add(current);
+                    iterCat.remove();
+                }
+            }
+            if(!listOfChildrens.isEmpty()) {
+                categoryListToHTML(++level, listOfChildrens);
+            }
+            menuHTML.append("</li>");
+        }
+        menuHTML.append("</ul>");
+        return menuHTML.toString();
     }
 }

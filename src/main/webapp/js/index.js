@@ -139,3 +139,20 @@ function createForm(user_name) {
         document.write("</form>");
     }
 }
+
+function getCategoryList() {
+    $.ajax({
+        dataType: "html",
+        url: url,
+        type: "POST",
+        data: {
+            action: "getCategoryList"
+        },
+        success: function (html) {
+            $('#navigate').append(html).html();
+        },
+        error: function () {
+            alert("Error can not get lots");
+        }
+    });
+}
