@@ -37,7 +37,7 @@ function clickLogin() {
             }
         },
         error: function () {
-            alert("Error while send register data.");
+            alert("Error while send login data.");
         }
     });
 }
@@ -56,7 +56,7 @@ function logOut() {
             }
         },
         error: function () {
-            alert("Error while send register data.");
+            alert("Error while send logout data.");
         }
     });
 }
@@ -70,6 +70,16 @@ function clickFind(find) {
         data: {
             action: "find",
             text: find
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url)
+            } else {
+                alert($(data).find("result").text());
+            }
+        },
+        error: function () {
+            alert("Error while send find data.");
         }
     });
 }

@@ -43,17 +43,25 @@ public class IndexServlet extends HttpServlet {
 
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
-            sendResponse(response, "<result>OK</result>", null);
+            sendResponse(response, "<result>OK</result>");
         } else if ("find".equals(request.getParameter("action"))) {
             log.info("Click find with query - " + request.getParameter("text"));
-            sendResponse(response, "<result>OK</result>", null);
+            if (request.getParameter("text").length() > 2) {
+                products = null;
+                products = OracleDataBase.getInstance().findProducts(request.getParameter("text"));
+                request.setAttribute("products", products);
+                sendResponse(response, "<result>OK</result>");
+            } else {
+                sendResponse(response, "<result>Short find request</result>");
+            }
+
         } else if ("login".equals(request.getParameter("action"))) {
             log.info("Click login");
-            sendResponse(response, "<result>OK</result>", null);
+            sendResponse(response, "<result>OK</result>");
         } else if ("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("user") != null) {
                 session.removeAttribute("user");
-                sendResponse(response, "<result>OK</result>", null);
+                sendResponse(response, "<result>OK</result>");
             }
         } else if ("getProducts".equals(request.getParameter("action"))) {
             log.info("Click getProducts");
@@ -64,7 +72,7 @@ public class IndexServlet extends HttpServlet {
             } else {
                 count = 0;
             }
-            sendResponse(response, "<result>OK</result>", null);
+            sendResponse(response, "<result>OK</result>");
         }
     }
 
@@ -91,17 +99,11 @@ public class IndexServlet extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void sendResponse(HttpServletResponse response, String text, String message) {
+    private void sendResponse(HttpServletResponse response, String text) {
         try (PrintWriter pw = response.getWriter()) {
-            if ("message".equals(text)) {
-                pw.println("<result>");
-                pw.println("<text>" + message + "</text>");
-                pw.println("</result>");
-            } else {
-                pw.println(text);
-            }
+            pw.println(text);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
