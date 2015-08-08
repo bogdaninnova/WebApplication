@@ -131,7 +131,7 @@
                         <input type="radio" name="radio" value="new"> new<Br>
                         <input type="radio" name="radio" value="uses"> used<Br>
                     </p>
-                    <button on onclick="">Sort</button>
+                    <button onclick="">Sort</button>
                 </form>
             </div>
         </footer>
@@ -139,7 +139,7 @@
 
 
     <aside class="container-section-lot">
-        <hesder>
+        <header>
             <div align="center">
                 <% List<Product> products = (List<Product>) request.getAttribute("products");
                     if (products != null) { %>
@@ -181,7 +181,7 @@
                     }
                 %>
             </div>
-        </hesder>
+        </header>
         <footer>
             <div align="center">
                 <% if (products != null && products.size() > 10) { %>
@@ -192,7 +192,7 @@
     </aside>
 </div>
 
-<footer>
+<footer id="footer">
     <div class="container" align="right">
         <p>Group 7.3</p>
     </div>
