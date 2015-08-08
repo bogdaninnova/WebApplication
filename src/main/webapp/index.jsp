@@ -95,24 +95,32 @@
             <%! private void categoryListToHTML(int level, List<Category> childsList) {
                 if (level == 0) {
                     menuHTML.append("<ul class = \"topnav\">");
-                    menuHTML.append("<li><a href=\"user\">Home</a></li>");
+                    menuHTML.append("<li><a href=\"#\" onClick=\"getProductByCategory('0');\">All products</a></li>");
                 } else {
                     menuHTML.append("<ul>");
                 }
                 for (Category currentCat : childsList) {
-                    menuHTML.append("<li>");
-                    menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
                     List<Category> listOfChildrens = new ArrayList<Category>();
                     Iterator<Category> iterCat = categoryList.iterator();
+                    int count = 0;
                     while (iterCat.hasNext()) {
                         Category current = iterCat.next();
+
                         if (currentCat.getId() == current.getParentID()) {
+                            if (count == 0) {
+                                menuHTML.append("<li>");
+                                menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
+                                count += 1;
+                            }
                             listOfChildrens.add(current);
                             iterCat.remove();
                         }
                     }
                     if (!listOfChildrens.isEmpty()) {
                         categoryListToHTML(++level, listOfChildrens);
+                    } else {
+                        menuHTML.append("<li>");
+                        menuHTML.append("<a href=\"#\" onClick=\"getProductByCategory('" + currentCat.getId() + "');\">" + currentCat.getName() + "</a>");
                     }
                     menuHTML.append("</li>");
                 }

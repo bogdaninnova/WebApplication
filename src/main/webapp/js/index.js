@@ -85,12 +85,31 @@ function createForm(user_name, user_second_name) {
         document.write(user_name);
         document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
         document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");
-        document.write("")
-        document.write("</td>")
+        document.write(" ");
+        document.write("</td>");
     } else {
-        document.write("<td>Please </td>")
+        document.write("<td>Please </td>");
         document.write("<td><label onclick=\"clickLogin();\">[ <b>Login</b> ]</Label></td>");
         document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
     }
 }
 
+function getProductByCategory(categoryID) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "getProducts",
+            id: parseInt(categoryID)
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url)
+            }
+        },
+        error: function () {
+            alert("Error while send register data.");
+        }
+    });
+}

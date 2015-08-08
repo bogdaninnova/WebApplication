@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * This servlet working with index.jsp.
- *
+ * <p/>
  * Created by Greenberg Dima <gdvdima2008@yandex.ru>
  */
 public class IndexServlet extends HttpServlet {
@@ -26,6 +26,7 @@ public class IndexServlet extends HttpServlet {
     private HttpSession session;
     private List<Category> categoryList;
     private List<Product> products;
+    private int count = 0;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -54,6 +55,16 @@ public class IndexServlet extends HttpServlet {
                 session.removeAttribute("user");
                 sendResponse(response, "<result>OK</result>", null);
             }
+        } else if ("getProducts".equals(request.getParameter("action"))) {
+            log.info("Click getProducts");
+            if (Integer.parseInt(request.getParameter("id")) > 0) {
+                products = null;
+                products = OracleDataBase.getInstance().getProductsByCategory(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("products", products);
+            } else {
+                count = 0;
+            }
+            sendResponse(response, "<result>OK</result>", null);
         }
     }
 
@@ -64,17 +75,19 @@ public class IndexServlet extends HttpServlet {
             session = request.getSession();
             log.info("Create HttpSession in UserServlet");
         }
+        if (count == 0) {
+            products = null;
+            products = OracleDataBase.getInstance().getAllProducts();
+            log.info("Init products");
+            count += 1;
+        }
+
         categoryList = null;
-        products = null;
         categoryList = OracleDataBase.getInstance().getAllCategories();
         log.info("Init categoryList" + categoryList);
-        products = OracleDataBase.getInstance().getAllProducts();
-        log.info("Init products");
-
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
         request.setAttribute("products", products);
-
         rd.forward(request, response);
     }
 
