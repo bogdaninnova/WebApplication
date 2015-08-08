@@ -74,48 +74,48 @@
         </header>
 
         <div align="center">
-        <%! List<Category> categoryList;%>
-        <% categoryList = (List<Category>) request.getAttribute("list"); %>
-        <%! private StringBuilder menuHTML;
+            <%! List<Category> categoryList;%>
+            <% categoryList = (List<Category>) request.getAttribute("list"); %>
+            <%! private StringBuilder menuHTML;
 
-        %>
-        <% List<Category> rootCategories = new ArrayList<Category>();
-            menuHTML = new StringBuilder();
-            for (Category c : categoryList) {
-                if (c.getParentID() == 0) {
-                    rootCategories.add(c);
-                }
-            }
-
-            categoryListToHTML(0, rootCategories);
-        %>
-        <%! private void categoryListToHTML(int level, List<Category> childsList) {
-            if (level == 0) {
-                menuHTML.append("<ul class = \"topnav\">");
-                menuHTML.append("<li><a href=\"user\">Home</a></li>");
-            } else {
-                menuHTML.append("<ul>");
-            }
-            for (Category currentCat : childsList) {
-                menuHTML.append("<li>");
-                menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
-                List<Category> listOfChildrens = new ArrayList<Category>();
-                Iterator<Category> iterCat = categoryList.iterator();
-                while (iterCat.hasNext()) {
-                    Category current = iterCat.next();
-                    if (currentCat.getId() == current.getParentID()) {
-                        listOfChildrens.add(current);
-                        iterCat.remove();
+            %>
+            <% List<Category> rootCategories = new ArrayList<Category>();
+                menuHTML = new StringBuilder();
+                for (Category c : categoryList) {
+                    if (c.getParentID() == 0) {
+                        rootCategories.add(c);
                     }
                 }
-                if (!listOfChildrens.isEmpty()) {
-                    categoryListToHTML(++level, listOfChildrens);
+
+                categoryListToHTML(0, rootCategories);
+            %>
+            <%! private void categoryListToHTML(int level, List<Category> childsList) {
+                if (level == 0) {
+                    menuHTML.append("<ul class = \"topnav\">");
+                    menuHTML.append("<li><a href=\"user\">Home</a></li>");
+                } else {
+                    menuHTML.append("<ul>");
                 }
-                menuHTML.append("</li>");
-            }
-            menuHTML.append("</ul>");
-        }%>
-        <%= menuHTML.toString() %>
+                for (Category currentCat : childsList) {
+                    menuHTML.append("<li>");
+                    menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
+                    List<Category> listOfChildrens = new ArrayList<Category>();
+                    Iterator<Category> iterCat = categoryList.iterator();
+                    while (iterCat.hasNext()) {
+                        Category current = iterCat.next();
+                        if (currentCat.getId() == current.getParentID()) {
+                            listOfChildrens.add(current);
+                            iterCat.remove();
+                        }
+                    }
+                    if (!listOfChildrens.isEmpty()) {
+                        categoryListToHTML(++level, listOfChildrens);
+                    }
+                    menuHTML.append("</li>");
+                }
+                menuHTML.append("</ul>");
+            }%>
+            <%= menuHTML.toString() %>
         </div>
 
         <footer>

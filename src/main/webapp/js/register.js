@@ -6,11 +6,11 @@ function validData(login, password, confirmPassword, firstName, secondName, age,
     if (login.length > 0 && password.length > 0 && confirmPassword.length > 0 && firstName.length > 0 && secondName.length > 0 && age.length > 0 && email.length > 0) {
         if (Boolean(login.length <= 3)) {
             alert("Short login.");
-        } else if(Boolean(password.length <= 3)) {
+        } else if (Boolean(password.length <= 3)) {
             alert("Short password.");
-        } else if(password != confirmPassword) {
+        } else if (password != confirmPassword) {
             alert("Check the input password confirmation.");
-        } else if(firstName.length <= 3) {
+        } else if (firstName.length <= 3) {
             alert("Check the input password confirmation.");
         } else if (!(isEmail(email))) {
             alert("Incorrect Email address.");
@@ -24,7 +24,6 @@ function isEmail(checkEmail) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(checkEmail);
 }
-
 
 
 function sendRegisterData(login, password, firstName, secondName, age, email, phone) {
@@ -54,4 +53,8 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
             alert("Error while send register data.");
         }
     });
+}
+
+function clickBack() {
+    window.location.replace("index");
 }

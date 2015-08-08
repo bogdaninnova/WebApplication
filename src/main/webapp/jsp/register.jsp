@@ -13,8 +13,8 @@
 <body>
 <div class="container">
     <h2 align="center">Please register</h2>
-    <form>
-        <table align="center">
+    <table align="center">
+        <form>
             <tr>
                 <td><label>*</label></td>
                 <td>Login:</td>
@@ -55,16 +55,20 @@
                 <td>Phone number:</td>
                 <td><input type="text" id="phone" size="10" maxlength="20"></td>
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>
-                    <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val());">Sign up</button>
-                </td>
-            </tr>
+        </form>
 
-        </table>
-    </form>
+        <tr>
+            <td></td>
+            <td>
+                <button onclick="clickBack();"> Back</button>
+            </td>
+            <td>
+                <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val());">
+                    Sign up
+                </button>
+            </td>
+        </tr>
+    </table>
     <br><label>* - Required fields.</label>
 </div>
 </body>

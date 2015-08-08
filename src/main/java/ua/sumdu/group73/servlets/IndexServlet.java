@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.Product;
-import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -27,7 +26,6 @@ public class IndexServlet extends HttpServlet {
     private HttpSession session;
     private List<Category> categoryList;
     private List<Product> products;
-    private StringBuilder menuHTML;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -49,23 +47,9 @@ public class IndexServlet extends HttpServlet {
             log.info("Click find with query - " + request.getParameter("text"));
             sendResponse(response, "<result>OK</result>", null);
         } else if ("login".equals(request.getParameter("action"))) {
-            User res = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
-            log.info("USER - " + res);
-            if (res != null) {
-                session.setAttribute("user", res);
-                sendResponse(response, "<result>OK</result>", null);
-            } else {
-                sendResponse(response, "message", "Login incorrect.");
-            }
-        } else if ("loginEmail".equals(request.getParameter("action"))) {
-            User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
-            if (res != null) {
-                session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
-                sendResponse(response, "<result>OK</result>", null);
-            } else {
-                sendResponse(response, "error", "Email incorrect.");
-            }
-        } else if("logOut".equals(request.getParameter("action"))) {
+            log.info("Click login");
+            sendResponse(response, "<result>OK</result>", null);
+        } else if ("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("user") != null) {
                 session.removeAttribute("user");
                 sendResponse(response, "<result>OK</result>", null);

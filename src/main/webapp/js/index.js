@@ -2,44 +2,7 @@
  * Created by Created by Greenberg Dima <gdvdima2008@yandex.ru>.
  */
 
-var url="index";
-var loginAction;
-
-
-function getLots() {
-    $.ajax({
-        dataType: "html",
-        url: url,
-        type: "POST",
-        data: {
-            action: "getLots"
-        },
-        success: function (html) {
-            $('#lots').append(html).html();
-        },
-        error: function () {
-            alert("Error can not get lots");
-        }
-    });
-}
-
-function checkLoginForm(login, password) {
-    if (login.length > 0) {
-         if (password.length > 0) {
-            if (isEmail(login)) {
-                loginAction = "loginEmail";
-            } else {
-                loginAction = "login";
-            }
-            clickLogin(login, hex_md5(password), loginAction);
-        } else alert("Please enter password");
-    } else alert("Please enter login");
-}
-
-function isEmail(login) {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(login);
-}
+var url = "index";
 
 function clickRegister() {
     $.ajax({
@@ -60,30 +23,21 @@ function clickRegister() {
     });
 }
 
-function clickLogin(login, password, loginAction) {
+function clickLogin() {
     $.ajax({
         dataType: "xml",
         url: url,
         type: "POST",
         data: {
-            action: loginAction,
-            login: login,
-            password: password
+            action: "login"
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                $("#login").val("");
-                $("#password").val("");
-                window.location.replace(url)
-            } else {
-                $(data).find('error');
-                var text = $(data).find("text").text();
-                $("#password").val("");
-                alert(text);
+                window.location.replace("login")
             }
         },
         error: function () {
-            alert("Error while send login data.");
+            alert("Error while send register data.");
         }
     });
 }
@@ -122,7 +76,7 @@ function clickFind(find) {
 
 
 function createForm(user_name) {
-    if (user_name != null && user_name !="" && user_name != "null") {
+    if (user_name != null && user_name != "" && user_name != "null") {
         document.write("<td>");
         document.write("Welcome ,");
         document.write(user_name);
@@ -131,12 +85,9 @@ function createForm(user_name) {
         document.write("")
         document.write("</td>")
     } else {
-        document.write("<form>");
-        document.write("<td><input type=\"text\" id=\"login\" size=\"10\" maxlength=\"15\" autofocus required placeholder='login or email'></td>");
-        document.write("<td><input type=\"password\" id=\"password\" size=\"10\" maxlength=\"15\" required placeholder='password'></td>");
-        document.write("<td><label onclick=\"checkLoginForm($('#login').val(), $('#password').val());\">[ <b>Login</b> ]</label></td>");
+        document.write("<td>Please </td>")
+        document.write("<td><label onclick=\"clickLogin();\">[ <b>Login</b> ]</Label></td>");
         document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
-        document.write("</form>");
     }
 }
 
