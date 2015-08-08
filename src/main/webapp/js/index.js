@@ -75,10 +75,13 @@ function clickFind(find) {
 }
 
 
-function createForm(user_name) {
-    if (user_name != null && user_name != "" && user_name != "null") {
+function createForm(user_name, user_second_name) {
+    if (user_name != null && user_name != "" && user_name != "null"
+        && user_second_name != null && user_second_name != "" && user_second_name != "null") {
         document.write("<td>");
         document.write("Welcome ,");
+        document.write(user_second_name);
+        document.write(" ");
         document.write(user_name);
         document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
         document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");

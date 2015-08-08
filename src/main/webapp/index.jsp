@@ -36,13 +36,16 @@
         <tr>
             <% User user = (User) session.getAttribute("user");
                 String userName = "";
+                String userSecondName = "";
                 if (user != null) {
                     userName = user.getName();
+                    userSecondName = user.getSecondName();
                 }
             %>
 
             <script>var user_name = '<%= userName %>';
-            createForm(user_name);</script>
+            var user_second_name = '<%= userSecondName %>';
+            createForm(user_name, user_second_name);</script>
 
         </tr>
     </div>
