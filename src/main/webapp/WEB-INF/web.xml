@@ -26,8 +26,8 @@
   </filter-mapping>
   
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>ua.sumdu.group73.servlets.UserServlet</servlet-class>
+        <servlet-name>IndexServlet</servlet-name>
+        <servlet-class>ua.sumdu.group73.servlets.IndexServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
@@ -39,8 +39,8 @@
         <servlet-class>ua.sumdu.group73.servlets.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/user</url-pattern>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
@@ -51,6 +51,6 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>/user</welcome-file>
+        <welcome-file>/index</welcome-file>
     </welcome-file-list>
 </web-app>

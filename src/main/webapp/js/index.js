@@ -2,7 +2,7 @@
  * Created by Created by Greenberg Dima <gdvdima2008@yandex.ru>.
  */
 
-var url="user";
+var url="index";
 var loginAction;
 
 
@@ -74,7 +74,7 @@ function clickLogin(login, password, loginAction) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 $("#login").val("");
                 $("#password").val("");
-                window.location.replace("user")
+                window.location.replace(url)
             } else {
                 $(data).find('error');
                 var text = $(data).find("text").text();
@@ -98,7 +98,7 @@ function logOut() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("user")
+                window.location.replace(url)
             }
         },
         error: function () {

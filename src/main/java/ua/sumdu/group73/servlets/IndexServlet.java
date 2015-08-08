@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,8 +22,8 @@ import java.util.List;
  *
  * Created by Greenberg Dima <gdvdima2008@yandex.ru>
  */
-public class UserServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(UserServlet.class);
+public class IndexServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(IndexServlet.class);
     private HttpSession session;
     private List<Category> categoryList;
     private List<Product> products;

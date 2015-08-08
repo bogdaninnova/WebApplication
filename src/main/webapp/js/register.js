@@ -45,7 +45,7 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("user");
+                window.location.replace("index");
             } else {
                 alert($(data).find("result").text());
             }
