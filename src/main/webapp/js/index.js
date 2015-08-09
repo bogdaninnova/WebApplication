@@ -84,6 +84,13 @@ function clickFind(find) {
     });
 }
 
+function clickProduct(user) {
+    if (user != null && user != "" && user != "null"){
+        window.location.replace("product");
+    } else {
+        alert("Please login.");
+    }
+}
 
 function createForm(user_name, user_second_name) {
     if (user_name != null && user_name != "" && user_name != "null"

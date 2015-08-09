@@ -151,12 +151,16 @@
 
 
     <aside class="container-section-lot">
+
+        <% if (user != null) {
+        }%>
         <header>
             <div align="center">
                 <% List<Product> products = (List<Product>) request.getAttribute("products");
                     if (products != null) { %>
                 <% for (Product product : products) { %>
-                <div class="container-lots">
+                <div class="container-lots" onclick="var user = '<%=user%>';clickProduct(user);">
+
                     <div class="container-lots-image">
                         <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");
                             String pictureURL = null;

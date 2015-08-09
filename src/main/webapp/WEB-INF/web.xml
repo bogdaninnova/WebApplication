@@ -42,6 +42,10 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>ua.sumdu.group73.servlets.ProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -57,6 +61,10 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index</welcome-file>
