@@ -84,8 +84,28 @@ function clickFind(find) {
     });
 }
 
-function clickProduct(user) {
+function clickProduct(user, prodid) {
     if (user != null && user != "" && user != "null"){
+        $.ajax({
+            dataType: "xml",
+            url: url,
+            type: "POST",
+            data: {
+                action: "product",
+                prodID: parseInt(prodid)
+            }
+            ,
+            success: function (data) {
+                if ("ok" === $(data).find("result").text().toLowerCase()) {
+                    alert("Error while send logout data.");
+                }
+            },
+            error: function () {
+
+            }
+        });
+
+
         window.location.replace("product");
     } else {
         alert("Please login.");

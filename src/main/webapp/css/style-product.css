@@ -1,0 +1,43 @@
+body {
+    background: #ddd url(../images/background.jpg);
+    color: black;
+    width: 70%;
+    min-width: 400px;
+    position: relative;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+#footer {
+    clear: both;
+}
+
+.container-product {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.poduct-header {
+    width : 100%;
+    min-height: 400px;
+}
+
+.product-img {
+    float : left;
+    margin : 0% 2% 2% 2%;
+    border : 1px solid grey;
+}
+
+
+.product-footer {
+    width :100%;
+}

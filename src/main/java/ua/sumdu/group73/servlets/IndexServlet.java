@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * This servlet working with index.jsp.
- * <p/>
+ *
  * Created by Greenberg Dima <gdvdima2008@yandex.ru>
  */
 public class IndexServlet extends HttpServlet {
@@ -76,6 +76,11 @@ public class IndexServlet extends HttpServlet {
             } else {
                 count = 0;
             }
+            sendResponse(response, "<result>OK</result>");
+        } else if ("product".equals(request.getParameter("action"))) {
+            log.info("Click product");
+            RequestDispatcher rd = request.getRequestDispatcher("product");
+            rd.forward(request, response);
             sendResponse(response, "<result>OK</result>");
         }
     }
