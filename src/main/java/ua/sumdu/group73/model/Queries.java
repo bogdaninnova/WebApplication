@@ -68,6 +68,19 @@ public class Queries {
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE EMAIL = LOWER(?)";
     
+	public static final String GET_ALL_USERS =
+			"SELECT "
+			+ " ID,"
+			+ " LOGIN,"
+			+ " PASSWORD,"
+			+ " NAME,"
+			+ " SECOND_NAME,"
+			+ " EMAIL,"
+			+ " PHONE,"
+			+ " STATUS,"
+			+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
+			+ " FROM USERS";
+	
 	public static final String GET_USERS_PRODUCTS =
 			"SELECT * FROM PRODUCTS WHERE SELLER_ID = ?";
     
@@ -205,8 +218,8 @@ public class Queries {
 	public static final String GET_TRANSACTION =
 			"SELECT * FROM TRANSACTIONS WHERE ID = ?";
     
-	public static final String GET_PICTURES_URL =
-			"SELECT URL FROM PICTURES WHERE PRODUCT_ID = ?";
+	public static final String GET_PICTURES_OF_PRODUCT =
+			"SELECT * FROM PICTURES WHERE PRODUCT_ID = ?";
     
 	public static final String ADD_PICTURE =
 			"INSERT INTO PICTURES("
@@ -217,4 +230,7 @@ public class Queries {
 					+ "PICTURE_ID_S.NEXTVAL,"
 					+ "?,"
 					+ "?)";
+	
+	public static final String GET_ALL_PICTURES =
+			"SELECT * FROM PICTURES";
 }
