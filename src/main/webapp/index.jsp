@@ -4,6 +4,7 @@
 <%@ page import="ua.sumdu.group73.model.objects.Product" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
+<%@ page import="ua.sumdu.group73.model.objects.Picture" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -157,7 +158,15 @@
                 <% for (Product product : products) { %>
                 <div class="container-lots">
                     <div class="container-lots-image">
-
+                        <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");
+                            String pictureURL = null;
+                            if (pictures != null) {%>
+                        <% for(Picture picture : pictures) {
+                            if (product.getId() == picture.getProductID()) {
+                                pictureURL = picture.getURL();
+                            }
+                        }}%>
+                        <img src="<%=pictureURL%>" alt="No picture" width="150" height="100">
                     </div>
                     <div class="container-lots-price">
                         <% if (product.getCurrentPrice() != 0) { %>
