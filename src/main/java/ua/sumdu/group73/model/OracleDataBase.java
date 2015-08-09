@@ -37,12 +37,13 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     
     private void closeConnection() {
     	log.info("Method closeConnection starts.....");
-    	try {
-			conn.close();
-			conn = null;
-		} catch (SQLException e) {
-			log.error("SQLException in closeConnection()", e);
-		}
+    	if (conn != null)
+	    	try {
+				conn.close();
+				conn = null;
+			} catch (SQLException e) {
+				log.error("SQLException in closeConnection()", e);
+			}
     }
     
     
@@ -275,6 +276,34 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return list;
     }
+    
+	@Override
+	public List<User> getAllUsers() {
+    	log.info("Method getAllUsers starts.....");
+    	List<User> list = new ArrayList<User>();
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_USERS)) {
+    		try (ResultSet rs = preparedStatement.executeQuery()) {
+    			while (rs.next()) {
+    				int id = rs.getInt("ID");
+		            String login = rs.getString("LOGIN");
+		            String password = rs.getString("PASSWORD");
+		            String name = rs.getString("NAME");
+		            String secondName = rs.getString("SECOND_NAME");
+		            byte age = rs.getByte("AGE");
+		            String eMail = rs.getString("EMAIL");
+		            String phone = rs.getString("PHONE");
+		            String status = rs.getString("STATUS");
+		            list.add(new User(id, login, password, name, secondName, age, eMail, phone, status));
+    			}
+    		}
+        } catch (SQLException e) {
+            log.error("SQLException in getAllUsers()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+	}
 
 
     //------------------------------------------------------
@@ -844,19 +873,22 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //------------------------------------------------------
 
 
-    public List<String> getPicturesURLs(int productID) {
-    	log.info("Method getPicturesURLs starts.....");
-        List<String> list = new ArrayList<String>();
+    public List<Picture> getPictures(int productID) {
+    	log.info("Method getPictures starts.....");
+        List<Picture> list = new ArrayList<Picture>();
         initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PICTURES_URL)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PICTURES_OF_PRODUCT)) {
             preparedStatement.setInt(1, productID);
 
             try(ResultSet rs = preparedStatement.executeQuery()){
-	            while (rs.next())
-	                list.add(rs.getString("URL"));
+	            while (rs.next()) 
+	            	list.add(new Picture(
+	            			rs.getInt("ID"),
+	            			rs.getInt("PRODUCT_ID"),
+	            			rs.getString("URL")));
             }
         } catch (SQLException e) {
-            log.error("SQLException in getPicturesURLs()", e);
+            log.error("SQLException in getPictures()", e);
         } finally {
         	closeConnection();
         }
@@ -879,4 +911,27 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
     }
+
+
+	@Override
+	public List<Picture> getAllPictures() {
+    	log.info("Method getAllPictures starts.....");
+        List<Picture> list = new ArrayList<Picture>();
+        initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_PICTURES)) {
+            try(ResultSet rs = preparedStatement.executeQuery()){
+	            while (rs.next()) 
+	            	list.add(new Picture(
+	            			rs.getInt("ID"),
+	            			rs.getInt("PRODUCT_ID"),
+	            			rs.getString("URL")));
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getAllPictures()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+		
+	}
 }
