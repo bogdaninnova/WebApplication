@@ -38,15 +38,18 @@
             <% User user = (User) session.getAttribute("user");
                 String userName = "";
                 String userSecondName = "";
+                boolean userStatus = false;
                 if (user != null) {
                     userName = user.getName();
                     userSecondName = user.getSecondName();
+                    userStatus = user.isAdmin();
                 }
             %>
 
             <script>var user_name = '<%= userName %>';
             var user_second_name = '<%= userSecondName %>';
-            createForm(user_name, user_second_name);</script>
+            var userStatus = '<%= userStatus%>'.toString();
+            createForm(user_name, user_second_name, userStatus);</script>
 
         </tr>
     </div>

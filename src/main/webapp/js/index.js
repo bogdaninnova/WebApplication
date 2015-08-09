@@ -112,7 +112,7 @@ function clickProduct(user, prodid) {
     }
 }
 
-function createForm(user_name, user_second_name) {
+function createForm(user_name, user_second_name, userStatus) {
     if (user_name != null && user_name != "" && user_name != "null"
         && user_second_name != null && user_second_name != "" && user_second_name != "null") {
         document.write("<td>");
@@ -121,6 +121,9 @@ function createForm(user_name, user_second_name) {
         document.write(" ");
         document.write(user_name);
         document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
+        if (userStatus == "true") {
+            document.write("<label onclick=\"\">[ <b>Admin</b> ]</Label>");
+        }
         document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");
         document.write(" ");
         document.write("</td>");
