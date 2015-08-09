@@ -188,9 +188,16 @@
                             Close: <%=product.getEndDate()%>
                         </div>
                         <div class="container-lots-buyer">
-                            <% if (product.getCurrentBuyerID() != 0) { %>
-                            <%=product.getCurrentBuyerID()%> //todo get userName
-                            <% } %>
+                            <% if (product.getCurrentBuyerID() != 0) {
+                                List<User> users = (List<User>) request.getAttribute("users");
+                                String nameBuyer = null;
+                                if (users != null) {%>
+                            <% for (User userBuyer : users) {
+                                if (product.getCurrentBuyerID() == userBuyer.getId())
+                                    nameBuyer = userBuyer.getName();
+                            }%>
+                            <%=nameBuyer%>
+                            <% }} %>
                         </div>
                     </footer>
                     <br><br>

@@ -5,6 +5,7 @@ import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.Picture;
 import ua.sumdu.group73.model.objects.Product;
+import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -28,6 +29,7 @@ public class IndexServlet extends HttpServlet {
     private List<Category> categoryList;
     private List<Product> products;
     private List<Picture> pictures;
+    private List<User> users;
     private int count = 0;
 
     public void init(ServletConfig config) throws ServletException {
@@ -96,12 +98,15 @@ public class IndexServlet extends HttpServlet {
         }
 
         categoryList = null;
+        users = null;
         categoryList = OracleDataBase.getInstance().getAllCategories();
         log.info("Init categoryList" + categoryList);
+        users = OracleDataBase.getInstance().getAllUsers();
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
         request.setAttribute("products", products);
         request.setAttribute("pictures", pictures);
+        request.setAttribute("users", users);
         rd.forward(request, response);
     }
 
