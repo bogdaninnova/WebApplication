@@ -145,10 +145,10 @@ public class Queries {
     
 	public static final String FIND_PRODUCTS =
 			"SELECT * FROM PRODUCTS"
-					+ " WHERE"
-						+ " upper(DESCRIPTION) LIKE upper(?)"
-					+ "OR"
-						+ "upper(NAME) LIKE upper(?)";
+				+ " WHERE "
+					+ "LOWER(DESCRIPTION) LIKE LOWER(?)"
+				+ " OR "
+					+ "LOWER(NAME) LIKE LOWER(?)";
     
 	public static final String GET_CATEGORY =
 			"SELECT * FROM CATEGORIES WHERE ID = ?";
