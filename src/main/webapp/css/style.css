@@ -38,6 +38,7 @@ body {
 
 label:hover {
     color: yellow;
+    cursor: pointer;
 }
 
 #block-logo {
@@ -78,12 +79,32 @@ label:hover {
     background-color: white;
     border-top-style: solid;
     border-top-width: 1px;
+    border-top-color: lightgrey;
     border-left-style: solid;
     border-left-width: 1px;
+    border-left-color: lightgrey;
+    border-right-style: solid;
+    border-right-width: 4px;
+    border-right-color: lightgrey;
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+    border-bottom-color: lightgrey;
+}
+
+.container-lots:hover {
+    cursor: pointer;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: grey;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: grey;
     border-right-style: solid;
     border-right-width: 1px;
+    border-right-color: grey;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    border-bottom-color: grey;
 }
 
 .container-lots-image{
