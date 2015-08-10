@@ -44,9 +44,15 @@
                     <div class="product-bet-container">
                         <div class="product-bet-price">
                             Max bet
-                            <% if (product.getCurrentPrice() > 0) {%>
+                            <% int currentPrice;
+                                User user = (User) session.getAttribute("user");
+                                int age = (int) user.getAge();
+                            %>
+                            <% if (product.getCurrentPrice() > 0) {
+                                currentPrice = product.getCurrentPrice(); %>
                             <h3><%= product.getCurrentPrice()%> $</h3>
-                            <% } else { %>
+                            <% } else {
+                                currentPrice = product.getStartPrice(); %>
                             <h3><%= product.getStartPrice()%> $</h3>
                             <% } %>
                         </div>
@@ -58,7 +64,7 @@
                             </form>
                         </div>
                         <div class="product-bet">
-                            <button onclick="">Bet</button>
+                            <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%= age%>);">Bet</button>
                         </div>
                     </div>
                     <div class="product-buy-container">
