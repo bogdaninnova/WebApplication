@@ -8,7 +8,12 @@ body {
     margin-top: 5%;
 }
 
-#footer {
+label:hover {
+    color: yellow;
+    cursor: pointer;
+}
+
+footer {
     clear: both;
 }
 
@@ -26,18 +31,83 @@ body {
     border-bottom-width: 1px;
 }
 
-.poduct-header {
-    width : 100%;
-    min-height: 400px;
+.product-header {
+    width : 90%;
+    margin-left: 5%;
 }
 
 .product-img {
     float : left;
     margin : 0% 2% 2% 2%;
-    border : 1px solid grey;
+    border : 1px solid lightgrey;
 }
 
+.product-buy {
+    float : left;
+    background-color: lightgray;
+}
+
+.product-bet-container {
+    float : left;
+    margin : 5px;
+}
+
+.product-bet-price {
+    float : left;
+}
+
+.product-bet-yourprice {
+    margin-left : 30px;
+    float : left;
+}
+
+.product-bet {
+    margin-top : 17%;
+    margin-left : 30px;
+    float : left;
+}
+
+.product-buy-container {
+    margin : 5px;
+}
+
+.product-buy-price {
+    margin-left: 80px;
+    float : left;
+}
+
+.product-buy-button {
+    margin-top : 10%;
+    margin-left : 30px;
+    float : right;
+}
+
+.product-status {
+    margin : 5px;
+    float : left;
+}
+
+.product-status-lider {
+
+}
+
+.product-status-closeTime {
+
+}
 
 .product-footer {
-    width :100%;
+    width : 90%;
+    margin-left : 5%;
+}
+
+.product-description {
+    width : 90%;
+    margin-left : 5%;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.product-back {
+    float : right;
 }

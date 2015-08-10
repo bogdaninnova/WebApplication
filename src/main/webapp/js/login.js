@@ -41,7 +41,7 @@ function clickLogin(login, password, loginOrEmail) {
             }
         },
         error: function () {
-            alert("Error while send register data.");
+            alert("Error while send login data.");
         }
     });
 }
