@@ -63,8 +63,8 @@ public class IndexServlet extends HttpServlet {
             log.info("Click login");
             sendResponse(response, "<result>OK</result>");
         } else if ("logOut".equals(request.getParameter("action"))) {
-            if (session.getAttribute("user") != null) {
-                session.removeAttribute("user");
+            if (session.getAttribute("user") != null || session.getAttribute("user") != "") {
+                session.setAttribute("user", null);
                 sendResponse(response, "<result>OK</result>");
             }
         } else if ("getProducts".equals(request.getParameter("action"))) {
@@ -80,6 +80,7 @@ public class IndexServlet extends HttpServlet {
         } else if ("product".equals(request.getParameter("action"))) {
             log.info("Click product");
             RequestDispatcher rd = request.getRequestDispatcher("product");
+            session.setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
             rd.forward(request, response);
             sendResponse(response, "<result>OK</result>");
         }

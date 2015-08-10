@@ -1,4 +1,6 @@
 <%@ page import="ua.sumdu.group73.model.objects.Product" %>
+<%@ page import="ua.sumdu.group73.model.objects.Picture" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -11,12 +13,21 @@
 </head>
 <body>
   <div class="container-product">
-      <% Product product = (Product) request.getAttribute("product"); %>
+      <% Product product = (Product) request.getAttribute("product");
+          List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");
+      %>
       <% if (product != null) { %>
       <header>
           <div class="poduct-header">
             <duv class="product-img">
-                <img src="#" alt="No photo" width="400" height="300">
+                <% if (pictures != null) {
+                    String image = "";
+                for(Picture picture : pictures) {
+                    if(picture.getProductID() == product.getId()) {
+                        image = picture.getURL();
+                %>
+                <img src="<%= image%>" alt="No photo" width="400" height="300">
+                <% } } %>
             </duv>
             <h1><%= product.getName()%></h1>
           </div>
@@ -30,7 +41,7 @@
             </div>
         </div>
       </footer>
-      <% } %>
+      <% } } %>
   </div>
 </body>
 </html>

@@ -85,7 +85,7 @@ function clickFind(find) {
 }
 
 function clickProduct(user, prodid) {
-    if (user != null && user != "" && user != "null"){
+    if (user != null && user != "" && user != "null" && prodid != null){
         $.ajax({
             dataType: "xml",
             url: url,
