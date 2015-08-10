@@ -66,7 +66,7 @@ public class IndexServlet extends HttpServlet {
             sendResponse(response, "<result>OK</result>");
         } else if ("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("user") != null || session.getAttribute("user") != "") {
-            	request.getSession().removeAttribute("user");
+            	session.setAttribute("user", "");
                 sendResponse(response, "<result>OK</result>");
             }
         } else if ("getProducts".equals(request.getParameter("action"))) {
