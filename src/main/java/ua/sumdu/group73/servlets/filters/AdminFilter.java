@@ -16,18 +16,14 @@ public class AdminFilter implements Filter {
 
 		HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String path = ((HttpServletRequest) request).getRequestURI();
+        //String path = ((HttpServletRequest) request).getRequestURI();
         
 		HttpSession session = req.getSession();
-		
-		if ((session == null) || (session.getAttribute("user") == null)) 
-			res.sendRedirect("index.jsp");//TODO login.jsp?
-		else {
-			User user = (User) session.getAttribute("user");
-			//if(OracleDataBase.getInstance().isAdmin(user.getId()))
-			if (!user.isAdmin())
+		if (
+			(session == null) ||
+			(session.getAttribute("user") == null) ||
+			!((User) session.getAttribute("user")).isAdmin())  
 				res.sendError(HttpServletResponse.SC_FORBIDDEN);
-		}
 
 		chain.doFilter(request, response);
 	}

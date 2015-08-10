@@ -14,7 +14,7 @@ function clickRegister() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("register")
+                window.location.replace("register");
             }
         },
         error: function () {
@@ -33,11 +33,30 @@ function clickLogin() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("login")
+                window.location.replace("login");
             }
         },
         error: function () {
             alert("Error while send login data.");
+        }
+    });
+}
+
+function clickAdmin() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "admin"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("admin");
+            }
+        },
+        error: function () {
+            alert("Error while send admin data.");
         }
     });
 }
@@ -52,7 +71,7 @@ function logOut() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url)
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -73,7 +92,7 @@ function clickFind(find) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url)
+                window.location.replace(url);
             } else {
                 alert($(data).find("result").text());
             }
@@ -122,7 +141,7 @@ function createForm(user_name, user_second_name, userStatus) {
         document.write(user_name);
         document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
         if (userStatus == "true") {
-            document.write("<label onclick=\"\">[ <b>Admin</b> ]</Label>");
+            document.write("<label onclick=\"clickAdmin();\">[ <b>Admin</b> ]</Label>");
         }
         document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");
         document.write(" ");
@@ -145,7 +164,7 @@ function getProductByCategory(categoryID) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url)
+                window.location.replace(url);
             }
         },
         error: function () {

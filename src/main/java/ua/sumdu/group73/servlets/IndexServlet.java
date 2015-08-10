@@ -1,6 +1,7 @@
 package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
+
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.Picture;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -64,7 +66,7 @@ public class IndexServlet extends HttpServlet {
             sendResponse(response, "<result>OK</result>");
         } else if ("logOut".equals(request.getParameter("action"))) {
             if (session.getAttribute("user") != null || session.getAttribute("user") != "") {
-                session.setAttribute("user", null);
+            	request.getSession().removeAttribute("user");
                 sendResponse(response, "<result>OK</result>");
             }
         } else if ("getProducts".equals(request.getParameter("action"))) {
@@ -82,6 +84,9 @@ public class IndexServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("product");
             session.setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
             rd.forward(request, response);
+            sendResponse(response, "<result>OK</result>");
+        } else if ("admin".equals(request.getParameter("action"))) {
+            log.info("Click admin");
             sendResponse(response, "<result>OK</result>");
         }
     }

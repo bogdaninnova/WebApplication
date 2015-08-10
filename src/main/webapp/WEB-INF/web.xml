@@ -22,7 +22,7 @@
   </filter-mapping>
   <filter-mapping>
   	<filter-name>AdminFilter</filter-name>
-  	<url-pattern>/AdminFilter</url-pattern>
+  	<url-pattern>/admin</url-pattern>
   </filter-mapping>
   
     <servlet>
