@@ -117,7 +117,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String password = rs.getString("PASSWORD");
 	            String name = rs.getString("NAME");
 	            String secondName = rs.getString("SECOND_NAME");
-	            byte age = rs.getByte("AGE");
+	            int age = rs.getInt("AGE");
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
@@ -186,7 +186,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
@@ -215,7 +215,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String login = rs.getString("LOGIN");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 		            
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
@@ -290,7 +290,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String password = rs.getString("PASSWORD");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
