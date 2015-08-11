@@ -13,6 +13,8 @@ public class User {
 	  private String eMail;
 	  private String phone;
 	  private boolean isAdmin;
+	  private boolean isActivated;
+	  private boolean isBanned;
 		  
 	  public User(int id, String login, String password, String name,
 			  String secondName, int age, String eMail, String phone, String status) {
@@ -23,7 +25,24 @@ public class User {
 		  setSecondName(secondName);
 		  setAge(age);
 		  setPhone(phone);
-		  setAdmin(status.equals("admin"));	//'user' && 'admin'
+		  switch (status) {
+		  	case "admin" :
+		  		setActivated(true);
+		  		setBanned(false);
+		  		setAdmin(true);
+		  	case "banned" :
+		  		setActivated(true);
+		  		setBanned(true);
+		  		setAdmin(false);
+		  	case "unactivated" :
+		  		setActivated(false);
+		  		setBanned(false);
+		  		setAdmin(false);
+		  	default ://"user"
+		  		setActivated(true);
+		  		setBanned(false);
+		  		setAdmin(false);
+		  }
 	  }
 
 	public String getLogin() {
@@ -96,5 +115,21 @@ public class User {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+	public boolean isBanned() {
+		return isBanned;
+	}
+
+	public void setBanned(boolean isBanned) {
+		this.isBanned = isBanned;
 	}
 }
