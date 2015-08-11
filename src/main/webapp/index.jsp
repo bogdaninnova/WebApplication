@@ -165,15 +165,21 @@
                 <div class="container-lots" onclick="var user = '<%=user%>'; clickProduct(user, <%=product.getId()%>);">
 
                     <div class="container-lots-image">
-                        <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");
-                            String pictureURL = null;
-                            if (pictures != null) {%>
-                        <% for(Picture picture : pictures) {
-                            if (product.getId() == picture.getProductID()) {
-                                pictureURL = picture.getURL();
-                            }
-                        }}%>
-                        <img src="<%=pictureURL%>" alt="No picture" width="150" height="100">
+                        <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
+                        <% if (pictures != null) {
+                            String image = "";
+                            int count = 0;
+                            for (Picture picture : pictures) {
+                                if (picture.getProductID() == product.getId()) {
+                                    if (count == 0) {
+                                        image = picture.getURL();
+                                        count += 1;
+                                    }
+                        %>
+                        <img src="<%= image%>" alt="No photo" width="150" height="100">
+                        <% } else { %>
+                        <img src="./images/no_image.png" alt="No photo" width="150" height="100">
+                        <% }}} %>
                     </div>
                     <div class="container-lots-price">
                         <% if (product.getCurrentPrice() != 0) { %>
