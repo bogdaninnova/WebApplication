@@ -518,6 +518,23 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
     }
+    
+    public boolean buyout(int productID, int buyerID) {
+    	log.info("Method makeBet starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.BUYOUT)) {
+            preparedStatement.setInt(1, buyerID);
+            preparedStatement.setInt(2, productID);
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in makeBet()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+    }
 
     /**
      * @return list of products id, that was finished just now

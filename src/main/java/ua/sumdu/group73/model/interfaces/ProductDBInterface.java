@@ -19,6 +19,8 @@ public interface ProductDBInterface {
 		
 	public boolean makeBet(int productID, int buyerID, int price);
 	
+	public boolean buyout(int productID, int buyerID);
+	
 	public ArrayList<Product> finishAuctions();
 	
 	public List<Product> getAllProducts();

@@ -165,6 +165,12 @@ public class Queries {
 					+ " CURRENT_PRICE = ?,"
 					+ " CURRENT_BUYER_ID = ?"
 			+ " WHERE ID = ?";
+	
+	public static final String BUYOUT =
+			"UPDATE PRODUCTS SET"
+					+ " CURRENT_PRICE = BUYOUT_PRICE,"
+					+ " CURRENT_BUYER_ID = ?"
+			+ " WHERE ID = ?";
     
 	public static final String FINISH_AUCTIONS =
 			"SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < SYSDATE";
