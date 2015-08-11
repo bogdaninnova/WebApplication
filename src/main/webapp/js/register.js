@@ -4,9 +4,9 @@
 
 function validData(login, password, confirmPassword, firstName, secondName, age, email, phone) {
     if (login.length > 0 && password.length > 0 && confirmPassword.length > 0 && firstName.length > 0 && secondName.length > 0 && age.length > 0 && email.length > 0) {
-        if (Boolean(login.length <= 3)) {
+        if (login.length <= 3) {
             alert("Short login.");
-        } else if (Boolean(password.length <= 3)) {
+        } else if (password.length <= 3) {
             alert("Short password.");
         } else if (password != confirmPassword) {
             alert("Check the input password confirmation.");
