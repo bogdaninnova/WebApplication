@@ -30,7 +30,8 @@ CREATE TABLE USERS
   BIRTH DATE NOT NULL,
   EMAIL VARCHAR2(50) NOT NULL UNIQUE,
   PHONE VARCHAR2(20),
-  STATUS VARCHAR2(5) CHECK (STATUS IN ('user', 'admin')) NOT NULL
+  REGISTRATION_DATE DATE NOT NULL,
+  STATUS VARCHAR2(5) CHECK (STATUS IN ('user', 'admin', 'unactivated', 'banned')) NOT NULL
 );
 
 
@@ -106,6 +107,7 @@ INSERT INTO USERS(
     BIRTH,
     EMAIL,
     PHONE,
+    REGISTRATION_DATE,
     STATUS
 )VALUES(
     USER_ID_S.NEXTVAL,
@@ -116,6 +118,7 @@ INSERT INTO USERS(
     TO_DATE('1975/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
     'bogdan.innova@gmail.com',
     '0660915033',
+    SYSDATE,
     'user'
 );
 
@@ -128,6 +131,7 @@ INSERT INTO USERS(
     BIRTH,
     EMAIL,
     PHONE,
+    REGISTRATION_DATE,
     STATUS
 )VALUES(
     0,
@@ -138,6 +142,7 @@ INSERT INTO USERS(
     TO_DATE('2000/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
     'admin@gmail.com',
     '00000000',
+    SYSDATE,
     'admin'
 );
 
@@ -150,6 +155,7 @@ INSERT INTO USERS(
     BIRTH,
     EMAIL,
     PHONE,
+    REGISTRATION_DATE,
     STATUS
 )VALUES(
     USER_ID_S.NEXTVAL,
@@ -160,6 +166,7 @@ INSERT INTO USERS(
     TO_DATE('2000/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
     'alex.alex@gmail.com',
     '066090000',
+    SYSDATE,
     'user'
 );
 
@@ -183,7 +190,7 @@ INSERT INTO PRODUCTS(
     'Good iron',
     TO_DATE('2015/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
     TO_DATE('2003/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
-    100,
+    120,
     1000,
     NULL,
     NULL,

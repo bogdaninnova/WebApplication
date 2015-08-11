@@ -16,6 +16,7 @@ public class Queries {
 					+ "BIRTH,"
 					+ "EMAIL,"
 					+ "PHONE,"
+					+ "REGISTRATION_DATE,"
 					+ "STATUS)"
 			+ "VALUES("
 					+ "USER_ID_S.NEXTVAL,"
@@ -26,6 +27,7 @@ public class Queries {
 					+ "?,"
 					+ "LOWER(?),"
 					+ "?,"
+					+ "SYSDATE,"
 					+ "?)";
 	
 	public static final String GET_USER =
@@ -37,6 +39,7 @@ public class Queries {
 					+ " EMAIL,"
 					+ " PHONE,"
 					+ " STATUS,"
+					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE ID = ?";
 	
@@ -56,6 +59,7 @@ public class Queries {
 					+ " EMAIL,"
 					+ " PHONE,"
 					+ " STATUS,"
+					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE LOGIN = LOWER(?)";
     
@@ -69,6 +73,7 @@ public class Queries {
 					+ " EMAIL,"
 					+ " PHONE,"
 					+ " STATUS,"
+					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE EMAIL = LOWER(?)";
     
@@ -82,6 +87,7 @@ public class Queries {
 			+ " EMAIL,"
 			+ " PHONE,"
 			+ " STATUS,"
+			+ " REGISTRATION_DATE,"
 			+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS";
 	
@@ -95,7 +101,7 @@ public class Queries {
 			"UPDATE USERS SET STATUS = 'user' WHERE ID = ?";
 	
 	public static final String SET_USER_BAN =
-			"UPDATE USERS SET STATUS = 'banned' WHERE ID = ?";
+			"UPDATE USERS SET STATUS = '?' WHERE ID = ?";
 	
 	
     //------------------------------------------------------

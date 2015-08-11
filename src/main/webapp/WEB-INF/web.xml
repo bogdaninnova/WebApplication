@@ -46,6 +46,12 @@
         <servlet-name>ProductServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.ProductServlet</servlet-class>
     </servlet>
+    <servlet>
+    	<servlet-name>VerificationServlet</servlet-name>
+    	<display-name>VerificationServlet</display-name>
+    	<description></description>
+    	<servlet-class>ua.sumdu.group73.servlets.VerificationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -65,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
         <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>VerificationServlet</servlet-name>
+    	<url-pattern>/Verification</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index</welcome-file>

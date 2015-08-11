@@ -1,5 +1,7 @@
 package ua.sumdu.group73.model.objects;
 
+import java.util.Date;
+
 
 public class User {
 	
@@ -15,9 +17,10 @@ public class User {
 	  private boolean isAdmin;
 	  private boolean isActivated;
 	  private boolean isBanned;
+	  private Date registrationDate;
 		  
 	  public User(int id, String login, String password, String name,
-			  String secondName, int age, String eMail, String phone, String status) {
+			  String secondName, int age, String eMail, String phone, String status, Date reistrationDate) {
 		  setId(id);
 		  setLogin(login);
 		  setPassword(password);
@@ -25,6 +28,7 @@ public class User {
 		  setSecondName(secondName);
 		  setAge(age);
 		  setPhone(phone);
+		  setRegistrationDate(reistrationDate);
 		  switch (status) {
 		  	case "admin" :
 		  		setActivated(true);
@@ -131,5 +135,13 @@ public class User {
 
 	public void setBanned(boolean isBanned) {
 		this.isBanned = isBanned;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 }
