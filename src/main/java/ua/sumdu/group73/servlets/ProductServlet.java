@@ -32,6 +32,14 @@ public class ProductServlet extends HttpServlet {
         if ("back".equals(request.getParameter("action"))) {
             session.setAttribute("prodID", "");
             sendResponse(response, "<result>OK</result>");
+        } else if ("clickBet".equals(request.getParameter("action"))) {
+            if (OracleDataBase.getInstance().makeBet(Integer.parseInt(request.getParameter("productID")),
+                    Integer.parseInt(request.getParameter("buyerID")),
+                    Integer.parseInt(request.getParameter("bet")))) {
+                sendResponse(response, "<result>OK</result>");
+            } else {
+                sendResponse(response, "<result>Error: DataBase.</result>");
+            }
         }
     }
 
@@ -46,8 +54,6 @@ public class ProductServlet extends HttpServlet {
         if (session.getAttribute("prodID") != null && session.getAttribute("prodID") != ""
                 && session.getAttribute("user") != null && session.getAttribute("user") != "") {
             product = null;
-            pictures = null;
-            users = null;
             product = OracleDataBase.getInstance().getProduct(Integer.parseInt(session.getAttribute("prodID").toString()));
             pictures = OracleDataBase.getInstance().getAllPictures();
             users = OracleDataBase.getInstance().getAllUsers();

@@ -46,7 +46,7 @@
                             Max bet
                             <% int currentPrice;
                                 User user = (User) session.getAttribute("user");
-                                int age = (int) user.getAge();
+                                int age = user.getAge();
                             %>
                             <% if (product.getCurrentPrice() > 0) {
                                 currentPrice = product.getCurrentPrice(); %>
@@ -64,7 +64,8 @@
                             </form>
                         </div>
                         <div class="product-bet">
-                            <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%= age%>);">Bet</button>
+                            <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%= age%>,
+                                <%= product.getId()%>, <%= user.getId()%>);">Bet</button>
                         </div>
                     </div>
                     <div class="product-buy-container">
@@ -84,13 +85,13 @@
                     <br>
                     <% if (product.getCurrentBuyerID() > 0) { %>
                     <% List<User> users = (List<User>) request.getAttribute("users");
-                    String nameBuyer = null;
+                    String nickBuyer = null;
                     if (users != null) {%>
                     <% for (User userBuyer : users) {
                         if (product.getCurrentBuyerID() == userBuyer.getId())
-                            nameBuyer = userBuyer.getName();
+                            nickBuyer = userBuyer.getLogin();
                     }%>
-                        Leader : <%= nameBuyer %>
+                        Leader : <%= nickBuyer %>
                     <% }} else { %>
                         Leader : Not yet.
                     <% } %>
