@@ -14,7 +14,9 @@ public interface UserDBInterface {
 			long birthDate, String eMail, String phone);
 	
 	public User getUser(int id);
-		
+	
+	public User getUser(String login);
+	
 	public boolean isLoginFree(String login);
 	
 	public boolean isEmailFree(String login);
@@ -42,7 +44,7 @@ public interface UserDBInterface {
 		
 	public boolean setUserBan(int userID, boolean isBan);
 	
-	public boolean activateUser(int userID);
+	public boolean activateUser(String login);
 	
 	
 	

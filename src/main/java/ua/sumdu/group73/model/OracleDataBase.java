@@ -104,7 +104,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
     }
-
+    
     public User getUser(int id) {
     	log.info("Method getUser starts.....");
     	User user = null;
@@ -121,8 +121,37 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
-
-	            user = new User(id, login, password, name, secondName, age, eMail, phone, status);
+	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            
+	            user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getUser()", e);
+        } finally {
+        	closeConnection();
+        }
+        return user;
+    }
+    
+    public User getUser(String login) {
+    	log.info("Method getUser starts.....");
+    	User user = null;
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER_BY_ID)) {
+            preparedStatement.setString(1, login);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+	            rs.next();
+	            int id = rs.getInt("ID");
+	            String password = rs.getString("PASSWORD");
+	            String name = rs.getString("NAME");
+	            String secondName = rs.getString("SECOND_NAME");
+	            int age = rs.getInt("AGE");
+	            String eMail = rs.getString("EMAIL");
+	            String phone = rs.getString("PHONE");
+	            String status = rs.getString("STATUS");
+	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            
+	            user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
             }
         } catch (SQLException e) {
             log.error("SQLException in getUser()", e);
@@ -187,9 +216,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
 		            int age = rs.getByte("AGE");
-
+		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+		            
 		            if (rs.getString("PASSWORD").equals(password))
-		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
+		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
         } catch (SQLException e) {
@@ -216,9 +246,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
 		            int age = rs.getByte("AGE");
+		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
 		            
 		            if (rs.getString("PASSWORD").equals(password))
-		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
+		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
         } catch (SQLException e) {
@@ -294,7 +325,9 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            list.add(new User(id, login, password, name, secondName, age, eMail, phone, status));
+		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+		            
+		            list.add(new User(id, login, password, name, secondName, age, eMail, phone, status, regDate));
     			}
     		}
         } catch (SQLException e) {
@@ -307,15 +340,41 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 	@Override
 	public boolean setUserBan(int userID, boolean isBan) {
-		// TODO Auto-generated method stub
-		return false;
+    	log.info("Method setUserBan starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.SET_USER_BAN)) {
+        	if (isBan)
+        		preparedStatement.setString(1, "banned");
+        	else
+        		preparedStatement.setString(1, "user");
+        	preparedStatement.setInt(2, userID);
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in setUserBan()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
 	}
 
 
 	@Override
-	public boolean activateUser(int userID) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean activateUser(String login) {
+    	log.info("Method activateUser starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ACTIVATE_USER)) {
+            preparedStatement.setString(1, login);
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in activateUser()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
 	}
 
 

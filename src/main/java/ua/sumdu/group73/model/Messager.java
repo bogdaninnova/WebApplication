@@ -1,6 +1,6 @@
 package ua.sumdu.group73.model;
 
-import java.util.*;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -58,63 +58,31 @@ public class Messager {
 
 	}
 	
-	public static void registrationMail(int userID) {
+	public static void registrationMail(String login, String name, String mail) {
 		
 		log.info(CLASSNAME + "Method registrationMail starts.....");
 		
-		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
 		
-		User user = database.getUser(userID);
-
 		StringBuilder textSB = new StringBuilder();
-		textSB.append("Hello, " + user.getName() +"!\n");
+		textSB.append("Hello, " + name +"! \n");
 		textSB.append("You just registred at our auction Lab3!\n\n");
-		textSB.append("Login: " + user.getLogin() + "\n");
-		textSB.append("Password: " + user.getPassword() + "\n\n");
+				
+		textSB.append(
+			"Use link bellow and verify your account\n"
+			+ "http://localhost:7001/WebApplication/Verification?"
+			+ getToken(login));
+		
+		textSB.append("\n\nLogin: " + login + "\n");
 		textSB.append("This mail was generated automatically, please don't answer on it");
-
-		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), user.geteMail());
+		
+		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), mail);
 	} 
 	
-
-	
-	
-	private static List<Category> getListSubcategories(List<Category> categories, Category category) {
-		List<Category> list = new ArrayList<Category>();
-		for (Category c : categories)
-			if (category.getId() == c.getParentID())
-				list.add(category);
-		return list;
+	private static String getToken(String login) {
+		String loginToken = StringCrypter.getInstance().encrypt(login);
+		String regDateToken = StringCrypter.getInstance().encrypt(
+				String.valueOf(new Date().getTime()));
+		return "l=" + loginToken + "&d=" + regDateToken;
 	}
-
-	private static boolean hasSubcategories(List<Category> categories, Category category) {
-		for (Category c : categories)
-			if (category.getId() == c.getParentID())
-				return true;
-		return false;
-	}
-	
-	private static void printSubcategories(List<Category> categories, Category category) {
-	
-		System.out.println(category.getName());
-		categories.remove(category);
-		List<Category> list = getListSubcategories(categories, category);
-		if (!list.isEmpty()) {
-			for (Category cat : list)
-				printSubcategories(categories, cat);
-		}
-	}
-	
-	public static void printCategories(List<Category> categories) {
-		List<Category> rootList = new ArrayList<Category>();
-		
-		for (Category category : categories)
-			if (!hasSubcategories(categories, category)) 
-				rootList.add(category);
-		
-		for (Category category : rootList) 
-			printSubcategories(categories, category);
-	}
-	
 }
