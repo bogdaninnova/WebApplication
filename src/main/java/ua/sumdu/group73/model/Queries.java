@@ -2,6 +2,10 @@ package ua.sumdu.group73.model;
 
 public class Queries {
 
+    //------------------------------------------------------
+    //-----------------------XXX:USER-----------------------
+    //------------------------------------------------------
+	
 	public static final String ADD_USER =
 			"INSERT INTO USERS("
 					+ "ID,"
@@ -87,6 +91,12 @@ public class Queries {
 	public static final String IS_USER_ADMIN =
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
+	
+    //------------------------------------------------------
+    //----------------XXX:PRODUCT FOLLOWING-----------------
+    //------------------------------------------------------
+	
+	
 	public static final String FOLLOW_PRODUCT =
 			"INSERT INTO FOLLOWINGS("
 					+ "ID,"
@@ -106,6 +116,12 @@ public class Queries {
 	public static final String GET_FOLLOWING_PRODUCTS =
 			"SELECT PRODUCT_ID FROM FOLLOWINGS WHERE FOLLOWER_ID = ?";
     
+	
+    //------------------------------------------------------
+    //---------------------XXX:PRODUCT----------------------
+    //------------------------------------------------------
+	
+	
 	public static final String ADD_PRODUCT =
 			"INSERT INTO PRODUCTS("
 					+ "ID,"
@@ -151,7 +167,7 @@ public class Queries {
 			+ " WHERE ID = ?";
     
 	public static final String FINISH_AUCTIONS =
-			"SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < ?";
+			"SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < SYSDATE";
     
 	public static final String GET_ALL_PRODUCTS =
 			"SELECT * FROM PRODUCTS";
@@ -163,6 +179,12 @@ public class Queries {
 				+ " OR "
 					+ "LOWER(NAME) LIKE LOWER(?)";
     
+	
+    //------------------------------------------------------
+    //--------------------XXX:CATEGORY----------------------
+    //------------------------------------------------------
+	
+	
 	public static final String GET_CATEGORY =
 			"SELECT * FROM CATEGORIES WHERE ID = ?";
     
@@ -193,6 +215,12 @@ public class Queries {
 				+ " LEFT JOIN PRODUCTS ON PRODUCTS.ID ="
 						+ " PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
     
+	
+    //------------------------------------------------------
+    //------------------XXX:TRANSACTION---------------------
+    //------------------------------------------------------
+	
+	
 	public static final String GET_SALLERS_TRANSACTIONS =
 			"SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
     
@@ -218,6 +246,12 @@ public class Queries {
 	public static final String GET_TRANSACTION =
 			"SELECT * FROM TRANSACTIONS WHERE ID = ?";
     
+	
+    //------------------------------------------------------
+    //--------------------XXX:PICTURES----------------------
+    //------------------------------------------------------
+	
+	
 	public static final String GET_PICTURES_OF_PRODUCT =
 			"SELECT * FROM PICTURES WHERE PRODUCT_ID = ?";
     
