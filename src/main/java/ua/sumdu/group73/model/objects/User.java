@@ -34,14 +34,17 @@ public class User {
 		  		setActivated(true);
 		  		setBanned(false);
 		  		setAdmin(true);
+		  		break;
 		  	case "banned" :
 		  		setActivated(true);
 		  		setBanned(true);
 		  		setAdmin(false);
+		  		break;
 		  	case "unactivated" :
 		  		setActivated(false);
 		  		setBanned(false);
 		  		setAdmin(false);
+		  		break;
 		  	default ://"user"
 		  		setActivated(true);
 		  		setBanned(false);
