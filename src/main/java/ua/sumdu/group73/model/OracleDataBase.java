@@ -587,12 +587,45 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
         	}            
         } catch (SQLException e) {
-            log.error("SQLException in finishAuctions()", e);
+            log.error("SQLException in getAllProducts()", e);
         } finally {
         	closeConnection();
         }
         return list;
     }
+    
+	@Override
+	public List<Product> getAllActiveProducts() {
+    	log.info("Method getAllActiveProducts starts.....");
+        ArrayList<Product> list = new ArrayList<Product>();
+        initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_PRODUCTS)) {
+           
+        	try(ResultSet rs = preparedStatement.executeQuery()){
+	            while (rs.next()) {
+	                if (rs.getString("IS_ACTIVE").equals("active"))
+	            	list.add(
+	                		new Product(
+	                				rs.getInt("ID"),
+	                				rs.getInt("SELLER_ID"),
+	                				rs.getString("NAME"),
+	                				rs.getString("DESCRIPTION"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
+	                				rs.getInt("START_PRICE"),
+	                				rs.getInt("BUYOUT_PRICE"),
+	                				rs.getInt("CURRENT_PRICE"),
+	                				rs.getInt("CURRENT_BUYER_ID"),
+	                				true));
+	            }
+        	}            
+        } catch (SQLException e) {
+            log.error("SQLException in getAllActiveProducts()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+	}
     
 	@Override
 	public List<Product> findProducts(String substring) {
