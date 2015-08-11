@@ -91,6 +91,12 @@ public class Queries {
 	public static final String IS_USER_ADMIN =
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
+	public static final String ACTIVATE_USER =
+			"UPDATE USERS SET STATUS = 'user' WHERE ID = ?";
+	
+	public static final String SET_USER_BAN =
+			"UPDATE USERS SET STATUS = 'banned' WHERE ID = ?";
+	
 	
     //------------------------------------------------------
     //----------------XXX:PRODUCT FOLLOWING-----------------
@@ -169,7 +175,8 @@ public class Queries {
 	public static final String BUYOUT =
 			"UPDATE PRODUCTS SET"
 					+ " CURRENT_PRICE = BUYOUT_PRICE,"
-					+ " CURRENT_BUYER_ID = ?"
+					+ " CURRENT_BUYER_ID = ?,"
+					+ " IS_ACTIVE = 'disactive'"
 			+ " WHERE ID = ?";
     
 	public static final String FINISH_AUCTIONS =

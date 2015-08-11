@@ -94,7 +94,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setDate(5, new java.sql.Date(birthDate));
             preparedStatement.setString(6, eMail);
             preparedStatement.setString(7, phone);
-            preparedStatement.setString(8, "user");
+            preparedStatement.setString(8, "unactivated");
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -303,6 +303,19 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return list;
+	}
+	
+	@Override
+	public boolean setUserBan(int userID, boolean isBan) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean activateUser(int userID) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
@@ -982,4 +995,5 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return list;
 		
 	}
+
 }
