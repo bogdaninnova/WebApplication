@@ -47,7 +47,6 @@ function isBet(bet) {
 }
 
 function clickBet(productID, buyerID, bet) {
-    alert("ProductID - " + productID + " ,BuyerID - " + buyerID + " ,Bet - " + bet);
     $.ajax({
         dataType: "xml",
         url: url,
@@ -61,6 +60,71 @@ function clickBet(productID, buyerID, bet) {
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 window.location.replace("product");
+            } else {
+                alert($(data).find("result").text());
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function clickBuy() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickBuy"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            } else {
+                alert($(data).find("result").text());
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function clickBreak() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "break"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            } else {
+                alert($(data).find("result").text());
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function realBuy(productID, userID) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action : "realBuy",
+            productID : productID,
+            userID : userID
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
             } else {
                 alert($(data).find("result").text());
             }

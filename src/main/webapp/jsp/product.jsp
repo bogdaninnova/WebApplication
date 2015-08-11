@@ -75,13 +75,13 @@
                             </h3>
                         </div>
                         <div class="product-buy-button">
-                            <button onclick="">Buy</button>
+                            <button onclick="clickBuy();">Buy</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="product-status">
-                <div class="product-status-lider">
+                <div class="product-status-leader">
                     <br>
                     <% if (product.getCurrentBuyerID() > 0) { %>
                     <% List<User> users = (List<User>) request.getAttribute("users");

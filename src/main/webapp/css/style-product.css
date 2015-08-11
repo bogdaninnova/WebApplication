@@ -17,6 +17,14 @@ footer {
     clear: both;
 }
 
+h4 {
+    background-color: lightgrey;
+}
+
+td {
+    padding-right: 120px;
+}
+
 .container-product {
     width: 100%;
     position: relative;
@@ -87,7 +95,7 @@ footer {
     float : left;
 }
 
-.product-status-lider {
+.product-status-leader {
 
 }
 

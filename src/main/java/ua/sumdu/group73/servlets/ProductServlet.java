@@ -29,8 +29,12 @@ public class ProductServlet extends HttpServlet {
     private List<User> users;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/xml");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
+
         if ("back".equals(request.getParameter("action"))) {
-            session.setAttribute("prodID", "");
+            request.getSession().setAttribute("prodID", null);
             sendResponse(response, "<result>OK</result>");
         } else if ("clickBet".equals(request.getParameter("action"))) {
             if (OracleDataBase.getInstance().makeBet(Integer.parseInt(request.getParameter("productID")),
@@ -39,6 +43,20 @@ public class ProductServlet extends HttpServlet {
                 sendResponse(response, "<result>OK</result>");
             } else {
                 sendResponse(response, "<result>Error: DataBase.</result>");
+            }
+        } else if ("clickBuy".equals(request.getParameter("action"))) {
+            request.getSession().setAttribute("buy", "ok");
+            sendResponse(response, "<result>OK</result>");
+        } else if ("break".equals(request.getParameter("action"))) {
+            request.getSession().setAttribute("buy", null);
+            sendResponse(response, "<result>OK</result>");
+        } else if ("realBuy".equals(request.getParameter("action"))) {
+            if (OracleDataBase.getInstance().buyout(Integer.parseInt(request.getParameter("productID")),
+                    Integer.parseInt(request.getParameter("userID")))) {
+                request.getSession().setAttribute("buy", null);
+                sendResponse(response, "<result>OK</result>");
+            } else {
+                sendResponse(response, "<result>Can not buy</result>");
             }
         }
     }
@@ -52,15 +70,24 @@ public class ProductServlet extends HttpServlet {
         }
 
         if (session.getAttribute("prodID") != null && session.getAttribute("prodID") != ""
-                && session.getAttribute("user") != null && session.getAttribute("user") != "") {
+                && session.getAttribute("user") != null && session.getAttribute("user") != ""
+                && OracleDataBase.getInstance().isProductActive(Integer.parseInt(session.getAttribute("prodID").toString()))) {
             product = null;
+            pictures = null;
+            users = null;
             product = OracleDataBase.getInstance().getProduct(Integer.parseInt(session.getAttribute("prodID").toString()));
             pictures = OracleDataBase.getInstance().getAllPictures();
             users = OracleDataBase.getInstance().getAllUsers();
             request.setAttribute("pictures", pictures);
             request.setAttribute("product", product);
             request.setAttribute("users", users);
-            RequestDispatcher rd = request.getRequestDispatcher("jsp/product.jsp");
+            RequestDispatcher rd;
+            if (session.getAttribute("buy") != null && session.getAttribute("buy") != "") {
+                rd = request.getRequestDispatcher("jsp/buy.jsp");
+            } else {
+               rd = request.getRequestDispatcher("jsp/product.jsp");
+            }
+
             rd.forward(request, response);
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("index");
