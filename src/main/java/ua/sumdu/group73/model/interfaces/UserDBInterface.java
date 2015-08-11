@@ -40,4 +40,10 @@ public interface UserDBInterface {
 	
 	public List<User> getAllUsers();
 		
+	public boolean setUserBan(int userID, boolean isBan);
+	
+	public boolean activateUser(int userID);
+	
+	
+	
 }
