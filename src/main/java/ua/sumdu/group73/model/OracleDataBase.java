@@ -527,11 +527,9 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FINISH_AUCTIONS)) {
-            preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-            
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) {
-	                list.add(
+	            	list.add(
 	                		new Product(
 	                				rs.getInt("ID"),
 	                				rs.getInt("SELLER_ID"),
@@ -545,16 +543,16 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("CURRENT_BUYER_ID"),
 	                				rs.getString("IS_ACTIVE").equals("active")));
 	                
-	                disactivateProduct(rs.getInt("PRODUCT_ID"));
-	                
-	                if (rs.getInt("CURRENT_PRICE") != 0) {
-	                    addTransaction(
-	                    		rs.getInt("CURRENT_BUYER_ID"),
-	                    		rs.getInt("SELLER_ID"),
-	                            rs.getInt("PRODUCT_ID"),
-	                            rs.getInt("CURRENT_PRICE"),
-	                            rs.getDate("END_DATE"));
-	                }
+//	                disactivateProduct(rs.getInt("ID"));
+//	                
+//	                if (rs.getInt("CURRENT_PRICE") != 0) {
+//	                    addTransaction(
+//	                    		rs.getInt("CURRENT_BUYER_ID"),
+//	                    		rs.getInt("SELLER_ID"),
+//	                            rs.getInt("ID"),
+//	                            rs.getInt("CURRENT_PRICE"),
+//	                            rs.getTimestamp("END_DATE"));
+//	                }
 	            }
             }
         } catch (SQLException e) {
