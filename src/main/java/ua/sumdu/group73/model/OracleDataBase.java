@@ -117,7 +117,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String password = rs.getString("PASSWORD");
 	            String name = rs.getString("NAME");
 	            String secondName = rs.getString("SECOND_NAME");
-	            byte age = rs.getByte("AGE");
+	            int age = rs.getInt("AGE");
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
@@ -186,7 +186,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
@@ -215,7 +215,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String login = rs.getString("LOGIN");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 		            
 		            if (rs.getString("PASSWORD").equals(password))
 		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status);
@@ -290,7 +290,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String password = rs.getString("PASSWORD");
 		            String name = rs.getString("NAME");
 		            String secondName = rs.getString("SECOND_NAME");
-		            byte age = rs.getByte("AGE");
+		            int age = rs.getByte("AGE");
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
@@ -527,11 +527,9 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         ArrayList<Product> list = new ArrayList<Product>();
         initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.FINISH_AUCTIONS)) {
-            preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-            
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) {
-	                list.add(
+	            	list.add(
 	                		new Product(
 	                				rs.getInt("ID"),
 	                				rs.getInt("SELLER_ID"),
@@ -545,16 +543,16 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("CURRENT_BUYER_ID"),
 	                				rs.getString("IS_ACTIVE").equals("active")));
 	                
-	                disactivateProduct(rs.getInt("PRODUCT_ID"));
-	                
-	                if (rs.getInt("CURRENT_PRICE") != 0) {
-	                    addTransaction(
-	                    		rs.getInt("CURRENT_BUYER_ID"),
-	                    		rs.getInt("SELLER_ID"),
-	                            rs.getInt("PRODUCT_ID"),
-	                            rs.getInt("CURRENT_PRICE"),
-	                            rs.getDate("END_DATE"));
-	                }
+//	                disactivateProduct(rs.getInt("ID"));
+//	                
+//	                if (rs.getInt("CURRENT_PRICE") != 0) {
+//	                    addTransaction(
+//	                    		rs.getInt("CURRENT_BUYER_ID"),
+//	                    		rs.getInt("SELLER_ID"),
+//	                            rs.getInt("ID"),
+//	                            rs.getInt("CURRENT_PRICE"),
+//	                            rs.getTimestamp("END_DATE"));
+//	                }
 	            }
             }
         } catch (SQLException e) {
@@ -589,12 +587,45 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            }
         	}            
         } catch (SQLException e) {
-            log.error("SQLException in finishAuctions()", e);
+            log.error("SQLException in getAllProducts()", e);
         } finally {
         	closeConnection();
         }
         return list;
     }
+    
+	@Override
+	public List<Product> getAllActiveProducts() {
+    	log.info("Method getAllActiveProducts starts.....");
+        ArrayList<Product> list = new ArrayList<Product>();
+        initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_ALL_PRODUCTS)) {
+           
+        	try(ResultSet rs = preparedStatement.executeQuery()){
+	            while (rs.next()) {
+	                if (rs.getString("IS_ACTIVE").equals("active"))
+	            	list.add(
+	                		new Product(
+	                				rs.getInt("ID"),
+	                				rs.getInt("SELLER_ID"),
+	                				rs.getString("NAME"),
+	                				rs.getString("DESCRIPTION"),
+	                				rs.getTimestamp("START_DATE"),
+	                				rs.getTimestamp("END_DATE"),
+	                				rs.getInt("START_PRICE"),
+	                				rs.getInt("BUYOUT_PRICE"),
+	                				rs.getInt("CURRENT_PRICE"),
+	                				rs.getInt("CURRENT_BUYER_ID"),
+	                				true));
+	            }
+        	}            
+        } catch (SQLException e) {
+            log.error("SQLException in getAllActiveProducts()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+	}
     
 	@Override
 	public List<Product> findProducts(String substring) {

@@ -9,13 +9,13 @@ public class User {
 	  private String password;
 	  private String name;
 	  private String secondName;
-	  private byte age;
+	  private int age;
 	  private String eMail;
 	  private String phone;
 	  private boolean isAdmin;
 		  
 	  public User(int id, String login, String password, String name,
-			  String secondName, byte age, String eMail, String phone, String status) {
+			  String secondName, int age, String eMail, String phone, String status) {
 		  setId(id);
 		  setLogin(login);
 		  setPassword(password);
@@ -90,11 +90,11 @@ public class User {
 		this.secondName = secondName;
 	}
 
-	public byte getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(byte age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 }
