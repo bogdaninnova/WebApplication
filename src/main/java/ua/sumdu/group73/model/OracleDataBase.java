@@ -104,7 +104,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
     }
-
+    
     public User getUser(int id) {
     	log.info("Method getUser starts.....");
     	User user = null;
@@ -114,6 +114,34 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             try (ResultSet rs = preparedStatement.executeQuery()) {
 	            rs.next();
 	            String login = rs.getString("LOGIN");
+	            String password = rs.getString("PASSWORD");
+	            String name = rs.getString("NAME");
+	            String secondName = rs.getString("SECOND_NAME");
+	            int age = rs.getInt("AGE");
+	            String eMail = rs.getString("EMAIL");
+	            String phone = rs.getString("PHONE");
+	            String status = rs.getString("STATUS");
+	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            
+	            user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getUser()", e);
+        } finally {
+        	closeConnection();
+        }
+        return user;
+    }
+    
+    public User getUser(String login) {
+    	log.info("Method getUser starts.....");
+    	User user = null;
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER_BY_ID)) {
+            preparedStatement.setString(1, login);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+	            rs.next();
+	            int id = rs.getInt("ID");
 	            String password = rs.getString("PASSWORD");
 	            String name = rs.getString("NAME");
 	            String secondName = rs.getString("SECOND_NAME");
@@ -333,12 +361,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
 	@Override
-	public boolean activateUser(int userID) {
+	public boolean activateUser(String login) {
     	log.info("Method activateUser starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ACTIVATE_USER)) {
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setString(1, login);
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {

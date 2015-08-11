@@ -1,6 +1,9 @@
 package ua.sumdu.group73.model;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
+
 import ua.sumdu.group73.model.objects.*;
 
 public class Messager {
@@ -55,38 +58,31 @@ public class Messager {
 
 	}
 	
-	public static void registrationMail(int userID) {
+	public static void registrationMail(String login, String name, String mail) {
 		
 		log.info(CLASSNAME + "Method registrationMail starts.....");
 		
 		MailSender mailer = MailSender.getInstance();
 		
-		User user = OracleDataBase.getInstance().getUser(userID);
-
 		StringBuilder textSB = new StringBuilder();
-		textSB.append("Hello, " + user.getName() +"!\n");
+		textSB.append("Hello, " + name +"! \n");
 		textSB.append("You just registred at our auction Lab3!\n\n");
 				
 		textSB.append(
-				"<link rel=\""
-			+ "Click this link and verify your account\""
-				+ " href=\""
-			+ "http://localhost:7001/WebApplication/Verification?token=" + getToken(user)
-				+ "\">");
+			"Use link bellow and verify your account\n"
+			+ "http://localhost:7001/WebApplication/Verification?"
+			+ getToken(login));
 		
-		textSB.append("Login: " + user.getLogin() + "\n");
-		textSB.append("Password: " + user.getPassword() + "\n\n");
+		textSB.append("\n\nLogin: " + login + "\n");
 		textSB.append("This mail was generated automatically, please don't answer on it");
-
 		
-		
-		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), user.geteMail());
+		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), mail);
 	} 
 	
-	private static String getToken(User user) {
-		String login = user.getLogin();
-		long regDate = user.getRegistrationDate().getTime();
-		
-		return login + regDate;//TODO security
+	private static String getToken(String login) {
+		String loginToken = StringCrypter.getInstance().encrypt(login);
+		String regDateToken = StringCrypter.getInstance().encrypt(
+				String.valueOf(new Date().getTime()));
+		return "l=" + loginToken + "&d=" + regDateToken;
 	}
 }

@@ -1,6 +1,8 @@
 package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
+
+import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
 
 import javax.servlet.RequestDispatcher;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -35,7 +38,8 @@ public class RegisterServlet extends HttpServlet {
                 if (OracleDataBase.getInstance().addUser(request.getParameter("login"), request.getParameter("password"),
                         request.getParameter("firstName"), request.getParameter("secondName"), Long.parseLong(request.getParameter("age")),
                         request.getParameter("email"), request.getParameter("phone"))) {
-                    sendResponse(response, "<result>OK</result>");
+                	Messager.registrationMail(request.getParameter("login"), request.getParameter("firstName"), request.getParameter("email"));
+                	sendResponse(response, "<result>OK</result>");
                 }
             }
         }

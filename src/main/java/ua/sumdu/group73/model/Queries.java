@@ -43,6 +43,19 @@ public class Queries {
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE ID = ?";
 	
+	public static final String GET_USER_BY_ID =
+			"SELECT"
+					+ " ID,"
+					+ " PASSWORD,"
+					+ " NAME,"
+					+ " SECOND_NAME,"
+					+ " EMAIL,"
+					+ " PHONE,"
+					+ " STATUS,"
+					+ " REGISTRATION_DATE,"
+					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
+			+ " FROM USERS WHERE LOGIN = ?";
+	
 	public static final String IS_LOGIN_FREE =
 			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
 	
@@ -98,7 +111,7 @@ public class Queries {
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
 	public static final String ACTIVATE_USER =
-			"UPDATE USERS SET STATUS = 'user' WHERE ID = ?";
+			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 	
 	public static final String SET_USER_BAN =
 			"UPDATE USERS SET STATUS = '?' WHERE ID = ?";

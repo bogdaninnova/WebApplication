@@ -31,7 +31,7 @@ CREATE TABLE USERS
   EMAIL VARCHAR2(50) NOT NULL UNIQUE,
   PHONE VARCHAR2(20),
   REGISTRATION_DATE DATE NOT NULL,
-  STATUS VARCHAR2(5) CHECK (STATUS IN ('user', 'admin', 'unactivated', 'banned')) NOT NULL
+  STATUS VARCHAR2(64) CHECK (STATUS IN ('user', 'admin', 'unactivated', 'banned')) NOT NULL
 );
 
 
