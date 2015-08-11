@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,7 +26,6 @@ import java.util.List;
  */
 public class IndexServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(IndexServlet.class);
-    private HttpSession session;
     private List<Category> categoryList;
     private List<Product> products;
     private List<Picture> pictures;
@@ -65,7 +63,7 @@ public class IndexServlet extends HttpServlet {
             log.info("Click login");
             sendResponse(response, "<result>OK</result>");
         } else if ("logOut".equals(request.getParameter("action"))) {
-            if (session.getAttribute("user") != null || session.getAttribute("user") != "") {
+            if (request.getSession().getAttribute("user") != null || request.getSession().getAttribute("user") != "") {
                 request.getSession().setAttribute("user", null);
                 sendResponse(response, "<result>OK</result>");
             }
@@ -81,9 +79,7 @@ public class IndexServlet extends HttpServlet {
             sendResponse(response, "<result>OK</result>");
         } else if ("product".equals(request.getParameter("action"))) {
             log.info("Click product");
-            RequestDispatcher rd = request.getRequestDispatcher("product");
-            session.setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
-            rd.forward(request, response);
+            request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
             sendResponse(response, "<result>OK</result>");
         } else if ("admin".equals(request.getParameter("action"))) {
             log.info("Click admin");
@@ -92,12 +88,6 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in UserServlet");
-        }
         if (count == 0) {
             products = null;
             pictures = null;

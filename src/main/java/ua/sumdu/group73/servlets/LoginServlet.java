@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -20,7 +19,6 @@ import java.io.PrintWriter;
  */
 public class LoginServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(LoginServlet.class);
-    private HttpSession session;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/xml");
@@ -31,7 +29,7 @@ public class LoginServlet extends HttpServlet {
             User user = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             log.info("USER - " + user);
             if (user != null) {
-                session.setAttribute("user", user);
+                request.getSession().setAttribute("user", user);
                 sendResponse(response, "<result>OK</result>");
             } else {
                 sendResponse(response, "<result>Login incorrect.</result>");
@@ -39,7 +37,7 @@ public class LoginServlet extends HttpServlet {
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
-                session.setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
+                request.getSession().setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
                 sendResponse(response, "<result>OK</result>");
             } else {
                 sendResponse(response, "<result>Email incorrect.</result>");
@@ -48,12 +46,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in UserServlet");
-        }
         RequestDispatcher rd = request.getRequestDispatcher("jsp/login.jsp");
         rd.forward(request, response);
     }

@@ -162,7 +162,7 @@
                 <% List<Product> products = (List<Product>) request.getAttribute("products");
                     if (products != null) { %>
                 <% for (Product product : products) { %>
-                <div class="container-lots" onclick="var user = '<%=user%>'; clickProduct(user, <%=product.getId()%>);">
+                <div class="container-lots" onclick="clickProduct(<%=product.getId()%>);">
 
                     <div class="container-lots-image">
                         <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
@@ -179,7 +179,9 @@
                         <img src="<%= image%>" alt="No photo" width="150" height="100">
                         <% } else { %>
                         <img src="./images/no_image.png" alt="No photo" width="150" height="100">
-                        <% }}} %>
+                        <% }
+                        }
+                        } %>
                     </div>
                     <div class="container-lots-price">
                         <% if (product.getCurrentPrice() != 0) { %>
@@ -210,7 +212,8 @@
                                     nameBuyer = userBuyer.getName();
                             }%>
                             <%=nameBuyer%>
-                            <% }} %>
+                            <% }
+                            } %>
                         </div>
                     </footer>
                     <br><br>

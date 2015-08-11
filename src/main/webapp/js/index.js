@@ -103,32 +103,25 @@ function clickFind(find) {
     });
 }
 
-function clickProduct(user, prodid) {
-    if (user != null && user != "" && user != "null" && prodid != null){
-        $.ajax({
-            dataType: "xml",
-            url: url,
-            type: "POST",
-            data: {
-                action: "product",
-                prodID: parseInt(prodid)
+function clickProduct(prodid) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "product",
+            prodID: parseInt(prodid)
+        }
+        ,
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("product");
             }
-            ,
-            success: function (data) {
-                if ("ok" === $(data).find("result").text().toLowerCase()) {
-                    alert("Error while send logout data.");
-                }
-            },
-            error: function () {
+        },
+        error: function () {
 
-            }
-        });
-
-
-        window.location.replace("product");
-    } else {
-        alert("Please login.");
-    }
+        }
+    });
 }
 
 function createForm(user_name, user_second_name, userStatus) {

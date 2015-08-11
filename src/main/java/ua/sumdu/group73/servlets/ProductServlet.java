@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 public class ProductServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(IndexServlet.class);
-    private HttpSession session;
     private Product product;
     private List<Picture> pictures;
     private List<User> users;
@@ -62,30 +60,23 @@ public class ProductServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in ProductServlet");
-        }
-
-        if (session.getAttribute("prodID") != null && session.getAttribute("prodID") != ""
-                && session.getAttribute("user") != null && session.getAttribute("user") != ""
-                && OracleDataBase.getInstance().isProductActive(Integer.parseInt(session.getAttribute("prodID").toString()))) {
+        if (request.getSession().getAttribute("prodID") != null && request.getSession().getAttribute("prodID") != ""
+                && request.getSession().getAttribute("user") != null && request.getSession().getAttribute("user") != ""
+                && OracleDataBase.getInstance().isProductActive(Integer.parseInt(request.getSession().getAttribute("prodID").toString()))) {
             product = null;
             pictures = null;
             users = null;
-            product = OracleDataBase.getInstance().getProduct(Integer.parseInt(session.getAttribute("prodID").toString()));
+            product = OracleDataBase.getInstance().getProduct(Integer.parseInt(request.getSession().getAttribute("prodID").toString()));
             pictures = OracleDataBase.getInstance().getAllPictures();
             users = OracleDataBase.getInstance().getAllUsers();
             request.setAttribute("pictures", pictures);
             request.setAttribute("product", product);
             request.setAttribute("users", users);
             RequestDispatcher rd;
-            if (session.getAttribute("buy") != null && session.getAttribute("buy") != "") {
+            if (request.getSession().getAttribute("buy") != null && request.getSession().getAttribute("buy") != "") {
                 rd = request.getRequestDispatcher("jsp/buy.jsp");
             } else {
-               rd = request.getRequestDispatcher("jsp/product.jsp");
+                rd = request.getRequestDispatcher("jsp/product.jsp");
             }
 
             rd.forward(request, response);
