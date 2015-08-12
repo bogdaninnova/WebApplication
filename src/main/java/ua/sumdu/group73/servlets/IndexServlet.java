@@ -3,6 +3,7 @@ package ua.sumdu.group73.servlets;
 import org.apache.log4j.Logger;
 
 import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.ServerTimerTask;
 import ua.sumdu.group73.model.objects.Category;
 import ua.sumdu.group73.model.objects.Picture;
 import ua.sumdu.group73.model.objects.Product;
@@ -94,8 +95,9 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        showProduct.clear();
-        if (products != null) {
+    	ServerTimerTask.getInstance();
+    	showProduct.clear();
+    	if (products != null) {
             for (Product product : products) {
                 if (OracleDataBase.getInstance().isProductActive(product.getId())) {
                     showProduct.add(OracleDataBase.getInstance().getProduct(product.getId()));

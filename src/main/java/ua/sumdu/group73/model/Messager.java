@@ -9,11 +9,13 @@ import ua.sumdu.group73.model.objects.*;
 public class Messager {
 
 	private static final Logger log = Logger.getLogger(Messager.class);
-	private static final String CLASSNAME = "Messager: ";
+	
+	private static final String VERIFICATION_URL =
+			"http://localhost:7001/WebApplication/Verification";
 	
 	public static void sendEndAuctionMessage(int productID) {
 		
-		log.info(CLASSNAME + "Method sendEndAuctionMessage starts.....");
+		log.info("Method sendEndAuctionMessage starts.....");
 		
 		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
@@ -60,29 +62,29 @@ public class Messager {
 	
 	public static void registrationMail(String login, String name, String mail) {
 		
-		log.info(CLASSNAME + "Method registrationMail starts.....");
+		log.info("Method registrationMail starts.....");
 		
 		MailSender mailer = MailSender.getInstance();
 		
 		StringBuilder textSB = new StringBuilder();
+
 		textSB.append("Hello, " + name +"! \n");
 		textSB.append("You just registred at our auction Lab3!\n\n");
 				
-		textSB.append(
-			"Use link bellow and verify your account\n"
-			+ "http://localhost:7001/WebApplication/Verification?"
-			+ getToken(login));
+		textSB.append("Use link bellow and verify your account\n");
 		
+		textSB.append(VERIFICATION_URL + getToken(login));
+
 		textSB.append("\n\nLogin: " + login + "\n");
 		textSB.append("This mail was generated automatically, please don't answer on it");
 		
 		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), mail);
-	} 
+	}
 	
 	private static String getToken(String login) {
 		String loginToken = StringCrypter.getInstance().encrypt(login);
 		String regDateToken = StringCrypter.getInstance().encrypt(
 				String.valueOf(new Date().getTime()));
-		return "l=" + loginToken + "&d=" + regDateToken;
+		return "?l=" + loginToken + "&d=" + regDateToken;
 	}
 }

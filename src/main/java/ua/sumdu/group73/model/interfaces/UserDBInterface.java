@@ -46,6 +46,6 @@ public interface UserDBInterface {
 	
 	public boolean activateUser(String login);
 	
-	
+	public boolean removeUnactivatedUsers();
 	
 }

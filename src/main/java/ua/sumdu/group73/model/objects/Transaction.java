@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Transaction {
 
-	private int id;
+	private Integer id;
 	private int buyerID;
 	private int sellerID;
 	private int productID;
@@ -12,7 +12,7 @@ public class Transaction {
 	private Date saleDate;
 	
 	
-	public Transaction(int id, int buyerID, int sellerID, int productID, int price, Date saleDate) {
+	public Transaction(Integer id, int buyerID, int sellerID, int productID, int price, Date saleDate) {
 		setId(id);
 		setBuyerID(buyerID);
 		setSellerID(sellerID);
@@ -72,12 +72,12 @@ public class Transaction {
 	}
 
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 	

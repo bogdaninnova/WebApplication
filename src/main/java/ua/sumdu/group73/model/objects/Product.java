@@ -142,5 +142,5 @@ public class Product {
 	public void setStartPrice(int startPrice) {
 		this.startPrice = startPrice;
 	}
-    
+
 }

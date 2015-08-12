@@ -117,6 +117,10 @@ public class Queries {
 			"UPDATE USERS SET STATUS = '?' WHERE ID = ?";
 	
 	
+	public static final String DELETE_UNACTIVATED_USERS = 
+			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"
+			+ " ((REGISTRATION_DATE + INTERVAL '24' HOUR) < SYSDATE)";
+	
     //------------------------------------------------------
     //----------------XXX:PRODUCT FOLLOWING-----------------
     //------------------------------------------------------
@@ -195,6 +199,7 @@ public class Queries {
 			"UPDATE PRODUCTS SET"
 					+ " CURRENT_PRICE = BUYOUT_PRICE,"
 					+ " CURRENT_BUYER_ID = ?,"
+					+ " END_DATE = SYSDATE,"
 					+ " IS_ACTIVE = 'disactive'"
 			+ " WHERE ID = ?";
     

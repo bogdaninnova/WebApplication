@@ -377,6 +377,23 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return result;
 	}
 
+	
+	@Override
+	public boolean removeUnactivatedUsers() {
+    	log.info("Method removeUnactivatedUsers starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.DELETE_UNACTIVATED_USERS)) {
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in removeUnactivatedUsers()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+
 
     //------------------------------------------------------
     //----------------XXX:PRODUCT FOLLOWING-----------------
@@ -398,7 +415,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return result;
-
     }
 
     public boolean isFollowProduct(int followerID, int productID) {
@@ -631,17 +647,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("CURRENT_PRICE"),
 	                				rs.getInt("CURRENT_BUYER_ID"),
 	                				rs.getString("IS_ACTIVE").equals("active")));
-	                
-//	                disactivateProduct(rs.getInt("ID"));
-//	                
-//	                if (rs.getInt("CURRENT_PRICE") != 0) {
-//	                    addTransaction(
-//	                    		rs.getInt("CURRENT_BUYER_ID"),
-//	                    		rs.getInt("SELLER_ID"),
-//	                            rs.getInt("ID"),
-//	                            rs.getInt("CURRENT_PRICE"),
-//	                            rs.getTimestamp("END_DATE"));
-//	                }
 	            }
             }
         } catch (SQLException e) {
@@ -1054,5 +1059,4 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return list;
 		
 	}
-
 }
