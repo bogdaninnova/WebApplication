@@ -29,6 +29,7 @@ public class User {
 		  setAge(age);
 		  setPhone(phone);
 		  setRegistrationDate(reistrationDate);
+		  seteMail(eMail);
 		  switch (status) {
 		  	case "admin" :
 		  		setActivated(true);
