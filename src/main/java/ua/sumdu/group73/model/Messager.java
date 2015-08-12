@@ -68,14 +68,13 @@ public class Messager {
 		
 		StringBuilder textSB = new StringBuilder();
 
-		textSB.append("Hello, " + name +"! \n");
-		textSB.append("You just registred at our auction Lab3!\n\n");
-				
-		textSB.append("Use link bellow and verify your account\n");
+		textSB.append("Hello, " + name +"! <br>");
+		textSB.append("You just registred at our auction Lab3!<br><br>");
 		
-		textSB.append(VERIFICATION_URL + getToken(login));//TODO send as link not as text
-
-		textSB.append("\n\nLogin: " + login + "\n");
+		textSB.append("<a href=\"" + VERIFICATION_URL + getToken(login) +
+				"\" target=\"_blank\">Use this link for verifying your account</a>");
+		
+		textSB.append("<br><br>Login: " + login + "<br>");
 		textSB.append("This mail was generated automatically, please don't answer on it");
 		
 		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), mail);
