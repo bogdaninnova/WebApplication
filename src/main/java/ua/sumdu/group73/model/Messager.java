@@ -73,7 +73,7 @@ public class Messager {
 				
 		textSB.append("Use link bellow and verify your account\n");
 		
-		textSB.append(VERIFICATION_URL + getToken(login));
+		textSB.append(VERIFICATION_URL + getToken(login));//TODO send as link not as text
 
 		textSB.append("\n\nLogin: " + login + "\n");
 		textSB.append("This mail was generated automatically, please don't answer on it");
