@@ -91,6 +91,9 @@ public class IndexServlet extends HttpServlet {
         } else if ("admin".equals(request.getParameter("action"))) {
             log.info("Click admin");
             sendResponse(response, "<result>OK</result>");
+        } else if ("cabinet".equals(request.getParameter("action"))) {
+            log.info("Click cabinet");
+            sendResponse(response, "<result>OK</result>");
         }
     }
 

@@ -124,6 +124,25 @@ function clickProduct(prodid) {
     });
 }
 
+function clickCabinet() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "cabinet"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("user");
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
 function createForm(user_name, user_second_name, userStatus) {
     if (user_name != null && user_name != "" && user_name != "null"
         && user_second_name != null && user_second_name != "" && user_second_name != "null") {
@@ -132,7 +151,7 @@ function createForm(user_name, user_second_name, userStatus) {
         document.write(user_second_name);
         document.write(" ");
         document.write(user_name);
-        document.write("<label onclick=\"\">[ <b>Cabinet</b> ]</Label>");
+        document.write("<label onclick=\"clickCabinet();\">[ <b>Cabinet</b> ]</Label>");
         if (userStatus == "true") {
             document.write("<label onclick=\"clickAdmin();\">[ <b>Admin</b> ]</Label>");
         }
