@@ -16,7 +16,7 @@ import ua.sumdu.group73.model.objects.Product;
 import ua.sumdu.group73.model.objects.User;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 /**
  * This servlet working with admin.jsp.
@@ -35,12 +35,18 @@ public class AdminServlet extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-        if (request.getParameter("backButton") != null) {
-        	System.out.println("--------------------------------------");
-        	response.sendRedirect(request.getContextPath() + "/index.jsp");
-        }
-		
-    }
+		if (request.getParameter("saveUsers") != null) {
+			OracleDataBase.getInstance().unBanAllUsers();
+			String[] s = request.getParameterValues("ban");
+			if (s != null)
+				for (int i = 0; i < s.length; i++)
+					OracleDataBase.getInstance().setUserBan(Integer.valueOf(s[i]));
+			doGet(request, response);
+		} else if (request.getParameter("deleteProduct") != null) {
+			System.out.println("deleteProduct");
+			doGet(request, response);
+		}
+	}
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (session != null) {
@@ -50,14 +56,10 @@ public class AdminServlet extends HttpServlet {
             log.info("Create HttpSession in UserServlet");
         }
         
-        if (categoryList == null) 
-        	categoryList = OracleDataBase.getInstance().getAllCategories();
-        if (users == null) 
-        	users = OracleDataBase.getInstance().getAllUsers();
-        if (products == null) 
-        	products = OracleDataBase.getInstance().getAllProducts();
-        if (pictures == null) 
-        	pictures = OracleDataBase.getInstance().getAllPictures();
+       	categoryList = OracleDataBase.getInstance().getAllCategories();
+       	users = OracleDataBase.getInstance().getAllUsers();
+       	products = OracleDataBase.getInstance().getAllProducts();
+       	pictures = OracleDataBase.getInstance().getAllPictures();
         
         request.setAttribute("categories", categoryList);
         request.setAttribute("products", products);

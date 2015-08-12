@@ -42,7 +42,9 @@ public interface UserDBInterface {
 	
 	public List<User> getAllUsers();
 		
-	public boolean setUserBan(int userID, boolean isBan);
+	public boolean setUserBan(int userID);
+	
+	public boolean unBanAllUsers();
 	
 	public boolean activateUser(String login);
 	

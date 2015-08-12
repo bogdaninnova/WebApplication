@@ -114,8 +114,13 @@ public class Queries {
 			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 	
 	public static final String SET_USER_BAN =
-			"UPDATE USERS SET STATUS = '?' WHERE ID = ?";
+			"UPDATE USERS SET STATUS = 'banned'"
+			+ " WHERE ID = ? AND"
+			+ " STATUS != 'admin' AND"
+			+ " STATUS != 'unactivated'";
 	
+	public static final String UNBAN_ALL_USERS =
+			"UPDATE USERS SET STATUS = 'user' WHERE STATUS = 'banned'";
 	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"

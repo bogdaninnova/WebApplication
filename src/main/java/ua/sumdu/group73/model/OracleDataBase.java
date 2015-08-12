@@ -344,20 +344,32 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 	
 	@Override
-	public boolean setUserBan(int userID, boolean isBan) {
+	public boolean setUserBan(int userID) {
     	log.info("Method setUserBan starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.SET_USER_BAN)) {
-        	if (isBan)
-        		preparedStatement.setString(1, "banned");
-        	else
-        		preparedStatement.setString(1, "user");
-        	preparedStatement.setInt(2, userID);
+        	preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
             log.error("SQLException in setUserBan()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+	
+	@Override
+	public boolean unBanAllUsers() {
+    	log.info("Method unBanAllUsers starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.UNBAN_ALL_USERS)) {
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in unBanAllUsers()", e);
         } finally {
         	closeConnection();
         }

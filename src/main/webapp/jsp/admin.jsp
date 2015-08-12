@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <script src="./js/login.js"></script>
+    <script src="./js/ladmin.js"></script>
 	<title>Admin</title>
 </head>
 <body>
@@ -22,69 +22,86 @@
 	
 	
 	<center><h3>USERS</h3></center>
-<table border="1" style="width:100%">
-  <tr>
-    <td>ID</td>
-    <td>Login</td>
-    <td>Name</td>		
-    <td>Second Name</td>
-    <td>Age</td>
-    <td>Mail</td>
-    <td>Login</td>
-  </tr>
- <%
-	for (User user : users) {
- %>
-  <tr>
-    <td><%=user.getId() %></td>
-    <td><%=user.getLogin() %></td>
-    <td><%=user.getName() %></td>		
-    <td><%=user.getSecondName() %></td>
-    <td><%=user.getAge() %></td>	
-    <td><%=user.geteMail() %></td>	
-    <td><%=user.getPhone() %></td>	
-  </tr>
-	<% } %>
-</table>
+<form action="admin" method="POST">
+	<table border="1" style="width:100%">
+	  <tr>
+	    <td>ID</td>
+	    <td>Login</td>
+	    <td>Name</td>		
+	    <td>Second Name</td>
+	    <td>Age</td>
+	    <td>Mail</td>
+	    <td>Phone</td>
+	    <td>Registration date</td>
+	    <td>Ban</td>
+	    <td>Activated</td>
+	    <td>Admin</td>
+	  </tr>
+	 <%
+		for (User user : users) {
+	 %>
+	  <tr>
+	  	<%
+	  		String phone = (user.getPhone() == null) ? "----------" : user.getPhone();
+	  	 %>
+	    <td><%=user.getId() %></td>
+	    <td><%=user.getLogin() %></td>
+	    <td><%=user.getName() %></td>		
+	    <td><%=user.getSecondName() %></td>
+	    <td><%=user.getAge() %></td>	
+	    <td><%=user.geteMail() %></td>	
+	    <td><%=phone %></td>	
+	    <td><%=user.getRegistrationDate() %></td>
+	    
+	    <td><input type="checkbox" name="ban" <% if (user.isBanned()) { %> checked <%} %> value=<%=user.getId() %> ></td>
+	    <td><input type="checkbox" name=<%="activated" %> onclick="return false" <% if (user.isActivated()) { %> checked <%} %>></td>
+	    <td><input type="checkbox" name=<%="admin" %> onclick="return false" <% if (user.isAdmin()) { %> checked <%} %>></td>
+	  </tr>
+		<% } %>
+	</table>
+	<input type="submit" name="saveUsers" value="Save" />
+</form>
 
 <br>
 
 	<center><h3>PRODUCTS</h3></center>
-<table border="1" style="width:100%">
-  <tr>
-    <td>ID</td>
-    <td>Name</td>
-    <td>Description</td>
-    <td>StartPrice</td>
-    <td>getBuyoutPrice</td>
-    <td>CurrentPrice</td>
-    <td>Start Date</td>
-    <td>End Date</td>
-    <td>Seller ID</td>
-    <td>Current Buyer ID</td>
-    <td>is Active</td>
-
-  </tr>
- <%
-	for (Product product : products) {
- %>
-  <tr>
-    <td><%=product.getId() %></td>
-    <td><%=product.getName() %></td>
-    <td><%=product.getDescription() %></td>
-    <td><%=product.getStartPrice() %></td>
-    <td><%=product.getBuyoutPrice() %></td>
-    <td><%=product.getCurrentPrice() %></td>
-    <td><%=product.getStartDate() %></td>
-    <td><%=product.getEndDate() %></td>
-    <td><%=product.getSellerID() %></td>
-    <td><%=product.getCurrentBuyerID() %></td>
-    <td><%=product.isActive() %></td>
-
-  </tr>
-	<% } %>
-</table>
-
+<form action="admin" method="POST">
+	<table border="1" style="width:100%">
+	  <tr>
+	    <td>ID</td>
+	    <td>Name</td>
+	    <td>Description</td>
+	    <td>StartPrice</td>
+	    <td>BuyoutPrice</td>
+	    <td>CurrentPrice</td>
+	    <td>Start Date</td>
+	    <td>End Date</td>
+	    <td>Seller ID</td>
+	    <td>Buyer ID</td>
+	    <td>Status</td>
+		<td>Delete</td>
+	  </tr>
+	 <%
+		for (Product product : products) {
+	 %>
+	  <tr>
+	    <td><%=product.getId() %></td>
+	    <td><%=product.getName() %></td>
+	    <td><%=product.getDescription() %></td>
+	    <td><%=product.getStartPrice() %></td>
+	    <td><%=product.getBuyoutPrice() %></td>
+	    <td><%=product.getCurrentPrice() %></td>
+	    <td><%=product.getStartDate() %></td>
+	    <td><%=product.getEndDate() %></td>
+	    <td><%=product.getSellerID() %></td>
+	    <td><%=product.getCurrentBuyerID() %></td>
+	    <td><% if (product.isActive()) {%> active <% } else { %> disactive <% } %> </td>
+	    <td><input type="submit" name="deleteProduct" value="Delete" /></td>
+	  </tr>
+		<% } %>
+	</table>
+	
+</form>
 <br>
 
 
