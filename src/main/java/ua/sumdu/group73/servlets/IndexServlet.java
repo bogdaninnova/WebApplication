@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,13 +29,17 @@ public class IndexServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(IndexServlet.class);
     private List<Category> categoryList;
     private List<Product> products;
+    private List<Product> showProduct;
     private List<Picture> pictures;
     private List<User> users;
-    private int count = 0;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         log.info("Init UserServlet");
+        products = null;
+        products = OracleDataBase.getInstance().getAllActiveProducts();
+        log.info("Init products");
+        showProduct = new ArrayList<Product>();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -74,7 +79,8 @@ public class IndexServlet extends HttpServlet {
                 products = OracleDataBase.getInstance().getProductsByCategory(Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("products", products);
             } else {
-                count = 0;
+                products = null;
+                products = OracleDataBase.getInstance().getAllActiveProducts();
             }
             sendResponse(response, "<result>OK</result>");
         } else if ("product".equals(request.getParameter("action"))) {
@@ -88,24 +94,26 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (count == 0) {
-            products = null;
-            pictures = null;
-            products = OracleDataBase.getInstance().getAllProducts();
-            log.info("Init products");
-            pictures = OracleDataBase.getInstance().getAllPictures();
-            log.info("Init pictures");
-            count += 1;
+        showProduct.clear();
+        if (products != null) {
+            for (Product product : products) {
+                if (OracleDataBase.getInstance().isProductActive(product.getId())) {
+                    showProduct.add(OracleDataBase.getInstance().getProduct(product.getId()));
+                }
+            }
         }
 
         categoryList = null;
         users = null;
+        pictures = null;
         categoryList = OracleDataBase.getInstance().getAllCategories();
         log.info("Init categoryList" + categoryList);
         users = OracleDataBase.getInstance().getAllUsers();
+        pictures = OracleDataBase.getInstance().getAllPictures();
+        log.info("Init pictures");
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
-        request.setAttribute("products", products);
+        request.setAttribute("products", showProduct);
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
         rd.forward(request, response);

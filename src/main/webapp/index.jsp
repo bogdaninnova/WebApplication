@@ -209,7 +209,7 @@
                                 if (users != null) {%>
                             <% for (User userBuyer : users) {
                                 if (product.getCurrentBuyerID() == userBuyer.getId())
-                                    nameBuyer = userBuyer.getName();
+                                    nameBuyer = userBuyer.getLogin();
                             }%>
                             <%=nameBuyer%>
                             <% }
