@@ -161,22 +161,23 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return user;
     }
 
-    public boolean isLoginFree(String login) {
-    	log.info("Method isLoginFree starts.....");
-    	boolean result = false;
-    	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_LOGIN_FREE)) {	
-        	preparedStatement.setString(1, login);
-        	try(ResultSet rs = preparedStatement.executeQuery()) {
-        		result = !rs.next();
-        	}
-        } catch (SQLException e) {
-            log.error("SQLException in isLoginFree()", e);
-        } finally {
-        	closeConnection();
-        }
-        return result;
-    }
+	public boolean isLoginFree(String login) {
+		log.info("Method isLoginFree starts.....");
+		boolean result = false;
+		initConnection();
+	    try (PreparedStatement preparedStatement =
+	    		conn.prepareStatement(Queries.IS_LOGIN_FREE)) {	
+	    	preparedStatement.setString(1, login);
+	    	try(ResultSet rs = preparedStatement.executeQuery()) {
+	    		result = !rs.next();
+	    	}
+	    } catch (SQLException e) {
+	        log.error("SQLException in isLoginFree()", e);
+	    } finally {
+	    	closeConnection();
+	    }
+	    return result;
+	}
 
     public boolean isEmailFree(String login) {
     	log.info("Method isEmailFree starts.....");
@@ -218,8 +219,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int age = rs.getByte("AGE");
 		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
 		            
-		            if (rs.getString("PASSWORD").equals(password))
-		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
+		            if (rs.getString("PASSWORD").equals(password) &&
+				       (!status.equals("unactivated")) &&
+				       (!status.equals("banned")))
+		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
         } catch (SQLException e) {
@@ -248,8 +251,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int age = rs.getByte("AGE");
 		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
 		            
-		            if (rs.getString("PASSWORD").equals(password))
-		            	user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
+		            if (rs.getString("PASSWORD").equals(password) &&
+		            	(!status.equals("unactivated")) &&
+		            	(!status.equals("banned")))
+		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
         } catch (SQLException e) {
