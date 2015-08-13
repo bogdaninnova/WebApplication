@@ -427,6 +427,28 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
 		return result;
 	}
+
+	@Override
+	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone) {
+	   	log.info("Method changePassword starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.CHANGE_DATA)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, secondName);
+            preparedStatement.setDate(3, new java.sql.Date(birthDate));
+            preparedStatement.setString(4, phone);
+            preparedStatement.setInt(5, userID);
+            result = preparedStatement.executeUpdate() != 0;
+        } catch (SQLException e) {
+            log.error("SQLException in changePassword()", e);
+        } finally {
+        	closeConnection();
+        }
+		return result;
+
+		
+	}
 	
     //------------------------------------------------------
     //----------------XXX:PRODUCT FOLLOWING-----------------

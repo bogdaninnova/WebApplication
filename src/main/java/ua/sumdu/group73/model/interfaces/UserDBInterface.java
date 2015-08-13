@@ -52,4 +52,6 @@ public interface UserDBInterface {
 	
 	public boolean changePassword(int userID, String oldPassword, String newPassword);
 	
+	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone);
+	
 }
