@@ -1,0 +1,11 @@
+<div class="container-user">
+    <h2> What do you want to change? </h2><br>
+
+    <form>
+        <input type="radio" name="changeSelect" value="changePassword"> Password<br>
+        <input type="radio" name="changeSelect" value="changeUser"> User<br>
+        <input type="radio" name="changeSelect" value="changeEmail"> Email<br>
+    </form>
+
+    <button onclick="clickChange(document.getElementsByName('changeSelect'));"> Change</button>
+</div>

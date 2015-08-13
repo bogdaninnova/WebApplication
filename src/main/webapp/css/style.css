@@ -149,3 +149,9 @@ label:hover {
 .container-lots-description {
     height : 80px;
 }
+
+.container-user {
+    width : 70%;
+    min-height: 50%;
+    margin-left: 25%;
+}

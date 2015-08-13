@@ -8,7 +8,15 @@
 
   <% if (request.getAttribute("showContent").equals("information")) { %>
       <%@include file="../jspf/user-information.jspf"%>
-   <% } %>
+   <% } else if (request.getAttribute("showContent").equals("changeUserData")) { %>
+      <%@include file="../jspf/user-changeData.jspf"%>
+  <% } else if (request.getAttribute("showContent").equals("changePassword")) { %>
+      <%@include file="../jspf/user-changePassword.jspf"%>
+  <% } else if (request.getAttribute("showContent").equals("changeUser")) { %>
+      <%@include file="../jspf/user-changeUser.jspf"%>
+  <% } else if (request.getAttribute("showContent").equals("changeEmail")) { %>
+      <%@include file="../jspf/user-changeEmail.jspf"%>
+  <% } %>
 
 <%@include file="../jspf/user-footer.jspf"%>
 </div>

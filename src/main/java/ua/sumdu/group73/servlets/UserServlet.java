@@ -37,6 +37,19 @@ public class UserServlet extends HttpServlet {
             log.info("Click Information");
             showContent = "information";
             sendResponse(response, "<result>OK</result>");
+        } else if ("clickUserChangeData".equals(request.getParameter("action"))) {
+            log.info("Click UserChangeData");
+            showContent = "changeUserData";
+            sendResponse(response, "<result>OK</result>");
+        } else if ("changePassword".equals(request.getParameter("action"))) {
+            showContent = "changePassword";
+            sendResponse(response, "<result>OK</result>");
+        } else if ("changeUser".equals(request.getParameter("action"))) {
+            showContent = "changeUser";
+            sendResponse(response, "<result>OK</result>");
+        } else if ("changeEmail".equals(request.getParameter("action"))) {
+            showContent = "changeEmail";
+            sendResponse(response, "<result>OK</result>");
         }
     }
 

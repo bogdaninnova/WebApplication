@@ -3,7 +3,7 @@
         <br><br>
         <ul class = "topnav">
             <li><a href="#" onClick="clickInformation();">Information</a></li>
-            <li><a href="#" onClick="">Change data</a></li>
+            <li><a href="#" onClick="clickChangeUserData();">Change user data</a></li>
             <li><a href="#" onClick="">Add lot</a></li>
             <li><a href="#" onClick="">Show my lots</a></li>
         </ul>
