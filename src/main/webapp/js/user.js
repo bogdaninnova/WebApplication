@@ -91,3 +91,47 @@ function clickChange(changeSelect) {
     }
 }
 
+function validPassword(oldPassword, newPassword, confirmPassword) {
+    if (oldPassword.length > 0) {
+        if (newPassword.length > 0) {
+            if (confirmPassword.length > 0) {
+                if (newPassword === confirmPassword) {
+                    clickChangePassword(hex_md5(oldPassword), hex_md5(newPassword));
+                } else {
+                    alert("NewPassword not equal confirmPassword");
+                }
+            } else {
+                alert("Please enter confirm password");
+            }
+        } else {
+            alert("Please enter new password");
+        }
+    } else {
+        alert("Please enter password");
+    }
+}
+
+function clickChangePassword(oldPassword, newPassword) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickChangePassword",
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                $("#password").val("");
+                $("#newPassword").val("");
+                $("#confirmPassword").val("");
+                alert("Your password is changed");
+                window.location.replace("user");
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}

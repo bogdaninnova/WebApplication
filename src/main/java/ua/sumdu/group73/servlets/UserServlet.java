@@ -1,6 +1,8 @@
 package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
+import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -50,6 +52,15 @@ public class UserServlet extends HttpServlet {
         } else if ("changeEmail".equals(request.getParameter("action"))) {
             showContent = "changeEmail";
             sendResponse(response, "<result>OK</result>");
+        } else if ("clickChangePassword".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                if (OracleDataBase.getInstance().changePassword(user.getId(), request.getParameter("oldPassword"), request.getParameter("newPassword"))) {
+                    sendResponse(response, "<result>OK</result>");
+                }
+            } else {
+                sendResponse(response, "<result>Please Login</result>");
+            }
         }
     }
 
