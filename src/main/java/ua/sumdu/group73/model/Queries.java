@@ -138,6 +138,9 @@ public class Queries {
 	public static final String UNBAN_ALL_USERS =
 			"UPDATE USERS SET STATUS = 'user' WHERE STATUS = 'banned'";
 	
+	public static final String CHANGE_PASSWORD =
+			"UPDATE USERS SET PASSWORD = ? WHERE ID = ? AND PASSWORD = ?";
+	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"
 			+ " ((REGISTRATION_DATE + INTERVAL '24' HOUR) < SYSDATE)";

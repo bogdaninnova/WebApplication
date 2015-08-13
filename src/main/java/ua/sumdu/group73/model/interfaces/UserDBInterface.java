@@ -50,4 +50,6 @@ public interface UserDBInterface {
 	
 	public boolean removeUnactivatedUsers();
 	
+	public boolean changePassword(int userID, String oldPassword, String newPassword);
+	
 }
