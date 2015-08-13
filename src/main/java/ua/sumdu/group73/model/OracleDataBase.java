@@ -179,12 +179,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	    return result;
 	}
 
-    public boolean isEmailFree(String login) {
+    public boolean isEmailFree(String newEmail) {
     	log.info("Method isEmailFree starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.IS_EMAIL_FREE)) {
-            preparedStatement.setString(1, login);
+            preparedStatement.setString(1, newEmail);
             try(ResultSet rs = preparedStatement.executeQuery()) {
             	result = !rs.next();
             }
@@ -430,7 +430,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 	@Override
 	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone) {
-	   	log.info("Method changePassword starts.....");
+	   	log.info("Method changeDate starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.CHANGE_DATA)) {
@@ -441,13 +441,28 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(5, userID);
             result = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
+            log.error("SQLException in changeDate()", e);
+        } finally {
+        	closeConnection();
+        }
+		return result;
+	}
+	
+	@Override
+	public boolean changeEMail(int userID, String newEmail) {
+	   	log.info("Method changePassword starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.CHANGE_EMAIL)) {
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setInt(2, userID);
+            result = preparedStatement.executeUpdate() != 0;//TODO not so easy
+        } catch (SQLException e) {
             log.error("SQLException in changePassword()", e);
         } finally {
         	closeConnection();
         }
 		return result;
-
-		
 	}
 	
     //------------------------------------------------------
@@ -808,6 +823,83 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return list;
     }
+	
+	@Override
+	public boolean deleteProducts(List<Integer> productsID) {
+		this.deleteProductsFOLLOWINGS(productsID);
+		this.deleteProductsPICTURES(productsID);
+		this.deleteProductsPRODUCT_CATEGORY(productsID);
+		this.deleteProductsTRANSACTIONS(productsID);
+		return this.deleteProductsPRODUCTS(productsID);
+	}
+	
+	private boolean deleteProductsPRODUCTS(List<Integer> productsID) {
+    	log.info("Method deleteProductsPRODUCTS starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsByIdFromPRODUCTS(productsID))) {
+            int res = preparedStatement.executeUpdate();
+            result = res != 0;
+        } catch (SQLException e) {
+            log.error("SQLException in deleteProductsPRODUCTS()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+	
+	private void deleteProductsTRANSACTIONS(List<Integer> productsID) {
+    	log.info("Method deleteProductsTRANSACTIONS starts.....");
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsByIdFromTRANSACTIONS(productsID))) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException in deleteProductsTRANSACTIONS()", e);
+        } finally {
+        	closeConnection();
+        }
+	}
+	
+	private void deleteProductsPRODUCT_CATEGORY(List<Integer> productsID) {
+    	log.info("Method deleteProductsPRODUCT_CATEGORY starts.....");
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsByIdFromPRODUCT_CATEGORY(productsID))) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException in deleteProductsPRODUCT_CATEGORY()", e);
+        } finally {
+        	closeConnection();
+        }
+	}
+	
+	private void deleteProductsPICTURES(List<Integer> productsID) {
+    	log.info("Method deleteProductsPICTURES starts.....");
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsByIdFromPICTURES(productsID))) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException in deleteProductsPICTURES()", e);
+        } finally {
+        	closeConnection();
+        }
+	}
+	
+	private void deleteProductsFOLLOWINGS(List<Integer> productsID) {
+    	log.info("Method deleteProductsFOLLOWINGS starts.....");
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsByIdFromFOLLOWINGS(productsID))) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException in deleteProductsFOLLOWINGS()", e);
+        } finally {
+        	closeConnection();
+        }
+	}
 
 
     //------------------------------------------------------
@@ -948,7 +1040,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 
 
-	@Override//TODO CHECK
+	@Override
 	public boolean addCategoriesToProduct(int productID, List<Integer> categoriesID) {
     	log.info("Method addCategoriesToProduct starts.....");
     	boolean result = false;

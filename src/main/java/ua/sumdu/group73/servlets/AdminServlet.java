@@ -46,8 +46,22 @@ public class AdminServlet extends HttpServlet {
 			}
 			doGet(request, response);
 		} else if (request.getParameter("deleteProduct") != null) {
-			System.out.println("deleteProduct");
+			
+			String[] s = request.getParameterValues("deleteCheckBox");
+			
+			if (s != null) {
+				List<Integer> deleteList = new ArrayList<Integer>();
+				for (int i = 0; i < s.length; i++){
+					System.out.println(s[i]);
+					deleteList.add(Integer.valueOf(s[i]));
+				}
+				OracleDataBase.getInstance().deleteProducts(deleteList);
+			}
+			
 			doGet(request, response);
+			
+		} else if (request.getParameter("BackButton") != null) {
+			response.sendRedirect("index");
 		}
 	}
 

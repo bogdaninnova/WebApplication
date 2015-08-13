@@ -128,13 +128,7 @@ public class Queries {
 			System.out.println(sb.toString());
 		return sb.toString();
 	}
-	
-	public static final String SET_USER_BAN =
-			""
-			+ " WHERE ID = ? AND"
-			+ " STATUS != 'admin' AND"
-			+ " STATUS != 'unactivated'";
-	
+
 	public static final String UNBAN_ALL_USERS =
 			"UPDATE USERS SET STATUS = 'user' WHERE STATUS = 'banned'";
 	
@@ -144,6 +138,9 @@ public class Queries {
 	public static final String CHANGE_DATA =
 			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, BIRTH = ?, PHONE = ?"
 			+ " WHERE ID = ?";
+	
+	public static final String CHANGE_EMAIL =
+			"UPDATE USERS SET EMAIL = ? WHERE ID = ?";
 	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"
@@ -244,7 +241,51 @@ public class Queries {
 				+ " OR "
 					+ "LOWER(NAME) LIKE LOWER(?)";
     
+	public static final String deleteProductsByIdFromPRODUCTS(List<Integer> productsID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM PRODUCTS WHERE ID IN ( ");
+		for (int i = 0; i < productsID.size() - 1; i++)
+			sb.append(productsID.get(i) + ", ");
+		sb.append(productsID.get(productsID.size() - 1) + " )");
+		return sb.toString();
+	}
 	
+	public static final String deleteProductsByIdFromTRANSACTIONS(List<Integer> productsID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM TRANSACTIONS WHERE PRODUCT_ID IN ( ");
+		for (int i = 0; i < productsID.size() - 1; i++)
+			sb.append(productsID.get(i) + ", ");
+		sb.append(productsID.get(productsID.size() - 1) + " )");
+		return sb.toString();
+	}
+	
+	public static final String deleteProductsByIdFromPICTURES(List<Integer> productsID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM PICTURES WHERE PRODUCT_ID IN ( ");
+		for (int i = 0; i < productsID.size() - 1; i++)
+			sb.append(productsID.get(i) + ", ");
+		sb.append(productsID.get(productsID.size() - 1) + " )");
+		return sb.toString();
+	}
+	
+	public static final String deleteProductsByIdFromFOLLOWINGS(List<Integer> productsID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM FOLLOWINGS WHERE PRODUCT_ID IN ( ");
+		for (int i = 0; i < productsID.size() - 1; i++)
+			sb.append(productsID.get(i) + ", ");
+		sb.append(productsID.get(productsID.size() - 1) + " )");
+		return sb.toString();
+	}
+	
+	public static final String deleteProductsByIdFromPRODUCT_CATEGORY(List<Integer> productsID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM PRODUCT_CATEGORY WHERE PRODUCT_ID IN ( ");
+		for (int i = 0; i < productsID.size() - 1; i++)
+			sb.append(productsID.get(i) + ", ");
+		sb.append(productsID.get(productsID.size() - 1) + " )");
+		return sb.toString();
+	}
+
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
     //------------------------------------------------------

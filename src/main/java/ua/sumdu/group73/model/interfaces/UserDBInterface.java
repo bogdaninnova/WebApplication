@@ -19,21 +19,10 @@ public interface UserDBInterface {
 	
 	public boolean isLoginFree(String login);
 	
-	public boolean isEmailFree(String login);
+	public boolean isEmailFree(String newEmail);
 	
-	
-	/**
-	 * Check login and password and do authorization.
-	 * @return id of authorizated user. If login or password is wrong - method returns -1.
-	 * 
-	 * */
 	public User authorization(String login, String password);
-	
-	/**
-	 * Check login and password and do authorization.
-	 * @return id of authorizated user. If login or password is wrong - method returns -1.
-	 * 
-	 * */
+
 	public User authorizationByEmail(String eMail, String password);
 	
 	public boolean isAdmin(int id);
@@ -54,4 +43,5 @@ public interface UserDBInterface {
 	
 	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone);
 	
+	public boolean changeEMail(int userID, String newEmail);
 }
