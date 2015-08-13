@@ -7,7 +7,7 @@ import ua.sumdu.group73.model.objects.*;
 public interface ProductDBInterface {
 
 	public boolean addProduct(int sellerID, String name, String description,
-    		Date startDate, Date endDate, int startPrice, int buyoutPrice);
+			long endDate, int startPrice, int buyoutPrice);
 	
 	public Product getProduct(int id);
 	

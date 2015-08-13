@@ -38,9 +38,12 @@ public class AdminServlet extends HttpServlet {
 		if (request.getParameter("saveUsers") != null) {
 			OracleDataBase.getInstance().unBanAllUsers();
 			String[] s = request.getParameterValues("ban");
-			if (s != null)
+			if (s != null) {
+				List<Integer> banList = new ArrayList<Integer>();
 				for (int i = 0; i < s.length; i++)
-					OracleDataBase.getInstance().setUserBan(Integer.valueOf(s[i]));
+					banList.add(Integer.valueOf(s[i]));
+				OracleDataBase.getInstance().setUserBan(banList);
+			}
 			doGet(request, response);
 		} else if (request.getParameter("deleteProduct") != null) {
 			System.out.println("deleteProduct");

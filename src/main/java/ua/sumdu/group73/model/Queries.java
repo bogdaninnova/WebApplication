@@ -1,5 +1,7 @@
 package ua.sumdu.group73.model;
 
+import java.util.List;
+
 public class Queries {
 
     //------------------------------------------------------
@@ -113,8 +115,22 @@ public class Queries {
 	public static final String ACTIVATE_USER =
 			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 	
+	
+	public static String setUserBanQuery(List<Integer> usersID) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE USERS SET STATUS = 'banned' WHERE ID IN ( ");
+		
+		for (int i = 0; i < usersID.size() - 1; i++)
+			sb.append(usersID.get(i) + ", ");
+		sb.append(usersID.get(usersID.size() - 1));	
+		sb.append(") AND STATUS != 'admin' AND STATUS != 'unactivated'");
+			System.out.println(sb.toString());
+		return sb.toString();
+	}
+	
 	public static final String SET_USER_BAN =
-			"UPDATE USERS SET STATUS = 'banned'"
+			""
 			+ " WHERE ID = ? AND"
 			+ " STATUS != 'admin' AND"
 			+ " STATUS != 'unactivated'";
@@ -174,7 +190,7 @@ public class Queries {
 					+ "?,"
 					+ "?,"
 					+ "?,"
-					+ "?,"
+					+ "SYSDATE,"
 					+ "?,"
 					+ "?,"
 					+ "?,"
@@ -257,6 +273,15 @@ public class Queries {
 				+ " LEFT JOIN PRODUCTS ON PRODUCTS.ID ="
 						+ " PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
     
+	public static final String setCategoriesToProductQuery(int productID, List<Integer> categoriesID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT ALL ");
+		for (int categoryID : categoriesID)
+			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + categoryID +", " + productID + ") ");
+		sb.append("SELECT * FROM dual");
+		return sb.toString();
+	}
+	
 	
     //------------------------------------------------------
     //------------------XXX:TRANSACTION---------------------

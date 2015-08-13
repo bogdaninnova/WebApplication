@@ -344,12 +344,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 	
 	@Override
-	public boolean setUserBan(int userID) {
+	public boolean setUserBan(List<Integer> usersID) {
     	log.info("Method setUserBan starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.SET_USER_BAN)) {
-        	preparedStatement.setInt(1, userID);
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.setUserBanQuery(usersID))) {
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -498,7 +497,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean addProduct(int sellerID, String name, String description,
-                              Date startDate, Date endDate, int startPrice, int buyoutPrice) {
+                              long endDate, int startPrice, int buyoutPrice) {
     	log.info("Method addProduct starts.....");
     	boolean result = false;
     	initConnection();
@@ -508,10 +507,9 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, sellerID);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, description);
-            preparedStatement.setDate(4, new java.sql.Date(startDate.getTime()));
-            preparedStatement.setDate(5, new java.sql.Date(endDate.getTime()));
-            preparedStatement.setInt(6, startPrice);
-            preparedStatement.setInt(7, buyoutPrice);
+            preparedStatement.setDate(4, new java.sql.Date(endDate));
+            preparedStatement.setInt(5, startPrice);
+            preparedStatement.setInt(6, buyoutPrice);
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -907,6 +905,25 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
 		return list;
+	}
+	
+
+
+	@Override//TODO CHECK
+	public boolean addCategoriesToProduct(int productID, List<Integer> categoriesID) {
+    	log.info("Method addCategoriesToProduct starts.....");
+    	boolean result = false;
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(
+    			Queries.setCategoriesToProductQuery(productID, categoriesID))) {    		
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in addCategoriesToProduct()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
 	}
   
 
