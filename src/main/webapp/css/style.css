@@ -25,6 +25,16 @@ body {
     border-bottom-width: 1px;
 }
 
+.container-footer {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
 .form-top {
     line-height: 24px;
     font-size: 12px;

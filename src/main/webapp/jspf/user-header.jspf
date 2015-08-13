@@ -1,0 +1,53 @@
+<%@ page import="ua.sumdu.group73.model.objects.User" %>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/menu.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".topnav").accordion({
+                accordion: false,
+                speed: 100,
+                closedSign: '[+]',
+                openedSign: '[-]'
+            });
+        });
+    </script>
+    <script src="js/user.js"></script>
+
+    <title>User cabinet</title>
+</head>
+<body>
+<div class="container">
+    <div class="form-top" align="right">
+        <tr>
+            <% User user = (User) session.getAttribute("user");
+                String userName = "";
+                String userSecondName = "";
+                if (user != null) {
+                    userName = user.getName();
+                    userSecondName = user.getSecondName();
+                }
+            %>
+            <td>Welcome to cabinet, </td>
+            <td> <%= userSecondName%> </td>
+            <td> <%= userName%> </td>
+            <td><label onclick=""> [<b> Exit </b>] </label></td>
+        </tr>
+    </div>
+    <header>
+        <div id="block-logo"><img src="images/logo.png" width="80" height="80" alt="Logo"></div>
+        <div id="block-contact">
+            tel. XXX XXX XX XX<br>
+            tel. XXX XXX XX XX<br><br><br>
+            group7.3@sumy.ua
+        </div>
+        <div id="block-name-site">
+            <h1 align="center"><strong>AUCTION</strong></h1>
+        </div>
+    </header>
+</div>
