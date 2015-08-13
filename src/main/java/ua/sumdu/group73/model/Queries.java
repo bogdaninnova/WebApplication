@@ -45,7 +45,7 @@ public class Queries {
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
 			+ " FROM USERS WHERE ID = ?";
 	
-	public static final String GET_USER_BY_ID =
+	public static final String GET_USER_BY_LOGIN =
 			"SELECT"
 					+ " ID,"
 					+ " PASSWORD,"
@@ -56,7 +56,7 @@ public class Queries {
 					+ " STATUS,"
 					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
-			+ " FROM USERS WHERE LOGIN = ?";
+			+ " FROM USERS WHERE LOGIN = LOWER(?)";
 	
 	public static final String IS_LOGIN_FREE =
 			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
@@ -113,7 +113,7 @@ public class Queries {
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
 	public static final String ACTIVATE_USER =
-			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
+			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = LOWER(?)";
 	
 	
 	public static String setUserBanQuery(List<Integer> usersID) {
@@ -140,7 +140,7 @@ public class Queries {
 			+ " WHERE ID = ?";
 	
 	public static final String CHANGE_EMAIL =
-			"UPDATE USERS SET EMAIL = ? WHERE ID = ?";
+			"UPDATE USERS SET EMAIL = LOWER(?) WHERE LOGIN = LOWER(?)";
 	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"
@@ -229,7 +229,8 @@ public class Queries {
 			+ " WHERE ID = ?";
     
 	public static final String FINISH_AUCTIONS =
-			"SELECT * FROM PRODUCTS WHERE IS_ACTIVE = 'active' AND END_DATE < SYSDATE";
+			"SELECT * FROM PRODUCTS"
+			+ " WHERE IS_ACTIVE = 'active' AND END_DATE < SYSDATE";
     
 	public static final String GET_ALL_PRODUCTS =
 			"SELECT * FROM PRODUCTS";

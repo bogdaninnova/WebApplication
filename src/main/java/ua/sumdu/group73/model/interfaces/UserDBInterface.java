@@ -43,5 +43,5 @@ public interface UserDBInterface {
 	
 	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone);
 	
-	public boolean changeEMail(int userID, String newEmail);
+	public boolean changeEMail(String login, String newEmail);
 }

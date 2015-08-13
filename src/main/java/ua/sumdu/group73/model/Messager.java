@@ -17,16 +17,15 @@ public class Messager {
 		
 		log.info("Method sendEndAuctionMessage starts.....");
 		
-		OracleDataBase database = OracleDataBase.getInstance();
 		MailSender mailer = MailSender.getInstance();
 		
-		Product product = database.getProduct(productID);
+		Product product = OracleDataBase.getInstance().getProduct(productID);
 		
 		if (product.getCurrentPrice() == 0) 
 			return;
 		
-		User buyer = database.getUser(product.getCurrentBuyerID());
-		User seller = database.getUser(product.getSellerID());
+		User buyer = OracleDataBase.getInstance().getUser(product.getCurrentBuyerID());
+		User seller = OracleDataBase.getInstance().getUser(product.getSellerID());
 		
 		String buyerName = buyer.getName();
 		String buyerMail = buyer.geteMail();
@@ -71,7 +70,7 @@ public class Messager {
 		textSB.append("Hello, " + name +"! <br>");
 		textSB.append("You just registred at our auction Lab3!<br><br>");
 		
-		textSB.append("<a href=\"" + VERIFICATION_URL + getToken(login) +
+		textSB.append("<a href=\"" + VERIFICATION_URL + getRegistrationToken(login) +
 				"\" target=\"_blank\">Use this link for verifying your account</a>");
 		
 		textSB.append("<br><br>Login: " + login + "<br>");
@@ -80,10 +79,42 @@ public class Messager {
 		mailer.send("Auction Lab3: REGISTRATION", textSB.toString(), mail);
 	}
 	
-	private static String getToken(String login) {
+	public static boolean changeMail(String login, String mail) {
+		
+		log.info("Method changeMailLetter starts.....");
+		
+		if (!OracleDataBase.getInstance().isEmailFree(mail))
+			return false;
+		
+		MailSender mailer = MailSender.getInstance();
+		
+		StringBuilder textSB = new StringBuilder();
+
+		textSB.append("Hello, " + login +"! <br>");
+		textSB.append("You just changed email of your account in auction Lab3!<br><br>");
+		
+		textSB.append("<a href=\"" +
+				VERIFICATION_URL +
+				getEmailChangesToken(login, mail) +
+				"\" target=\"_blank\">Use this link for verifying new email</a>");
+		
+		textSB.append("This mail was generated automatically, please don't answer on it");
+		
+		mailer.send("Auction Lab3: MAIL CHANGING", textSB.toString(), mail);
+		
+		return true;
+	}
+	
+	private static String getRegistrationToken(String login) {
 		String loginToken = StringCrypter.getInstance().encrypt(login);
 		String regDateToken = StringCrypter.getInstance().encrypt(
 				String.valueOf(new Date().getTime()));
 		return "?l=" + loginToken + "&d=" + regDateToken;
+	}
+	
+	private static String getEmailChangesToken(String login, String email) {
+		String idToken = StringCrypter.getInstance().encrypt(login);
+		String emailToken = StringCrypter.getInstance().encrypt(email);
+		return "?l=" + idToken + "&e=" + emailToken;
 	}
 }

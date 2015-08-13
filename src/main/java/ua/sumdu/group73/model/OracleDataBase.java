@@ -137,7 +137,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method getUser starts.....");
     	User user = null;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER_BY_ID)) {
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
 	            rs.next();
@@ -449,14 +449,16 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 	
 	@Override
-	public boolean changeEMail(int userID, String newEmail) {
+	public boolean changeEMail(String login, String newEmail) {
 	   	log.info("Method changePassword starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.CHANGE_EMAIL)) {
             preparedStatement.setString(1, newEmail);
-            preparedStatement.setInt(2, userID);
-            result = preparedStatement.executeUpdate() != 0;//TODO not so easy
+            preparedStatement.setString(2, login);
+            result = preparedStatement.executeUpdate() != 0;
+            if (result)
+            	System.out.println(Queries.CHANGE_EMAIL);
         } catch (SQLException e) {
             log.error("SQLException in changePassword()", e);
         } finally {
