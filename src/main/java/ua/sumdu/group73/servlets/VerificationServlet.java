@@ -19,23 +19,31 @@ public class VerificationServlet extends HttpServlet {
        
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		String loginToken = (String) request.getParameter("l");
-		String dateToken = (String) request.getParameter("d");
-		
 		loginToken = loginToken.replaceAll(" ", "+");
-		dateToken = dateToken.replaceAll(" ", "+");
 		String login = StringCrypter.getInstance().decrypt(loginToken);
-		String dateString = StringCrypter.getInstance().decrypt(dateToken);
 		
-		long regDate = Long.valueOf(dateString);
-
-		if ((regDate + 24 * 60 * 60 * 1000) < new Date().getTime())
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		else {
-			OracleDataBase.getInstance().activateUser(login);
-			response.sendRedirect("login");
+		String dateToken = (String) request.getParameter("d");
+		String emailToken = (String) request.getParameter("e");		
+		
+		if (dateToken != null) {
+			
+			dateToken = dateToken.replaceAll(" ", "+");
+			String dateString = StringCrypter.getInstance().decrypt(dateToken);
+			long regDate = Long.valueOf(dateString);
+	
+			if ((regDate + 24 * 60 * 60 * 1000) < new Date().getTime())
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			else {
+				OracleDataBase.getInstance().activateUser(login);
+				response.sendRedirect("login");
+			}
+		} else if (emailToken != null) {
+			emailToken = emailToken.replaceAll(" ", "+");
+			String email = StringCrypter.getInstance().decrypt(emailToken);
+			OracleDataBase.getInstance().changeEMail(login, email);
+			response.sendRedirect("index");
 		}
-		
 	}
-
 }

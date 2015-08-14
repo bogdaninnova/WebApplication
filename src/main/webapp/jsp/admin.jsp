@@ -7,7 +7,6 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <script src="./js/ladmin.js"></script>
 	<title>Admin</title>
 </head>
 <body>
@@ -96,11 +95,11 @@
 	    <td><%=product.getSellerID() %></td>
 	    <td><%=product.getCurrentBuyerID() %></td>
 	    <td><% if (product.isActive()) {%> active <% } else { %> disactive <% } %> </td>
-	    <td><input type="submit" name="deleteProduct" value="Delete" /></td>
+	    <td><input type="checkbox" name="deleteCheckBox" value=<%=product.getId() %> ></td>
 	  </tr>
 		<% } %>
 	</table>
-	
+	<input type="submit" name="deleteProduct" value="Delete Selected" />
 </form>
 <br>
 
@@ -125,8 +124,9 @@
 	
 <br>
 
-<button onclick="clickBack();">Back</button>
-	
+<form action="admin" method="POST">
+	<input type="submit" name="BackButton" value="Back" />
+</form>	
 	
 </body>
 </html>

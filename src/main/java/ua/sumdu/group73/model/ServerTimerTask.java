@@ -34,12 +34,8 @@ public class ServerTimerTask {
 			OracleDataBase.getInstance().disactivateProduct(product.getId());
 	        
 	        if (product.getCurrentPrice() != 0) {
-	        	OracleDataBase.getInstance().addTransaction(
-	            		product.getCurrentBuyerID(),
-	            		product.getSellerID(),
-	            		product.getId(),
-	            		product.getCurrentPrice(),
-	            		product.getEndDate());
+	        	OracleDataBase.getInstance()
+	        		.finishProductFollowings(product.getId());
 	        	Messager.sendEndAuctionMessage(product.getId());
 	        }
 		}
