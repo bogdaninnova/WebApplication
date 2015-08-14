@@ -136,7 +136,7 @@ public class Queries {
 			"UPDATE USERS SET PASSWORD = ? WHERE ID = ? AND PASSWORD = ?";
 	
 	public static final String CHANGE_DATA =
-			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, BIRTH = ?, PHONE = ?"
+			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, PHONE = ?"
 			+ " WHERE ID = ?";
 	
 	public static final String CHANGE_EMAIL =

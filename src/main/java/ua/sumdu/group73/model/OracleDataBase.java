@@ -462,16 +462,15 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 
 	@Override
-	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone) {
+	public boolean changeData(int userID, String name, String secondName, String phone) {
 	   	log.info("Method changeDate starts.....");
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.CHANGE_DATA)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, secondName);
-            preparedStatement.setDate(3, new java.sql.Date(birthDate));
-            preparedStatement.setString(4, phone);
-            preparedStatement.setInt(5, userID);
+            preparedStatement.setString(3, phone);
+            preparedStatement.setInt(4, userID);
             result = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             log.error("SQLException in changeDate()", e);
@@ -706,7 +705,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return result;
     }
     
-    public boolean buyout(int productID, int buyerID) {
+    private boolean buyoutProduct(int productID, int buyerID) {
     	log.info("Method makeBet starts.....");
     	boolean result = false;
     	initConnection();
@@ -721,6 +720,13 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return result;
+    }
+    
+    public boolean buyout(int productID, int buyerID) {
+    	if (buyoutProduct(productID, buyerID))
+    		if(finishProductFollowings(productID))
+    			return true;
+    	return false;
     }
 
     /**

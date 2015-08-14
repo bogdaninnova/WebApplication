@@ -7,6 +7,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="css/style-admin.css"/>
 	<title>Admin</title>
 </head>
 <body>
@@ -17,6 +18,28 @@
 		List<Category> categories = (ArrayList<Category>) request.getAttribute("categories");
     	List<Product> products = (ArrayList<Product>) request.getAttribute("products");
     	List<Picture> pictures = (ArrayList<Picture>) request.getAttribute("pictures");
+	
+	List<Category> list = new ArrayList<Category>();
+		
+		list.add(new Category(1, "1"));
+		list.add(new Category(2, "2"));
+		list.add(new Category(3, "3"));
+		list.add(new Category(31, 3, "31"));
+		list.add(new Category(32, 3, "32"));
+		list.add(new Category(33, 3, "33"));
+		list.add(new Category(4, "4"));
+		list.add(new Category(5, "5"));
+		list.add(new Category(51, 5, "51"));
+		list.add(new Category(52, 5, "52"));
+		list.add(new Category(521, 52, "521"));
+		list.add(new Category(522, 52, "522"));
+		list.add(new Category(523, 52, "523"));
+		list.add(new Category(524, 52, "524"));
+		list.add(new Category(5241, 524, "5241"));
+		list.add(new Category(53, 5, "53"));
+		list.add(new Category(54, 5, "54"));
+		list.add(new Category(6, "6"));
+	
 	 %>
 	
 	
@@ -104,25 +127,124 @@
 <br>
 
 
-	<center><h3>CATEGORIES</h3></center>
-<table border="1" style="width:100%">
-  <tr>
-    <td>ID</td>
-    <td>Parent ID</td>
-	<td>Name</td>
-  </tr>
- <%
-	for (Category category : categories) {
- %>
-  <tr>
-    <td><%=category.getId() %></td>
-    <td><%=category.getParentID() %></td>
-    <td><%=category.getName() %></td>
-  </tr>
-	<% } %>
-</table>
-	
+
+
+
+<%=printCategories(categories) %>
 <br>
+
+
+<%!
+	 public static String printCategories(List<Category> list) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<div id=\"multi-derevo\">\n");
+		sb.append("<a href=\"#\">CATEGORIES</a>\n");
+		sb.append("<ul>\n");
+		Map<Category, Boolean> map = new HashMap<Category, Boolean>();
+		for (Category category : list)
+			map.put(category, true);
+
+		for (Category category : map.keySet())
+			if (map.get(category) && (category.getParentID() == 0))
+				printSubcategories(map, category, sb);
+		sb.append("</ul>\n");
+		sb.append("</div>\n");
+		System.out.println(sb);
+		return sb.toString();
+	}
+%>
+	
+<%!
+	private static void printSubcategories(Map<Category, Boolean> map, Category category, StringBuilder sb) {
+		
+		map.put(category, false);
+		boolean hasSubcategory = getSubcategory(map, category) != null;
+		
+		sb.append("<li>\n");
+		
+		sb.append("<span><a href=\"#" + category.getId() + "\">" + category.getName() + "</a></span>\n");
+		
+		if (hasSubcategory)
+			sb.append("<ul>\n");
+		
+		while (getSubcategory(map, category) != null)
+			printSubcategories(map, getSubcategory(map, category), sb);
+
+		if (hasSubcategory)
+			sb.append("</ul>\n");
+			
+		sb.append("</li>\n");
+		
+	}
+%>
+	
+<%!
+	private static Category getSubcategory(Map<Category, Boolean> map, Category category) {
+		for (Category cat : map.keySet())
+			if ((map.get(cat)) && cat.getParentID() == category.getId())
+				return cat;
+		return null;
+	}
+%>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
+<script>
+/*<![CDATA[*/
+/*
+Построение дерева по готовому HTML списку.
+
+Выделяем узлы имющие поддеревья и добавляем у ним метку.
+Функция определяет поведение узлов дерева при клике на них. 
+ - Изменяет состояние маркера раскрытия (открыт/закрыт).
+ - Узлы содержащие в себе другие узлы, по клику разворачиваются 
+  или сворачиваются, в зависимости от текущего состояния. 
+ - При переходе с одного узла на другой снимается выделение (.current)
+  и пеходит на выбранный узел.
+ - Определяет последний узел с поддеревом и скрывает соединительную 
+  линию до следующего узла этого уровня.
+*/
+$(document).ready(function () {
+/* Расставляем маркеры на узлах, имющих внутри себя поддерево.
+  Выбираем элементы 'li' которые имеют вложенные 'ul', ставим для них 
+  маркер, т.е. находим в этом 'li' вложенный тег 'a' 
+  и в него дописываем маркер '<em class="marker"></em>'.
+  a:first используется, чтобы узлам ниже 1го уровня вложенности 
+  маркеры не добавлялись повторно. 
+*/
+$('#multi-derevo li:has("ul")').find('a:first').prepend('<em class="marker"></em>');
+// вешаем событие на клик по ссылке
+$('#multi-derevo li span').click(function () {
+  // снимаем выделение предыдущего узла
+  $('a.current').removeClass('current'); 
+  var a = $('a:first',this.parentNode);
+  // Выделяем выбранный узел
+  //было a.hasClass('current')?a.removeClass('current'):a.addClass('current');
+  a.toggleClass('current');
+  var li=$(this.parentNode);
+  /* если это последний узел уровня, то соединительную линию к следующему
+    рисовать не нужно */  
+  if (!li.next().length) {
+    /* берем корень разветвления <li>, в нем находим поддерево <ul>,
+     выбираем прямых потомков ul > li, назначаем им класс 'last' */
+    li.find('ul:first > li').addClass('last');
+  } 
+  // анимация раскрытия узла и изменение состояния маркера
+  var ul=$('ul:first',this.parentNode);// Находим поддерево
+  if (ul.length) {// поддерево есть
+   ul.slideToggle(300); //свернуть или развернуть
+   // Меняем сосотояние маркера на закрыто/открыто
+   var em=$('em:first',this.parentNode);// this = 'li span'
+   // было em.hasClass('open')?em.removeClass('open'):em.addClass('open');
+   em.toggleClass('open');
+ }
+});
+})
+/*]]>*/
+</script>
+
+
 
 <form action="admin" method="POST">
 	<input type="submit" name="BackButton" value="Back" />
