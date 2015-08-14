@@ -11,7 +11,7 @@ function validData(login, password, confirmPassword, firstName, secondName, age,
         } else if (password != confirmPassword) {
             alert("Check the input password confirmation.");
         } else if (firstName.length <= 3) {
-            alert("Check the input password confirmation.");
+            alert("Short name.");
         } else if (!(isEmail(email))) {
             alert("Incorrect Email address.");
         } else {

@@ -135,3 +135,85 @@ function clickChangePassword(oldPassword, newPassword) {
         }
     });
 }
+
+var oldName;
+var oldSecondName;
+var oldPhone;
+
+
+function validUserData(newName, newSecondName, newPhone) {
+    var name;
+    var secondName;
+    var age;
+    var phone;
+
+    if (newName != null && newName != "") {
+        if (newName != oldName) {
+            if (newName.length >=3) {
+                name = newName;
+            } else {
+                name = null;
+                alert("Short name.");
+            }
+        } else {
+            name = oldName;
+        }
+    } else {
+        name = oldName;
+    }
+
+    if (newSecondName != null && newSecondName != "") {
+        if (newSecondName != oldSecondName) {
+            if (newSecondName >= 2) {
+                secondName = newSecondName;
+            } else {
+                secondName = null;
+                alert("Short second name.");
+            }
+        } else {
+            secondName = oldSecondName;
+        }
+    } else {
+        secondName = oldSecondName;
+    }
+
+    if (newPhone != null && newPhone != "") {
+        if (newPhone != oldPhone) {
+            phone = newPhone;
+        } else {
+            phone = oldPhone;
+        }
+    } else {
+        phone = oldPhone;
+    }
+
+    if (name != null && secondName != null) {
+        clickChangeUser(name, secondName, phone);
+    }
+}
+
+function clickChangeUser(name, secondName, phone) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "sendNewUserData",
+            name: name,
+            secondName: secondName,
+            phone: phone
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                $("#changeName").val("");
+                $("#changeSecondName").val("");
+                $("#changePhone").val("");
+                alert("Your user data is changed. Please re login");
+                window.location.replace("user");
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}

@@ -61,6 +61,17 @@ public class UserServlet extends HttpServlet {
             } else {
                 sendResponse(response, "<result>Please Login</result>");
             }
+        } else if ("sendNewUserData".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+//                if (OracleDataBase.getInstance().changeDate(user.getId(), request.getParameter("name"),
+//                        request.getParameter("secondName"), request.getParameter("phone"))) {
+//                        request.getSession().setAttribute("user", null);
+//                    sendResponse(response, "<result>OK</result>");
+//                }
+            } else {
+                sendResponse(response, "<result>Please Login</result>");
+            }
         }
     }
 

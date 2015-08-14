@@ -1,4 +1,48 @@
 <div class="container-user">
     <h2>Change user data</h2>
-
+    <% if (user != null) { %>
+    <script>oldName = '<%= user.getName()%>';
+    oldSecondName = '<%= user.getSecondName()%>';
+    oldPhone = '<%= user.getPhone()%>';</script>
+    <table>
+        <form>
+            <tr>
+                <td>login :</td>
+                <td><%= user.getLogin()%></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Name :</td>
+                <td><%= user.getName()%></td>
+                <td><input type="text" id="changeName" size="15" maxlength="50" required autofocus></td>
+            </tr>
+            <tr>
+                <td>Second Name :</td>
+                <td><%= user.getSecondName()%></td>
+                <td><input type="text" id="changeSecondName" size="15" maxlength="50" required ></td>
+            </tr>
+            <tr>
+                <td>Date birthday :</td>
+                <td><%= user.getAge()%></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Phone :</td>
+                <% if (user.getPhone() != null && user.getPhone() != "") { %>
+                <td><%= user.getPhone()%></td>
+                <% } else { %>
+                <td>not yet</td>
+                <% } %>
+                <td><input type="text" id="changePhone" size="15" maxlength="20"></td>
+            </tr>
+        </form>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button onclick="validUserData($('#changeName').val(),
+                    $('#changeSecondName').val(),
+                    $('#changePhone').val());"> Change </button></td>
+        </tr>
+    </table>
+    <% } %>
 </div>
