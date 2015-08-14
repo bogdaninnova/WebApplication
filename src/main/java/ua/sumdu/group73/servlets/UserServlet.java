@@ -1,6 +1,7 @@
 package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
+import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.User;
 
@@ -64,11 +65,21 @@ public class UserServlet extends HttpServlet {
         } else if ("sendNewUserData".equals(request.getParameter("action"))) {
             if (request.getSession().getAttribute("user") != null) {
                 User user = (User) request.getSession().getAttribute("user");
-//                if (OracleDataBase.getInstance().changeDate(user.getId(), request.getParameter("name"),
-//                        request.getParameter("secondName"), request.getParameter("phone"))) {
-//                        request.getSession().setAttribute("user", null);
-//                    sendResponse(response, "<result>OK</result>");
-//                }
+                if (OracleDataBase.getInstance().changeData(user.getId(), request.getParameter("name"),
+                        request.getParameter("secondName"), request.getParameter("phone"))) {
+                        request.getSession().setAttribute("user", null);
+                    sendResponse(response, "<result>OK</result>");
+                }
+            } else {
+                sendResponse(response, "<result>Please Login</result>");
+            }
+        } else if ("clickChangeEmail".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                if (Messager.changeMail(user.getLogin(), request.getParameter("checkEmail"))) {
+                    request.getSession().setAttribute("user", null);
+                    sendResponse(response, "<result>OK</result>");
+                }
             } else {
                 sendResponse(response, "<result>Please Login</result>");
             }

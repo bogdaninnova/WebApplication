@@ -144,7 +144,6 @@ var oldPhone;
 function validUserData(newName, newSecondName, newPhone) {
     var name;
     var secondName;
-    var age;
     var phone;
 
     if (newName != null && newName != "") {
@@ -209,6 +208,41 @@ function clickChangeUser(name, secondName, phone) {
                 $("#changeSecondName").val("");
                 $("#changePhone").val("");
                 alert("Your user data is changed. Please re login");
+                window.location.replace("user");
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function validEmail(email) {
+    if(isEmail(email)) {
+        clickChangeEmail(email);
+    } else {
+        alert("Incorrect Email address.");
+    }
+}
+
+function isEmail(checkEmail) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(checkEmail);
+}
+
+function clickChangeEmail(checkEmail) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickChangeEmail",
+            checkEmail: checkEmail
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                $("#checkEmail").val("");
+                alert("On an email sent your letter of confirmation.");
                 window.location.replace("user");
             }
         },

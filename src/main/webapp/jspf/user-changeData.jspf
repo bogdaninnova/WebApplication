@@ -7,5 +7,5 @@
         <input type="radio" name="changeSelect" value="changeEmail"> Email<br>
     </form>
 
-    <button onclick="clickChange(document.getElementsByName('changeSelect'));"> Change</button>
+    <button onclick="clickChange(document.getElementsByName('changeSelect'));"> Next </button>
 </div>

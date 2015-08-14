@@ -1,4 +1,16 @@
 <div class="container-user">
-    <h2>Change email</h2>
+    <h2>Change E-mail address</h2>
 
+    <table>
+        <form>
+            <tr>
+                <td>New E-mail :</td>
+                <td><input type="text" id="changeEmail" size="15" maxlength="50" required autofocus ></td>
+            </tr>
+        </form>
+        <tr>
+            <td></td>
+            <td><button onclick="validEmail($('#changeEmail').val());"> Change Email </button></td>
+        </tr>
+    </table>
 </div>
