@@ -160,15 +160,15 @@ public class Queries {
 					+ "(FOLLOWING_ID_S.NEXTVAL,"
 					+ "?,"
 					+ "?)";
-    
-	public static final String IS_FOLLOW =
-			"SELECT * FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
-    
-	public static final String UNFOLLOW =
-			"DELETE FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
-    
+
+	public static final String FINISH_PRODUCT_FOLLOWING =
+			"DELETE FROM FOLLOWINGS WHERE PRODUCT_ID = ?";
+
+	
 	public static final String GET_FOLLOWING_PRODUCTS =
-			"SELECT PRODUCT_ID FROM FOLLOWINGS WHERE FOLLOWER_ID = ?";
+			"SELECT * FROM PRODUCTS"
+			+ " JOIN FOLLOWINGS ON PRODUCTS.ID = FOLLOWINGS.PRODUCT_ID"
+			+ " WHERE FOLLOWINGS.FOLLOWER_ID = ?";
     
 	
     //------------------------------------------------------
@@ -234,6 +234,9 @@ public class Queries {
     
 	public static final String GET_ALL_PRODUCTS =
 			"SELECT * FROM PRODUCTS";
+	
+	public static final String GET_USER_BUYING =
+			"SELECT * FROM PRODUCTS WHERE CURRENT_BUYER_ID = ? AND IS_ACTIVE = 'disactive'";
     
 	public static final String FIND_PRODUCTS =
 			"SELECT * FROM PRODUCTS"
@@ -337,30 +340,30 @@ public class Queries {
     //------------------------------------------------------
 	
 	
-	public static final String GET_SALLERS_TRANSACTIONS =
-			"SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
-    
-	public static final String GET_BUYERS_TRANSACTIONS =
-			"SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
-    
-	public static final String ADD_TRANSACTION =
-			"INSERT INTO TRANSACTIONS("
-					+ "ID,"
-					+ "BUYER_ID,"
-					+ "SELLER_ID,"
-					+ "PRODUCT_ID,"
-					+ "PRICE,"
-					+ "SALE_DATE)"
-			+ "VALUES"
-					+ "TRANSACTION_ID_S.NEXTVAL,"
-					+ "?,"
-					+ "?,"
-					+ "?,"
-					+ "?,"
-					+ "?)";
-    
-	public static final String GET_TRANSACTION =
-			"SELECT * FROM TRANSACTIONS WHERE ID = ?";
+//	public static final String GET_SALLERS_TRANSACTIONS =
+//			"SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
+//    
+//	public static final String GET_BUYERS_TRANSACTIONS =
+//			"SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
+//    
+//	public static final String ADD_TRANSACTION =
+//			"INSERT INTO TRANSACTIONS("
+//					+ "ID,"
+//					+ "BUYER_ID,"
+//					+ "SELLER_ID,"
+//					+ "PRODUCT_ID,"
+//					+ "PRICE,"
+//					+ "SALE_DATE)"
+//			+ "VALUES"
+//					+ "TRANSACTION_ID_S.NEXTVAL,"
+//					+ "?,"
+//					+ "?,"
+//					+ "?,"
+//					+ "?,"
+//					+ "?)";
+//    
+//	public static final String GET_TRANSACTION =
+//			"SELECT * FROM TRANSACTIONS WHERE ID = ?";
     
 	
     //------------------------------------------------------

@@ -29,6 +29,8 @@ public interface UserDBInterface {
 	
 	public List<Product> getUsersProducts(int userID);
 	
+	public List<Product> getUsersBuying(int userID);
+	
 	public List<User> getAllUsers();
 		
 	public boolean setUserBan(List<Integer> usersID);
