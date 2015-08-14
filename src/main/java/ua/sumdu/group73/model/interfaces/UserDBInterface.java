@@ -43,7 +43,7 @@ public interface UserDBInterface {
 	
 	public boolean changePassword(int userID, String oldPassword, String newPassword);
 	
-	public boolean changeDate(int userID, String name, String secondName, long birthDate, String phone);
+	public boolean changeData(int userID, String name, String secondName, String phone);
 	
 	public boolean changeEMail(String login, String newEmail);
 }
