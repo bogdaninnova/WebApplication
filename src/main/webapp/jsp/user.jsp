@@ -16,7 +16,9 @@
       <%@include file="../jspf/user-changeUser.jspf"%>
   <% } else if (request.getAttribute("showContent").equals("changeEmail")) { %>
       <%@include file="../jspf/user-changeEmail.jspf"%>
-  <% } %>
+  <% } else if (request.getAttribute("showContent").equals("clickAddLotPage")) { %>
+    <%@include file="../jspf/user-addLot.jspf"%>
+    <% } %>
 
 <%@include file="../jspf/user-footer.jspf"%>
 </div>

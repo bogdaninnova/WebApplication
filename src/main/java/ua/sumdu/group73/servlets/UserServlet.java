@@ -3,6 +3,8 @@ package ua.sumdu.group73.servlets;
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
+import ua.sumdu.group73.model.objects.Category;
+import ua.sumdu.group73.model.objects.Product;
 import ua.sumdu.group73.model.objects.User;
 
 import javax.servlet.RequestDispatcher;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * This servlet working with user.jsp.
@@ -22,10 +25,14 @@ import java.io.PrintWriter;
 public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private String showContent;
+    private List<Category> categoryList;
+//    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         showContent = "information";
+        categoryList = OracleDataBase.getInstance().getAllCategories();
+//        product = null;
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,11 +90,37 @@ public class UserServlet extends HttpServlet {
             } else {
                 sendResponse(response, "<result>Please Login</result>");
             }
+        } else if ("clickAddLotPage".equals(request.getParameter("action"))) {
+            log.info("Click clickAddLotPage");
+            showContent = "clickAddLotPage";
+            sendResponse(response, "<result>OK</result>");
+        } else if ("clickAddLot".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
+                        Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
+                    if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
+                        if (OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
+                                request.getParameter("description"), Long.parseLong(request.getParameter("endDate")),
+                                Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")))) {
+                            sendResponse(response, "<result>OK</result>");
+                        }
+                    } else {
+                        sendResponse(response, "<result>By it now less than start price</result>");
+                    }
+                } else {
+                    sendResponse(response, "<result>Incorrect price.</result>");
+                }
+            }
+
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        categoryList = OracleDataBase.getInstance().getAllCategories();
         request.setAttribute("showContent", showContent);
+        request.setAttribute("categories", categoryList);
+//        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);
     }

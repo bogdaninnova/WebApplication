@@ -33,7 +33,7 @@ function clickInformation() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("user");
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -52,7 +52,7 @@ function clickChangeUserData() {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("user");
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -79,7 +79,7 @@ function clickChange(changeSelect) {
             },
             success: function (data) {
                 if ("ok" === $(data).find("result").text().toLowerCase()) {
-                    window.location.replace("user");
+                    window.location.replace(url);
                 }
             },
             error: function () {
@@ -127,7 +127,7 @@ function clickChangePassword(oldPassword, newPassword) {
                 $("#newPassword").val("");
                 $("#confirmPassword").val("");
                 alert("Your password is changed");
-                window.location.replace("user");
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -208,7 +208,7 @@ function clickChangeUser(name, secondName, phone) {
                 $("#changeSecondName").val("");
                 $("#changePhone").val("");
                 alert("Your user data is changed. Please re login");
-                window.location.replace("user");
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -243,7 +243,68 @@ function clickChangeEmail(checkEmail) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 $("#checkEmail").val("");
                 alert("On an email sent your letter of confirmation.");
-                window.location.replace("user");
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function clickAddLotPage() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickAddLotPage"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function validLot(title, description, endDate, startPrice, buyOutPrice) {
+    if (title.length > 0 && description.length > 0 && endDate.length > 0 &&
+            startPrice.length > 0 && buyOutPrice.length > 0) {
+        if (title.length < 3) {
+            alert("Short title.");
+        } else if(description.length < 3) {
+            alert("Short description.");
+        } else {
+            clickAddLot(title, description, Date.parse(endDate), startPrice, buyOutPrice);
+        }
+    } else {
+        alert("Please fill in all required fields.");
+    }
+}
+
+function clickAddLot(title, description, endDate, startPrice, buyOutPrice) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickAddLot",
+            title: title,
+            description: description,
+            endDate: endDate,
+            startPrice: startPrice,
+            buyOutPrice: buyOutPrice
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                alert("Your lot is added.");
+                window.location.replace(url);
+            } else {
+                alert($(data).find("result").text());
             }
         },
         error: function () {
