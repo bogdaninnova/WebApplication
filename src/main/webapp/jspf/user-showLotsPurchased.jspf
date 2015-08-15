@@ -4,7 +4,7 @@
     <h2>Purchased Lots </h2>
     <% List<Product> purchasedList = (List<Product>) request.getAttribute("purchasedList");
         if (purchasedList != null) { %>
-    <table border="1">
+    <table border="1" style="min-width: 40%; text-align: center;">
         <thead style="background-color: lightgrey;">
         <tr>
             <td>Lot</td>
@@ -15,8 +15,8 @@
 
                 <tbody>
                     <tr>
-                        <td> <%= purchasedProduct.getName() %> </td>
-                        <td> <%= purchasedProduct.getBuyoutPrice() %> $</td>
+                        <td style="text-align: left"> <%= purchasedProduct.getName() %> </td>
+                        <td style="text-align: right"> <%= purchasedProduct.getBuyoutPrice() %> $</td>
                     </tr>
                 </tbody>
 
