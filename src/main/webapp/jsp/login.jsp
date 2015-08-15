@@ -26,11 +26,17 @@
         </form>
         <tr>
             <td>
+                <br>
                 <button onclick="clickBack();">Back</button>
             </td>
             <td>
+                <br>
                 <button onclick="checkLoginForm($('#login').val(), $('#password').val());">Login</button>
             </td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td></td>
         </tr>
     </table>
 </div>
