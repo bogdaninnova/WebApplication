@@ -26,12 +26,14 @@ public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private String showContent;
     private List<Category> categoryList;
+    private List<Product> purchasedList;
 //    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         showContent = "information";
         categoryList = OracleDataBase.getInstance().getAllCategories();
+        purchasedList = null;
 //        product = null;
     }
 
@@ -112,7 +114,13 @@ public class UserServlet extends HttpServlet {
                     sendResponse(response, "<result>Incorrect price.</result>");
                 }
             }
-
+        } else if ("showLotsPurchased".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                purchasedList = OracleDataBase.getInstance().getUsersBuying(user.getId());
+                showContent = "showLotsPurchased";
+                sendResponse(response, "<result>OK</result>");
+            }
         }
     }
 
@@ -120,6 +128,7 @@ public class UserServlet extends HttpServlet {
         categoryList = OracleDataBase.getInstance().getAllCategories();
         request.setAttribute("showContent", showContent);
         request.setAttribute("categories", categoryList);
+        request.setAttribute("purchasedList", purchasedList);
 //        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);

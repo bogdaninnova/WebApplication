@@ -312,3 +312,23 @@ function clickAddLot(title, description, endDate, startPrice, buyOutPrice) {
         }
     });
 }
+
+function clickShowLotsPurchasedPage() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "showLotsPurchased"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+

@@ -5,7 +5,7 @@
             <li><a href="#" onClick="clickInformation();">Information</a></li>
             <li><a href="#" onClick="clickChangeUserData();">Change user data</a></li>
             <li><a href="#" onClick="clickAddLotPage();">Add lot</a></li>
-            <li><a href="#" onClick="">Show my lots</a></li>
+            <li><a href="#" onClick="clickShowLotsPurchasedPage();">Show lots purchased</a></li>
         </ul>
         <br>
     </div>

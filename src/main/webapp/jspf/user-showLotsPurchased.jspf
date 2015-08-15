@@ -1,0 +1,26 @@
+<%@ page import="ua.sumdu.group73.model.objects.Product" %>
+<%@ page import="java.util.List" %>
+<div class="container-user">
+    <h2>Purchased Lots </h2>
+    <% List<Product> purchasedList = (List<Product>) request.getAttribute("purchasedList");
+        if (purchasedList != null) { %>
+    <table border="1">
+        <thead style="background-color: lightgrey;">
+        <tr>
+            <td>Lot</td>
+            <td>Price</td>
+        </tr>
+        </thead>
+        <% for(Product purchasedProduct : purchasedList) { %>
+
+                <tbody>
+                    <tr>
+                        <td> <%= purchasedProduct.getName() %> </td>
+                        <td> <%= purchasedProduct.getBuyoutPrice() %> $</td>
+                    </tr>
+                </tbody>
+
+        <% } %>
+    </table>
+    <% } %>
+</div>

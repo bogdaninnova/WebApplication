@@ -18,6 +18,8 @@
       <%@include file="../jspf/user-changeEmail.jspf"%>
   <% } else if (request.getAttribute("showContent").equals("clickAddLotPage")) { %>
     <%@include file="../jspf/user-addLot.jspf"%>
+    <% } else if (request.getAttribute("showContent").equals("showLotsPurchased")) { %>
+    <%@include file="../jspf/user-showLotsPurchased.jspf"%>
     <% } %>
 
 <%@include file="../jspf/user-footer.jspf"%>
