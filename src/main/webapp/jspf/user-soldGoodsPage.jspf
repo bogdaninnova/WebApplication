@@ -1,0 +1,28 @@
+<div class="container-user">
+    <h2>Sold goods </h2>
+
+    <% List<Product> soldGoodsList = (List<Product>) request.getAttribute("soldGoods");
+        if (soldGoodsList != null) { %>
+    <table border="1" style="min-width: 40%; text-align: center;">
+        <thead style="background-color: lightgrey;">
+        <tr>
+            <td>Lot</td>
+            <td>Price</td>
+        </tr>
+        </thead>
+        <% for (Product soldGoods : soldGoodsList) { %>
+        <% if (!soldGoods.isActive()) { %>
+
+        <tbody>
+        <tr>
+            <td style="text-align: left"><%= soldGoods.getName() %>
+            </td>
+            <td style="text-align: right"><%= soldGoods.getBuyoutPrice() %> $</td>
+        </tr>
+        </tbody>
+
+        <% } %>
+        <% } %>
+    </table>
+    <% } %>
+</div>

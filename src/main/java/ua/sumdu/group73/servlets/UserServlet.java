@@ -31,6 +31,7 @@ public class UserServlet extends HttpServlet {
     private List<Product> followingList;
     private List<Picture> pictures;
     private List<User> users;
+    private List<Product> soldGoods;
 //    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
@@ -41,6 +42,7 @@ public class UserServlet extends HttpServlet {
         followingList = null;
         pictures = null;
         users = null;
+        soldGoods = null;
 //        product = null;
     }
 
@@ -135,6 +137,13 @@ public class UserServlet extends HttpServlet {
                 showContent = "followingProducts";
                 sendResponse(response, "<result>OK</result>");
             }
+        } else if ("clickSoldGoodsPage".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                soldGoods = OracleDataBase.getInstance().getUsersProducts(user.getId());
+                showContent = "clickSoldGoodsPage";
+                sendResponse(response, "<result>OK</result>");
+            }
         }
     }
 
@@ -142,12 +151,14 @@ public class UserServlet extends HttpServlet {
         categoryList = OracleDataBase.getInstance().getAllCategories();
         pictures = OracleDataBase.getInstance().getAllPictures();
         users = OracleDataBase.getInstance().getAllUsers();
+
         request.setAttribute("showContent", showContent);
         request.setAttribute("categories", categoryList);
         request.setAttribute("purchasedList", purchasedList);
         request.setAttribute("followingList", followingList);
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
+        request.setAttribute("soldGoods", soldGoods);
 //        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);

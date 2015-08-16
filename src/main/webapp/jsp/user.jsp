@@ -22,6 +22,8 @@
     <%@include file="../jspf/user-showLotsPurchased.jspf"%>
     <% } else if (request.getAttribute("showContent").equals("followingProducts")) { %>
     <%@include file="../jspf/user-showFollowingProducts.jspf"%>
+    <% } else if (request.getAttribute("showContent").equals("clickSoldGoodsPage")) { %>
+    <%@include file="../jspf/user-soldGoodsPage.jspf"%>
     <% } %>
 
 <%@include file="../jspf/user-footer.jspf"%>

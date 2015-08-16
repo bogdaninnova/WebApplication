@@ -350,3 +350,22 @@ function clickFollowingProductsPage() {
         }
     });
 }
+
+function clickSoldGoodsPage() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickSoldGoodsPage"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    })
+}
