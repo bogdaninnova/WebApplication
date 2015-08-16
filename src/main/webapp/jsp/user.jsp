@@ -20,6 +20,8 @@
     <%@include file="../jspf/user-addLot.jspf"%>
     <% } else if (request.getAttribute("showContent").equals("showLotsPurchased")) { %>
     <%@include file="../jspf/user-showLotsPurchased.jspf"%>
+    <% } else if (request.getAttribute("showContent").equals("followingProducts")) { %>
+    <%@include file="../jspf/user-showFollowingProducts.jspf"%>
     <% } %>
 
 <%@include file="../jspf/user-footer.jspf"%>

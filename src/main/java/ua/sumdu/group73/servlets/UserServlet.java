@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.objects.Category;
+import ua.sumdu.group73.model.objects.Picture;
 import ua.sumdu.group73.model.objects.Product;
 import ua.sumdu.group73.model.objects.User;
 
@@ -27,6 +28,9 @@ public class UserServlet extends HttpServlet {
     private String showContent;
     private List<Category> categoryList;
     private List<Product> purchasedList;
+    private List<Product> followingList;
+    private List<Picture> pictures;
+    private List<User> users;
 //    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
@@ -34,6 +38,9 @@ public class UserServlet extends HttpServlet {
         showContent = "information";
         categoryList = OracleDataBase.getInstance().getAllCategories();
         purchasedList = null;
+        followingList = null;
+        pictures = null;
+        users = null;
 //        product = null;
     }
 
@@ -121,14 +128,26 @@ public class UserServlet extends HttpServlet {
                 showContent = "showLotsPurchased";
                 sendResponse(response, "<result>OK</result>");
             }
+        } else if ("followingProducts".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                followingList = OracleDataBase.getInstance().getFollowingProducts(user.getId());
+                showContent = "followingProducts";
+                sendResponse(response, "<result>OK</result>");
+            }
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         categoryList = OracleDataBase.getInstance().getAllCategories();
+        pictures = OracleDataBase.getInstance().getAllPictures();
+        users = OracleDataBase.getInstance().getAllUsers();
         request.setAttribute("showContent", showContent);
         request.setAttribute("categories", categoryList);
         request.setAttribute("purchasedList", purchasedList);
+        request.setAttribute("followingList", followingList);
+        request.setAttribute("pictures", pictures);
+        request.setAttribute("users", users);
 //        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);
