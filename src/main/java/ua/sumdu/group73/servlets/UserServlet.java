@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet {
     private List<Product> followingList;
     private List<Picture> pictures;
     private List<User> users;
-    private List<Product> soldGoods;
+    private List<Product> goods;
 //    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
@@ -42,7 +42,7 @@ public class UserServlet extends HttpServlet {
         followingList = null;
         pictures = null;
         users = null;
-        soldGoods = null;
+        goods = null;
 //        product = null;
     }
 
@@ -140,10 +140,20 @@ public class UserServlet extends HttpServlet {
         } else if ("clickSoldGoodsPage".equals(request.getParameter("action"))) {
             if (request.getSession().getAttribute("user") != null) {
                 User user = (User) request.getSession().getAttribute("user");
-                soldGoods = OracleDataBase.getInstance().getUsersProducts(user.getId());
+                goods = OracleDataBase.getInstance().getUsersProducts(user.getId());
                 showContent = "clickSoldGoodsPage";
                 sendResponse(response, "<result>OK</result>");
             }
+        } else if ("clickGoodsForSalePage".equals(request.getParameter("action"))) {
+            if (request.getSession().getAttribute("user") != null) {
+                User user = (User) request.getSession().getAttribute("user");
+                goods = OracleDataBase.getInstance().getUsersProducts(user.getId());
+                showContent = "clickGoodsForSalePage";
+                sendResponse(response, "<result>OK</result>");
+            }
+        } else if ("clickGoodsForSale".equals(request.getParameter("action"))) {
+            request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
+            sendResponse(response, "<result>OK</result>");
         }
     }
 
@@ -158,7 +168,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("followingList", followingList);
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
-        request.setAttribute("soldGoods", soldGoods);
+        request.setAttribute("goods", goods);
 //        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);

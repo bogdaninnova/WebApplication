@@ -1,0 +1,70 @@
+<div class="container-user">
+    <h2>Goods for sale</h2>
+
+    <div align="center">
+        <% List<Product> goodsForSaleList = (List<Product>) request.getAttribute("goods");
+            if (goodsForSaleList != null) { %>
+
+        <% for (Product goodsForSale : goodsForSaleList) { %>
+        <% if (goodsForSale.isActive()) { %>
+        <div class="container-lots" onclick="clickGoodsForSale(<%= goodsForSale.getId()%>);">
+
+            <div class="container-lots-image">
+                <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
+                <% if (pictures != null) {
+                    String image = "";
+                    int count = 0;
+                    for (Picture picture : pictures) {
+                        if (picture.getProductID() == goodsForSale.getId()) {
+                            if (count == 0) {
+                                image = picture.getURL();
+                                count += 1;
+                            }
+                %>
+                <img src="<%= image%>" alt="No photo" width="150" height="100">
+                <% } else { %>
+                <img src="./images/no_image.png" alt="No photo" width="150" height="100">
+                <% }
+                }
+                } %>
+            </div>
+            <div class="container-lots-price">
+                <% if (goodsForSale.getCurrentPrice() != 0) { %>
+                <%=goodsForSale.getCurrentPrice()%> $
+                <% } else {%>
+                <%=goodsForSale.getStartPrice()%> $
+                <% } %>
+            </div>
+            <header>
+                <%=goodsForSale.getName()%>
+            </header>
+            <assaid>
+                <div class="container-lots-description" align="left">
+                    <%=goodsForSale.getDescription()%>
+                </div>
+            </assaid>
+            <footer>
+                <div class="container-lots-time">
+                    Close: <%=goodsForSale.getEndDate()%>
+                </div>
+                <div class="container-lots-buyer">
+                    <% if (goodsForSale.getCurrentBuyerID() != 0) {
+                        List<User> users = (List<User>) request.getAttribute("users");
+                        String nameBuyer = null;
+                        if (users != null) {%>
+                    <% for (User userBuyer : users) {
+                        if (goodsForSale.getCurrentBuyerID() == userBuyer.getId())
+                            nameBuyer = userBuyer.getLogin();
+                    }%>
+                    <%=nameBuyer%>
+                    <% }
+                    } %>
+                </div>
+            </footer>
+            <br><br>
+        </div>
+        <% } %>
+        <% } %>
+        <% } %>
+    </div>
+</div>

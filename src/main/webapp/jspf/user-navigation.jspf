@@ -8,6 +8,7 @@
             <li><a href="#" onClick="clickShowLotsPurchasedPage();">Show lots purchased</a></li>
             <li><a href="#" onClick="clickFollowingProductsPage();">Following products</a></li>
             <li><a href="#" onClick="clickSoldGoodsPage();">Sold goods</a></li>
+            <li><a href="#" onClick="clickGoodsForSalePage();">Goods for sale</a></li>
         </ul>
         <br>
     </div>

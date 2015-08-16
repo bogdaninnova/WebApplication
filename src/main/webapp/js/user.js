@@ -367,5 +367,44 @@ function clickSoldGoodsPage() {
         error: function () {
             alert("Error while send data.");
         }
-    })
+    });
+}
+
+function clickGoodsForSalePage() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickGoodsForSalePage"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
+
+function clickGoodsForSale(prodid) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickGoodsForSale",
+            prodID: parseInt(prodid)
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace("product");
+            }
+        },
+        error: function () {
+
+        }
+    });
 }
