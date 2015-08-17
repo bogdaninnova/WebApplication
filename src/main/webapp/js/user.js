@@ -301,7 +301,6 @@ function clickAddLot(title, description, endDate, startPrice, buyOutPrice) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                alert("Your lot is added.");
                 window.location.replace(url);
             } else {
                 alert($(data).find("result").text());
@@ -410,10 +409,8 @@ function clickGoodsForSale(prodid) {
 }
 
 function clickAddCategories(productID, checkBoxSelect) {
-    //var mas = [];
     for (var i = 0 ; i < checkBoxSelect.length; i++) {
         if (checkBoxSelect[i].checked) {
-            //mas.push(checkBoxSelect[i].value);
             $.ajax({
                 dataType: "xml",
                 url: url,
@@ -424,7 +421,6 @@ function clickAddCategories(productID, checkBoxSelect) {
                 },
                 success: function (data) {
                     if ("ok" === $(data).find("result").text().toLowerCase()) {
-
                     }
                 },
                 error: function () {
@@ -448,7 +444,7 @@ function sendCategories(productID) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                alert("OK");
+                document.getElementById('buttonAddCategories').disabled = true;
             }
         },
         error: function () {

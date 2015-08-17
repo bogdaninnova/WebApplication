@@ -13,14 +13,17 @@
     <table>
         <form>
             <tr>
-                <td><h3>Step #1 : </h3><hr></td>
+                <td><h3>Step #1 : </h3>
+                    <hr>
+                </td>
                 <td></td>
             </tr>
 
             <% if (product != null) { %>
             <tr>
                 <td>New product id :</td>
-                <td><%= product.getId() %></td>
+                <td><%= product.getId() %>
+                </td>
             </tr>
             <% } else { %>
 
@@ -30,7 +33,8 @@
             </tr>
             <tr>
                 <td>Description :</td>
-                <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500" style="max-width: 600px; max-height: 300px;" required></textarea></td>
+                <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500"
+                              style="max-width: 600px; max-height: 300px;" required></textarea></td>
             </tr>
             <tr>
                 <td>End date :</td>
@@ -50,21 +54,28 @@
                 <td></td>
             </tr>
         </form>
-            <tr>
-                <td></td>
-                <td><button onclick="validLot($('#addTitle').val(), $('#addDescription').val(),
-                        $('#addAge').val(), $('#addStartPrice').val(), $('#addBuyPrice').val());">Add lot</button></td>
-            </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button onclick="validLot($('#addTitle').val(), $('#addDescription').val(),
+                        $('#addAge').val(), $('#addStartPrice').val(), $('#addBuyPrice').val());">Add lot
+                </button>
+            </td>
+        </tr>
 
 
-            <% } %>
-            <tr>
-                <td><br><h3>Step #2 : Categories</h3><hr><br></td>
-                <td></td>
-            </tr>
+        <% } %>
+        <tr>
+            <td><br>
 
+                <h3>Step #2 : Categories</h3>
+                <hr>
+                <br></td>
+            <td></td>
+        </tr>
+        <form>
             <% if (product != null) { %>
-            <div id="flgs">
+
             <tr>
                 <td><br>Choose category :</td>
                 <td><% categoryList = (List<Category>) request.getAttribute("categories");
@@ -72,15 +83,15 @@
 
                     <%! private StringBuilder menuHTML; %>
                     <% List<Category> rootCategories = new ArrayList<Category>();
-                    menuHTML = new StringBuilder();
-                    for (Category c : categoryList) {
-                        if (c.getParentID() == 0) {
-                            rootCategories.add(c);
+                        menuHTML = new StringBuilder();
+                        for (Category c : categoryList) {
+                            if (c.getParentID() == 0) {
+                                rootCategories.add(c);
+                            }
                         }
-                    }
 
-                    categoryListToHTML(0, rootCategories);
-                %>
+                        categoryListToHTML(0, rootCategories);
+                    %>
                     <%! private void categoryListToHTML(int level, List<Category> childsList) {
                         for (Category currentCat : childsList) {
                             List<Category> listOfChildrens = new ArrayList<Category>();
@@ -100,41 +111,28 @@
                             if (!listOfChildrens.isEmpty()) {
                                 categoryListToHTML(++level, listOfChildrens);
                             } else {
-                                menuHTML.append("<input type=\"checkbox\" id=\"" +
-                                        currentCat.getId() +
-                                        "\" name=\"checkBoxSelect\" value=\""+  currentCat.getId() + "\">" +
-                                        currentCat.getName() + " ");
+                                menuHTML.append("<input type=\"checkbox\" id=\"");
+                                menuHTML.append(currentCat.getId());
+                                menuHTML.append("\" name=\"checkBoxSelect\" value=\"");
+                                menuHTML.append(currentCat.getId());
+                                menuHTML.append("\">");
+                                menuHTML.append(currentCat.getName());
+                                menuHTML.append(" ");
                             }
                         }
                     } %>
                     <% } %>
-                    <%= menuHTML.toString() %></td>
+                    <%= menuHTML.toString() %>
+                </td>
             </tr>
-            <tr>
-                <td></td>
-                <td><button onclick="clickAddCategories(<%= product.getId() %>, document.getElementsByName('checkBoxSelect'));">Add categories</button></td>
-            </tr>
-            <% } else { %>
-                <tr>
-                    <td>Please do the first step.</td>
-                    <td></td>
-                </tr>
-            <% } %>
-            </div>
-            <tr>
-                <td><br><h3>Step #3 : Image</h3><hr><br></td>
-                <td></td>
-            </tr>
-
-            <% if (product != null) { %>
         </form>
         <tr>
-            <td><br>Add image :</td>
             <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><button onclick="">Add picture</button></td>
+            <td>
+                <button id="buttonAddCategories" onclick="clickAddCategories(<%= product.getId() %>, document.getElementsByName('checkBoxSelect'));">
+                    Add categories
+                </button>
+            </td>
         </tr>
         <% } else { %>
         <tr>
@@ -142,13 +140,44 @@
             <td></td>
         </tr>
         <% } %>
+
         <tr>
-            <td><br></td>
+            <td><br>
+
+                <h3>Step #3 : Image</h3>
+                <hr>
+                <br></td>
             <td></td>
         </tr>
+        <form>
+            <% if (product != null) { %>
+
+            <tr>
+                <td><br>Add image :</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button onclick="">Add picture</button>
+                </td>
+            </tr>
+            <% } else { %>
+            <tr>
+                <td>Please do the first step.</td>
+                <td></td>
+            </tr>
+            <% } %>
+            <tr>
+                <td><br></td>
+                <td></td>
+            </tr>
+        </form>
         <tr>
+            <td>
+                <button onclick="">Create new lot</button>
+            </td>
             <td></td>
-            <td><button onclick="">Create new lot</button></td>
         </tr>
         <tr>
             <td></td>
