@@ -571,6 +571,20 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return list;
     }
+    
+	public boolean isFollowProduct(int followerID, int productID) {
+		boolean result = false;
+		try(Connection connection = getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(Queries.IS_FOLLOW_QUERY);
+			preparedStatement.setInt(1, followerID);
+			preparedStatement.setInt(2, productID);
+			ResultSet rs = preparedStatement.executeQuery();
+			result = rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 
     //------------------------------------------------------
@@ -703,14 +717,14 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         } finally {
         	closeConnection();
         }
-        return result;
+        return result; 
     }
 
 
     public boolean makeBet(int productID, int buyerID, int price) {
     	log.info("Method makeBet starts.....");
     	boolean result = bet(productID, buyerID, price);
-    	if (result)
+    	if (result && !isFollowProduct(buyerID, productID))
     		followProduct(productID, buyerID);
         return result;
     }
