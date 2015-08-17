@@ -127,7 +127,6 @@ public class Queries {
 			sb.append(usersID.get(i) + ", ");
 		sb.append(usersID.get(usersID.size() - 1));	
 		sb.append(") AND STATUS != 'admin' AND STATUS != 'unactivated'");
-			System.out.println(sb.toString());
 		return sb.toString();
 	}
 
@@ -344,13 +343,30 @@ public class Queries {
 		for (int categoryID : categories)
 			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + categoryID +", " + productID + ") ");
 		sb.append("SELECT * FROM dual");
-		System.out.println(sb);
 		return sb.toString();
 	}
 	
 	public static final String CHANGE_CATEGORY =
 			"UPDATE CATEGORIES SET NAME = ? WHERE ID = ?";
 		
+	
+	public static final String deleteCategories(List<Integer> categoriesID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM CATEGORIES WHERE ID IN ( ");
+		for (int i = 0; i < categoriesID.size() - 1; i++)
+			sb.append(categoriesID.get(i) + ", ");
+		sb.append(categoriesID.get(categoriesID.size() - 1) + " )");
+		return sb.toString();
+	}
+	
+	public static final String deleteProductsCategories(List<Integer> categoriesID) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("DELETE FROM PRODUCT_CATEGORY WHERE CATEGORY_ID IN ( ");
+		for (int i = 0; i < categoriesID.size() - 1; i++)
+			sb.append(categoriesID.get(i) + ", ");
+		sb.append(categoriesID.get(categoriesID.size() - 1) + " )");
+		return sb.toString();
+	}
 	
     //------------------------------------------------------
     //--------------------XXX:PICTURES----------------------
@@ -377,7 +393,6 @@ public class Queries {
 		for (String pic : picturesURL)
 			sb.append("INTO PICTURES (PRODUCT_ID, URL) VALUES (" + productID + ", '" + pic + "') ");
 		sb.append("SELECT * FROM dual");
-		System.out.println(sb);
 		return sb.toString();
 	}
 	
