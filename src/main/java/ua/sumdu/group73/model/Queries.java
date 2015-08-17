@@ -173,53 +173,13 @@ public class Queries {
 			+ " WHERE FOLLOWINGS.FOLLOWER_ID = ?";
     
 	
+	public static final String IS_FOLLOW_QUERY =
+			"SELECT * FROM FOLLOWINGS WHERE FOLLOWER_ID = ? AND PRODUCT_ID = ?";
+
+	
     //------------------------------------------------------
     //---------------------XXX:PRODUCT----------------------
     //------------------------------------------------------
-	
-	
-	public static final String addProductQuery(
-			int sellerID, String name, String description,
-			long endDate, int startPrice, int buyoutPrice,
-			List<Category> categories, List<String> picturesURL) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT ALL ");
-		
-		
-		sb.append("INTO PRODUCTS("
-					+ "ID, "
-					+ "SELLER_ID, "
-					+ "NAME, "
-					+ "DESCRIPTION, "
-					+ "START_DATE, "
-					+ "END_DATE, "
-					+ "START_PRICE, "
-					+ "BUYOUT_PRICE, "
-					+ "CURRENT_PRICE, "
-					+ "CURRENT_BUYER_ID, "
-					+ "IS_ACTIVE) "
-			+ " VALUES "
-					+ "(PRODUCT_ID_S.NEXTVAL, "
-					+ sellerID + ", "
-					+ "'" + name + "', "
-					+ "'" + description + "', "
-					+ "SYSDATE, "
-					+ "TO_DATE('" + new java.sql.Date(endDate) + "', 'yyyy-mm-dd'), "
-					+ "'" + startPrice + "', "
-					+ "'" + buyoutPrice + "', "
-					+ "0, "
-					+ "NULL, "
-					+ "'active') ");		
-		
-		for (Category category : categories)
-			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + category.getId() + ", PRODUCT_ID_S.CURRVAL) ");
-		
-		for (String pic : picturesURL)
-			sb.append("INTO PICTURES (PRODUCT_ID, URL) VALUES (PRODUCT_ID_S.CURRVAL , '" + pic + "') ");
-
-		sb.append("SELECT * FROM dual");
-		return sb.toString();
-	}
 	
 	public static final String ADD_PRODUCT =
 			"INSERT INTO PRODUCTS("
