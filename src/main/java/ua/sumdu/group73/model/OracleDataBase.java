@@ -16,8 +16,7 @@ import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.objects.*;
 
 public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
-        TransactionDBIinterface, ProductDBInterface,
-        FollowingDBInterface, CategoriesDBInterface {
+        ProductDBInterface, FollowingDBInterface, CategoriesDBInterface {
 
 	private static final Logger log = Logger.getLogger(OracleDataBase.class);
 	
@@ -578,8 +577,29 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //---------------------XXX:PRODUCT----------------------
     //------------------------------------------------------
 
+    
+     public synchronized boolean addProduct(int sellerID, String name, String description,
+			long endDate, int startPrice, int buyoutPrice,
+			List<Category> categories, List<String> picturesURL) {
+       	log.info("Method addProduct2 starts.....");
+    	boolean result = false;
+    	initConnection();
+    	try (
+        	PreparedStatement preparedStatement = conn.prepareStatement(
+        			Queries.addProductQuery(sellerID, name, description, endDate,
+        					startPrice, buyoutPrice, categories, picturesURL));
+        ) {
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in addProduct2()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+    }
 
-    public boolean addProduct(int sellerID, String name, String description,
+    private boolean addProduct(int sellerID, String name, String description,
                               long endDate, int startPrice, int buyoutPrice) {
     	log.info("Method addProduct starts.....");
     	boolean result = false;
@@ -688,6 +708,14 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
 
     public boolean makeBet(int productID, int buyerID, int price) {
+    	log.info("Method makeBet starts.....");
+    	boolean result = bet(productID, buyerID, price);
+    	if (result)
+    		followProduct(productID, buyerID);
+        return result;
+    }
+    
+    private boolean bet(int productID, int buyerID, int price) {
     	log.info("Method makeBet starts.....");
     	boolean result = false;
     	initConnection();
@@ -936,6 +964,24 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
 	}
 
+	private int getProductCeurrVal() {
+    	log.info("Method getProductCeurrVal starts.....");
+    	initConnection();
+    	int result = -1;
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.getProductCurrVal())) {
+            try(ResultSet rs = preparedStatement.executeQuery()) {
+	            rs.next();
+	            result = rs.getInt("CURRVAL");
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getProductCeurrVal()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+	
 
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
@@ -1075,13 +1121,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 
 
-	@Override
-	public boolean addCategoriesToProduct(int productID, List<Integer> categoriesID) {
+	private boolean addCategoriesToProduct(int productID, List<Category> categories) {
     	log.info("Method addCategoriesToProduct starts.....");
     	boolean result = false;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(
-    			Queries.setCategoriesToProductQuery(productID, categoriesID))) {    		
+    			Queries.setCategoriesToProductQuery(productID, categories))) {    		
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -1092,107 +1137,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return result;
 	}
   
-
-    //------------------------------------------------------
-    //------------------XXX:TRANSACTION---------------------
-    //------------------------------------------------------
-
-
-//    public List<Transaction> getSalersTransaction(int sellerID) {
-//    	log.info("Method getSalersTransaction starts.....");
-//        List<Transaction> list = new ArrayList<Transaction>();
-//        initConnection();
-//        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_SALLERS_TRANSACTIONS)) {
-//            preparedStatement.setInt(1, sellerID);
-//
-//            try(ResultSet rs = preparedStatement.executeQuery()){
-//	            while (rs.next())
-//	                list.add(
-//	                		new Transaction(
-//	                				rs.getInt("ID"),
-//	                				rs.getInt("BUYER_ID"),
-//	                				rs.getInt("SELLER_ID"),
-//	                				rs.getInt("PRODUCT_ID"),
-//	                				rs.getInt("PRICE"),
-//	                				rs.getTimestamp("SALE_DATE")));
-//            }
-//        } catch (SQLException e) {
-//            log.error("SQLException in getSalersTransaction()", e);
-//        } finally {
-//        	closeConnection();
-//        }
-//        return list;
-//    }
-//
-//    public List<Transaction> getBuyersTransaction(int buyerID) {
-//    	log.info("Method getBuyersTransaction starts.....");
-//        List<Transaction> list = new ArrayList<Transaction>();
-//        initConnection();
-//        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_BUYERS_TRANSACTIONS)) {
-//            preparedStatement.setInt(1, buyerID);
-//            try(ResultSet rs = preparedStatement.executeQuery()){
-//	            while (rs.next())
-//	                list.add(
-//	                		new Transaction(
-//	                				rs.getInt("ID"),
-//	                				rs.getInt("BUYER_ID"),
-//	                				rs.getInt("SELLER_ID"),
-//	                				rs.getInt("PRODUCT_ID"),
-//	                				rs.getInt("PRICE"),
-//	                				rs.getTimestamp("SALE_DATE")));
-//            }
-//        } catch (SQLException e) {
-//            log.error("SQLException in getBuyersTransaction()", e);
-//        } finally {
-//        	closeConnection();
-//        }
-//        return list;
-//    }
-//
-//    public boolean addTransaction(int buyerID, int sellerID, int productID, int price, Date saleDate) {
-//    	log.info("Method addTransaction starts.....");
-//    	boolean result = false;
-//    	initConnection();
-//    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_TRANSACTION)) {
-//            preparedStatement.setInt(1, buyerID);
-//            preparedStatement.setInt(2, sellerID);
-//            preparedStatement.setInt(3, productID);
-//            preparedStatement.setInt(4, price);
-//            preparedStatement.setDate(5, new java.sql.Date(saleDate.getTime()));
-//            preparedStatement.executeUpdate();
-//            result = true;
-//        } catch (SQLException e) {
-//            log.error("SQLException in addTransaction()", e);
-//        } finally {
-//        	closeConnection();
-//        }
-//        return result;
-//    }
-//
-//    public Transaction getTransaction(int transactionID) {
-//    	log.info("Method getTransaction starts.....");
-//    	Transaction transaction = null;
-//    	initConnection();
-//        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_TRANSACTION)) {
-//            preparedStatement.setLong(1, transactionID);
-//            try(ResultSet rs = preparedStatement.executeQuery()){
-//	            rs.next();
-//	            int buyerID = rs.getInt("BUYER_ID");
-//	            int sellerID = rs.getInt("SELLER_ID");
-//	            int productID = rs.getInt("PRODUCT_ID");
-//	            int price = rs.getInt("PRICE");
-//	            Date saleDate = rs.getTimestamp("SALE_DATE");
-//	            transaction = new Transaction(transactionID, buyerID, sellerID, productID, price, saleDate);
-//            }
-//        } catch (SQLException e) {
-//            log.error("SQLException in getTransaction()", e);
-//        } finally {
-//        	closeConnection();
-//        }
-//        return transaction;
-//    }
-
-
     //------------------------------------------------------
     //--------------------XXX:PICTURES----------------------
     //------------------------------------------------------
@@ -1208,7 +1152,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) 
 	            	list.add(new Picture(
-	            			rs.getInt("ID"),
 	            			rs.getInt("PRODUCT_ID"),
 	            			rs.getString("URL")));
             }
@@ -1247,7 +1190,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            while (rs.next()) 
 	            	list.add(new Picture(
-	            			rs.getInt("ID"),
 	            			rs.getInt("PRODUCT_ID"),
 	            			rs.getString("URL")));
             }
@@ -1257,6 +1199,21 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return list;
-		
+	}
+	
+	private boolean addPicturesToProduct(int productID, List<String> picturesURL) {
+    	log.info("Method addPicturesToProduct starts.....");
+    	boolean result = false;
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(
+    			Queries.addPicturesToProduct(productID, picturesURL))) {    		
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in addPicturesToProduct()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
 	}
 }
