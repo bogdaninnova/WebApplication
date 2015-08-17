@@ -2,6 +2,8 @@ package ua.sumdu.group73.model;
 
 import java.util.List;
 
+import ua.sumdu.group73.model.objects.Category;
+
 public class Queries {
 
     //------------------------------------------------------
@@ -176,6 +178,49 @@ public class Queries {
     //------------------------------------------------------
 	
 	
+	public static final String addProductQuery(
+			int sellerID, String name, String description,
+			long endDate, int startPrice, int buyoutPrice,
+			List<Category> categories, List<String> picturesURL) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT ALL ");
+		
+		
+		sb.append("INTO PRODUCTS("
+					+ "ID, "
+					+ "SELLER_ID, "
+					+ "NAME, "
+					+ "DESCRIPTION, "
+					+ "START_DATE, "
+					+ "END_DATE, "
+					+ "START_PRICE, "
+					+ "BUYOUT_PRICE, "
+					+ "CURRENT_PRICE, "
+					+ "CURRENT_BUYER_ID, "
+					+ "IS_ACTIVE) "
+			+ " VALUES "
+					+ "(PRODUCT_ID_S.NEXTVAL, "
+					+ sellerID + ", "
+					+ "'" + name + "', "
+					+ "'" + description + "', "
+					+ "SYSDATE, "
+					+ "TO_DATE('" + new java.sql.Date(endDate) + "', 'yyyy-mm-dd'), "
+					+ "'" + startPrice + "', "
+					+ "'" + buyoutPrice + "', "
+					+ "0, "
+					+ "NULL, "
+					+ "'active') ");		
+		
+		for (Category category : categories)
+			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + category.getId() + ", PRODUCT_ID_S.CURRVAL) ");
+		
+		for (String pic : picturesURL)
+			sb.append("INTO PICTURES (PRODUCT_ID, URL) VALUES (PRODUCT_ID_S.CURRVAL , '" + pic + "') ");
+
+		sb.append("SELECT * FROM dual");
+		return sb.toString();
+	}
+	
 	public static final String ADD_PRODUCT =
 			"INSERT INTO PRODUCTS("
 					+ "ID,"
@@ -325,46 +370,16 @@ public class Queries {
 				+ " LEFT JOIN PRODUCTS ON PRODUCTS.ID ="
 						+ " PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
     
-	public static final String setCategoriesToProductQuery(int productID, List<Integer> categoriesID) {
+	public static final String setCategoriesToProductQuery(int productID, List<Category> categories) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT ALL ");
-		for (int categoryID : categoriesID)
-			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + categoryID +", " + productID + ") ");
+		for (Category category : categories)
+			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + category.getId() +", " + productID + ") ");
 		sb.append("SELECT * FROM dual");
+		System.out.println(sb);
 		return sb.toString();
 	}
-	
-	
-    //------------------------------------------------------
-    //------------------XXX:TRANSACTION---------------------
-    //------------------------------------------------------
-	
-	
-//	public static final String GET_SALLERS_TRANSACTIONS =
-//			"SELECT * FROM TRANSACTIONS WHERE SELLER_ID = ?";
-//    
-//	public static final String GET_BUYERS_TRANSACTIONS =
-//			"SELECT * FROM TRANSACTIONS WHERE BUYER_ID = ?";
-//    
-//	public static final String ADD_TRANSACTION =
-//			"INSERT INTO TRANSACTIONS("
-//					+ "ID,"
-//					+ "BUYER_ID,"
-//					+ "SELLER_ID,"
-//					+ "PRODUCT_ID,"
-//					+ "PRICE,"
-//					+ "SALE_DATE)"
-//			+ "VALUES"
-//					+ "TRANSACTION_ID_S.NEXTVAL,"
-//					+ "?,"
-//					+ "?,"
-//					+ "?,"
-//					+ "?,"
-//					+ "?)";
-//    
-//	public static final String GET_TRANSACTION =
-//			"SELECT * FROM TRANSACTIONS WHERE ID = ?";
-    
+		
 	
     //------------------------------------------------------
     //--------------------XXX:PICTURES----------------------
@@ -376,14 +391,26 @@ public class Queries {
     
 	public static final String ADD_PICTURE =
 			"INSERT INTO PICTURES("
-					+ "ID,"
 					+ "PRODUCT_ID,"
 					+ "URL)"
 			+ "VALUES("
-					+ "PICTURE_ID_S.NEXTVAL,"
 					+ "?,"
 					+ "?)";
 	
 	public static final String GET_ALL_PICTURES =
 			"SELECT * FROM PICTURES";
+	
+	public static String addPicturesToProduct(int productID, List<String> picturesURL) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT ALL ");
+		for (String pic : picturesURL)
+			sb.append("INTO PICTURES (PRODUCT_ID, URL) VALUES (" + productID + ", '" + pic + "') ");
+		sb.append("SELECT * FROM dual");
+		System.out.println(sb);
+		return sb.toString();
+	}
+	
+	public static String getProductCurrVal() {
+		return "SELECT PRODUCT_ID_S.CURRVAL from dual";
+	}
 }

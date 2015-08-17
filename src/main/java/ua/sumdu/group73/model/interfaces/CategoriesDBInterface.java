@@ -17,7 +17,4 @@ public interface CategoriesDBInterface {
 	public List<Category> getCategoriesOfProduct(int productID);
 	
 	public List<Category> getAllCategories();
-	
-	boolean addCategoriesToProduct(int productID, List<Integer> categoriesID);
-
 }
