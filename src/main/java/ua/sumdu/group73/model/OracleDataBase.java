@@ -578,28 +578,28 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     //------------------------------------------------------
 
     
-     public synchronized boolean addProduct(int sellerID, String name, String description,
-			long endDate, int startPrice, int buyoutPrice,
-			List<Category> categories, List<String> picturesURL) {
-       	log.info("Method addProduct2 starts.....");
-    	boolean result = false;
-    	initConnection();
-    	try (
-        	PreparedStatement preparedStatement = conn.prepareStatement(
-        			Queries.addProductQuery(sellerID, name, description, endDate,
-        					startPrice, buyoutPrice, categories, picturesURL));
-        ) {
-            preparedStatement.executeUpdate();
-            result = true;
-        } catch (SQLException e) {
-            log.error("SQLException in addProduct2()", e);
-        } finally {
-        	closeConnection();
-        }
-        return result;
-    }
-
-    private boolean addProduct(int sellerID, String name, String description,
+	public synchronized int addProduct(int sellerID, String name,
+			String description, long endDate, int startPrice, int buyoutPrice) {
+		log.info("Method addProduct starts.....");
+		int result = -1;
+		if (addProductIntoBD(sellerID, name, description, endDate, startPrice, buyoutPrice)) {
+	    	initConnection();
+	        try (PreparedStatement preparedStatement = conn.prepareStatement(
+	        		Queries.getProductCurrVal())) {
+	            try(ResultSet rs = preparedStatement.executeQuery()) {
+		            rs.next();
+		            result = rs.getInt("CURRVAL");
+	            }
+	        } catch (SQLException e) {
+	            log.error("SQLException in addProduct()", e);
+	        } finally {
+	        	closeConnection();
+	        }
+		}
+		return result;
+	}
+    
+    private boolean addProductIntoBD(int sellerID, String name, String description,
                               long endDate, int startPrice, int buyoutPrice) {
     	log.info("Method addProduct starts.....");
     	boolean result = false;
@@ -964,25 +964,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
 	}
 
-	private int getProductCeurrVal() {
-    	log.info("Method getProductCeurrVal starts.....");
-    	initConnection();
-    	int result = -1;
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.getProductCurrVal())) {
-            try(ResultSet rs = preparedStatement.executeQuery()) {
-	            rs.next();
-	            result = rs.getInt("CURRVAL");
-            }
-        } catch (SQLException e) {
-            log.error("SQLException in getProductCeurrVal()", e);
-        } finally {
-        	closeConnection();
-        }
-        return result;
-	}
-	
-
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
     //------------------------------------------------------
@@ -1121,7 +1102,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 
 
-	private boolean addCategoriesToProduct(int productID, List<Category> categories) {
+	public boolean addCategoriesToProduct(int productID, List<Category> categories) {
     	log.info("Method addCategoriesToProduct starts.....");
     	boolean result = false;
     	initConnection();
@@ -1201,7 +1182,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return list;
 	}
 	
-	private boolean addPicturesToProduct(int productID, List<String> picturesURL) {
+	public boolean addPicturesToProduct(int productID, List<String> picturesURL) {
     	log.info("Method addPicturesToProduct starts.....");
     	boolean result = false;
     	initConnection();
