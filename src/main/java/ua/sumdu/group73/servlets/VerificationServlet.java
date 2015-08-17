@@ -11,13 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import ua.sumdu.group73.model.OracleDataBase;
 import ua.sumdu.group73.model.StringCrypter;
 
-/**
- * Servlet implementation class VerificationServlet
- */
+@SuppressWarnings("serial")
 public class VerificationServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String loginToken = (String) request.getParameter("l");

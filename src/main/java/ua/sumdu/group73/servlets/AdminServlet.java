@@ -16,16 +16,13 @@ import ua.sumdu.group73.model.objects.Product;
 import ua.sumdu.group73.model.objects.User;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
-/**
- * This servlet working with admin.jsp.
- *
- * Created by Greenberg Dima <gdvdima2008@yandex.ru>
- */
+@SuppressWarnings("serial")
 public class AdminServlet extends HttpServlet {
     
-    private static final Logger log = Logger.getLogger(AdminServlet.class);
+	private static final Logger log = Logger.getLogger(AdminServlet.class);
     private HttpSession session;
 	
     private List<Category> categoryList = null;
@@ -33,8 +30,11 @@ public class AdminServlet extends HttpServlet {
     private List<Picture> pictures = null;
     private List<User> users = null;
     
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+    
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+				
 		if (request.getParameter("saveUsers") != null) {
 			OracleDataBase.getInstance().unBanAllUsers();
 			String[] s = request.getParameterValues("ban");
@@ -45,10 +45,11 @@ public class AdminServlet extends HttpServlet {
 				OracleDataBase.getInstance().setUserBan(banList);
 			}
 			doGet(request, response);
-		} else if (request.getParameter("deleteProduct") != null) {
+		}
+		
+		else if (request.getParameter("deleteProduct") != null) {
 			
 			String[] s = request.getParameterValues("deleteCheckBox");
-			
 			if (s != null) {
 				List<Integer> deleteList = new ArrayList<Integer>();
 				for (int i = 0; i < s.length; i++){
@@ -57,15 +58,73 @@ public class AdminServlet extends HttpServlet {
 				}
 				OracleDataBase.getInstance().deleteProducts(deleteList);
 			}
-			
 			doGet(request, response);
-			
-		} else if (request.getParameter("BackButton") != null) {
+		}
+		
+		else if (request.getParameter("BackButton") != null) {
 			response.sendRedirect("index");
 		}
+		
+		else if (request.getParameter("categories") != null) {
+			
+			boolean result = false;
+			String categoryName = request.getParameter("catName");
+			int categoryID = getCategoryID(request.getParameter("catID"));
+			
+			System.out.println(categoryName);
+			System.out.println(categoryID);
+			
+			if ("create".equals(request.getParameter("categories"))) {
+				if (!categoryName.equals("")) {
+					if (categoryID != -1) {
+						result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
+					} else {
+						result = OracleDataBase.getInstance().addCategory(categoryName);
+					}
+				}
+			}
+			
+			else if ("change".equals(request.getParameter("categories"))) {
+				if ((categoryID != -1) && (!categoryName.equals(""))) {
+					result = OracleDataBase.getInstance().changeCategory(categoryID, categoryName);
+				}
+			} else if ("delete".equals(request.getParameter("categories"))) {
+				if (categoryID != -1) {
+					//TODO OracleDataBase.getInstance()
+				}
+			}
+			if (result)
+				sendResponse(response, "<result>OK</result>");
+			else
+				sendResponse(response, "<result>ERROR</result>");
+		}
+		
+
+		
+		
+	}
+	
+    private void sendResponse(HttpServletResponse response, String text) {
+        try (PrintWriter pw = response.getWriter()) {
+            pw.println(text);
+        } catch (IOException e) {
+            log.error(e);
+        }
+    }
+	
+	private static int getCategoryID(String link) {
+		if (!link.contains("#"))
+			return -1;
+		int position = link.lastIndexOf('#');
+		String id = link.substring(position + 1);
+		if (id.equals(""))
+			return -1;
+		return Integer.valueOf(id);
 	}
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    		throws ServletException, IOException {
+    	
         if (session != null) {
             log.info("HttpSession isn't null");
         } else {

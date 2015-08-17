@@ -1023,9 +1023,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method addCategory(String) starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_CATEGORY)) {
-        	preparedStatement.setInt(1, 0);
-            preparedStatement.setString(2, name);
+        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_ROOT_CATEGORY)) {
+            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -1116,7 +1115,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 
 
-	public boolean addCategoriesToProduct(int productID, List<Category> categories) {
+	public boolean addCategoriesToProduct(int productID, List<Integer> categories) {
     	log.info("Method addCategoriesToProduct starts.....");
     	boolean result = false;
     	initConnection();
@@ -1130,6 +1129,31 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return result;
+	}
+	
+	@Override
+	public boolean changeCategory(int categoriesID, String newName) {
+    	log.info("Method changeCategory starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement =
+        		conn.prepareStatement(Queries.CHANGE_CATEGORY)) {
+        	preparedStatement.setString(1, newName);
+            preparedStatement.setInt(2, categoriesID);
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in changeCategory()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+		
+	}
+	
+	@Override
+	public boolean deleteCategory(int categoryID) {
+		return false;//TODO
 	}
   
     //------------------------------------------------------
@@ -1211,4 +1235,5 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
 	}
+
 }
