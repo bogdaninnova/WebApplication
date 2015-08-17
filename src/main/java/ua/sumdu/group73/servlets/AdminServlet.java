@@ -52,10 +52,8 @@ public class AdminServlet extends HttpServlet {
 			String[] s = request.getParameterValues("deleteCheckBox");
 			if (s != null) {
 				List<Integer> deleteList = new ArrayList<Integer>();
-				for (int i = 0; i < s.length; i++){
-					System.out.println(s[i]);
+				for (int i = 0; i < s.length; i++)
 					deleteList.add(Integer.valueOf(s[i]));
-				}
 				OracleDataBase.getInstance().deleteProducts(deleteList);
 			}
 			doGet(request, response);
@@ -70,9 +68,6 @@ public class AdminServlet extends HttpServlet {
 			boolean result = false;
 			String categoryName = request.getParameter("catName");
 			int categoryID = getCategoryID(request.getParameter("catID"));
-			
-			System.out.println(categoryName);
-			System.out.println(categoryID);
 			
 			if ("create".equals(request.getParameter("categories"))) {
 				if (!categoryName.equals("")) {
@@ -90,7 +85,7 @@ public class AdminServlet extends HttpServlet {
 				}
 			} else if ("delete".equals(request.getParameter("categories"))) {
 				if (categoryID != -1) {
-					//TODO OracleDataBase.getInstance()
+					result = OracleDataBase.getInstance().deleteCategory(categoryID, categoryList);
 				}
 			}
 			if (result)
@@ -98,10 +93,6 @@ public class AdminServlet extends HttpServlet {
 			else
 				sendResponse(response, "<result>ERROR</result>");
 		}
-		
-
-		
-		
 	}
 	
     private void sendResponse(HttpServletResponse response, String text) {

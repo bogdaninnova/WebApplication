@@ -8,7 +8,7 @@ public interface PicturesDBInterface {
 
 	public List<Picture> getPictures(int productID);
 	
-	public boolean addPictures(int productID, String URL);
+	public boolean addPicturesToProduct(int productID, List<String> URLs);
 	
 	public List<Picture> getAllPictures();
 	

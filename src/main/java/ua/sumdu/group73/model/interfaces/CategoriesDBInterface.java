@@ -12,7 +12,7 @@ public interface CategoriesDBInterface {
 	
 	public Category getCategory(int categoryID);
 	
-	public boolean deleteCategory(int categoryID);
+	public boolean deleteCategory(int categoryID, List<Category> list);
 	
 	public boolean changeCategory(int categoriesID, String newName);
 	

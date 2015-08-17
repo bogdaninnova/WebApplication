@@ -1152,8 +1152,71 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	}
 	
 	@Override
-	public boolean deleteCategory(int categoryID) {
-		return false;//TODO
+	public boolean deleteCategory(int categoryID, List<Category> list) {
+		List<Integer> deleteList = new ArrayList<Integer>();
+		for (Category category : list) 
+			if (isCategoryChild(category, categoryID, list))
+				deleteList.add(category.getId());
+		deleteList.add(categoryID);
+		if (deleteCategoriesListProducts(deleteList))
+			if (deleteCategoriesList(deleteList))
+				return true;
+		return false;
+	}
+	
+	private boolean deleteCategoriesList(List<Integer> list) {
+		log.info("Method deleteCategoryFromCategories starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteCategories(list))) {
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in deleteCategoryFromCategories()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+	
+	private boolean deleteCategoriesListProducts(List<Integer> list) {
+		log.info("Method deleteCategoryFromCategories starts.....");
+    	boolean result = false;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.deleteProductsCategories(list))) {
+            preparedStatement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            log.error("SQLException in deleteCategoryFromCategories()", e);
+        } finally {
+        	closeConnection();
+        }
+        return result;
+	}
+	
+	private boolean isCategoryChild(Category category, int categoryID, List<Category> list) {
+		int parrentID = category.getParentID();
+		if (parrentID == categoryID)
+			return true;
+		if (parrentID == 0)
+			return false;
+		return isCategoryChild(getParentCategory(list, category.getParentID()), categoryID, list);
+	}
+	
+	private Category getParentCategory(List<Category> list, int categoryID) {
+		for (Category category : list)
+			if (category.getId() == categoryID)
+				return category;
+		return null;
+	}
+	
+	private boolean hasChilren(Category category, List<Category> list) {
+		for (Category c : list)
+			if (c.getParentID() == category.getId())
+				return true;
+		return false;
 	}
   
     //------------------------------------------------------
@@ -1181,24 +1244,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return list;
     }
-
-    public boolean addPictures(int productID, String URL) {
-    	log.info("Method addPictures starts.....");
-    	boolean result = false;
-    	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_PICTURE)) {
-            preparedStatement.setInt(1, productID);
-            preparedStatement.setString(2, URL);
-            preparedStatement.executeUpdate();
-            result = true;
-        } catch (SQLException e) {
-            log.error("SQLException in addPictures()", e);
-        } finally {
-        	closeConnection();
-        }
-        return result;
-    }
-
 
 	@Override
 	public List<Picture> getAllPictures() {
