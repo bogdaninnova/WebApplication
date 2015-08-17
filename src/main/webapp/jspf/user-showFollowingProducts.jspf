@@ -7,7 +7,7 @@
             if (followingList != null) { %>
 
         <% for (Product followingProduct : followingList) { %>
-        <div class="container-lots" onclick="clickProduct(<%= followingProduct.getId()%>);">
+        <div class="container-lots" onclick="clickGoodsForSale(<%= followingProduct.getId()%>);">
 
             <div class="container-lots-image">
                 <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
