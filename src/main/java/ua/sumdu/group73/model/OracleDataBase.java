@@ -1245,24 +1245,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return list;
     }
 
-    public boolean addPictures(int productID, String URL) {
-    	log.info("Method addPictures starts.....");
-    	boolean result = false;
-    	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.ADD_PICTURE)) {
-            preparedStatement.setInt(1, productID);
-            preparedStatement.setString(2, URL);
-            preparedStatement.executeUpdate();
-            result = true;
-        } catch (SQLException e) {
-            log.error("SQLException in addPictures()", e);
-        } finally {
-        	closeConnection();
-        }
-        return result;
-    }
-
-
 	@Override
 	public List<Picture> getAllPictures() {
     	log.info("Method getAllPictures starts.....");
