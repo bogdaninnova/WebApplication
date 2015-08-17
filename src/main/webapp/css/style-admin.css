@@ -1,4 +1,3 @@
-/* общий стиль */
   body {font-family: Arial, Tahoma, sans-serif; margin: 2em; font-size: 62.5%;}
   p {
    font-size: 1.2em;
@@ -8,10 +7,7 @@
    text-decoration: none;
    outline: none;
   }
-  /*a:link {
-   color: #0066cc;  
-  } 
-  a:visited {color: #00cc63; }*/  
+
   a:hover {
    text-decoration: underline;
   }
@@ -25,33 +21,31 @@
    background-color: #f4f4f4; 
   }
 
-  /* Дерево многоуровневое
-  -------------------------------- */
   #multi-derevo {
-   width: 220px; /* блок под дерево */
-   border: solid; /* границы блока */
+   width: 220px;
+   border: solid;
    border-color: silver gray gray silver;
    border-width: 2px;
-   padding: 0 0 1em 0; /* нижний отступ */
+   padding: 0 0 1em 0;
    font-size: 1.3em;
   }
-   span { /* обертка пункта */
+   span {
      text-decoration: none;
-     display: block; /* растянем до правого края блока */
+     display: block;
      margin: 0 0 0 1.2em;      
      background-color: transparent;
-     border: solid silver; /* цвет линий */  
-     border-width: 0 0 1px 1px; /* границы: низ и лево */
+     border: solid silver;
+     border-width: 0 0 1px 1px;
    }
-    span a {/* тест элемента дерева */
+    span a {
       display: block; 
       position: relative;
-      top: .95em; /* смещаем узел на середину линии */
-      background-color: #fff; /* закраска в цвет фона обязательна иначе будет видно линию */
-      margin: 0 0 .2em .7em; /* делаем промежуток между узлами, отодвигаем левее  */
-      padding: 0 0.3em; /* небольшой отступ от линии */
+      top: .95em;
+      background-color: #fff;
+      margin: 0 0 .2em .7em; 
+      padding: 0 0.3em;
      }
-    h4 {/* заголовок дерева */
+    h4 {
      font-size: 1em;
      font-weight: bold;
      margin: 0;
@@ -72,16 +66,16 @@
       line-height: 1.2em;
      }
       ul li ul {
-        display: none; /* узлы свернуты */
+        display: none;
       }
         ul li ul li {
          margin: 0 0 0 1.2em;
-         border-left: 1px solid silver; /* цвет вертикальной линии между узлами */
+         border-left: 1px solid silver; 
         }
-        li.last {/* последний узел, соединительную линию к след. узлу убираем */
+        li.last {
          border: none; 
         }
-   .marker { /* маркер раскрытия списка в закрытом состоянии */
+   .marker {
      border-color: transparent transparent transparent gray;
      border-style: solid; 
      border-width: .25em 0 .25em .5em;  
@@ -91,11 +85,11 @@
      height: 0px; 
      line-height: 0px;
    }
-   .marker.open {/* маркер раскрытия списка в открытом состоянии */
+   .marker.open {
      border-color: gray transparent transparent transparent;
      border-width: .5em .25em 0 .25em;  
    }
-  /* IE 6 Fixup */
+
   * html #multi-derevo * { height: 1%;}
   * html .marker { border-style: dotted dotted dotted solid; }
   * html .marker.open { border-style: solid dotted dotted dotted; }

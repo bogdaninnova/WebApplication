@@ -312,6 +312,14 @@ public class Queries {
 					+ "(CATEGORY_ID_S.NEXTVAL,"
 					+ "?,"
 					+ "?)";
+	
+	public static final String ADD_ROOT_CATEGORY =
+			"INSERT INTO CATEGORIES("
+					+ "ID,"
+					+ "NAME)"
+			+ "VALUES"
+					+ "(CATEGORY_ID_S.NEXTVAL,"
+					+ "?)";
     
 	public static final String GET_ALL_CATEGORIES =
 			"SELECT * FROM CATEGORIES";
@@ -330,15 +338,18 @@ public class Queries {
 				+ " LEFT JOIN PRODUCTS ON PRODUCTS.ID ="
 						+ " PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
     
-	public static final String setCategoriesToProductQuery(int productID, List<Category> categories) {
+	public static final String setCategoriesToProductQuery(int productID, List<Integer> categories) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT ALL ");
-		for (Category category : categories)
-			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + category.getId() +", " + productID + ") ");
+		for (int categoryID : categories)
+			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + categoryID +", " + productID + ") ");
 		sb.append("SELECT * FROM dual");
 		System.out.println(sb);
 		return sb.toString();
 	}
+	
+	public static final String CHANGE_CATEGORY =
+			"UPDATE CATEGORIES SET NAME = ? WHERE ID = ?";
 		
 	
     //------------------------------------------------------

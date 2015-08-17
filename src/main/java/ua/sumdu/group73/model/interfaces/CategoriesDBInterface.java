@@ -12,9 +12,16 @@ public interface CategoriesDBInterface {
 	
 	public Category getCategory(int categoryID);
 	
+	public boolean deleteCategory(int categoryID);
+	
+	public boolean changeCategory(int categoriesID, String newName);
+	
 	public List<Product> getProductsByCategory(int categoryID);	
 	
 	public List<Category> getCategoriesOfProduct(int productID);
 	
 	public List<Category> getAllCategories();
+	
+	public boolean addCategoriesToProduct(int productID, List<Integer> categories);
+
 }
