@@ -32,7 +32,7 @@ public class UserServlet extends HttpServlet {
     private List<Picture> pictures;
     private List<User> users;
     private List<Product> goods;
-//    private Product product;
+    private Product product;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
         pictures = null;
         users = null;
         goods = null;
-//        product = null;
+        product = null;
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -111,10 +111,15 @@ public class UserServlet extends HttpServlet {
                 if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
                         Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
                     if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
-                        if (OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
+                        int productID = OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
                                 request.getParameter("description"), Long.parseLong(request.getParameter("endDate")),
-                                Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")))) {
+                                Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")));
+                        if (productID != -1 && productID != 0) {
+                            product = null;
+                            product = OracleDataBase.getInstance().getProduct(productID);
                             sendResponse(response, "<result>OK</result>");
+                        } else {
+                            sendResponse(response, "<result>Incorrect product number</result>");
                         }
                     } else {
                         sendResponse(response, "<result>By it now less than start price</result>");
@@ -169,7 +174,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
         request.setAttribute("goods", goods);
-//        request.setAttribute("product", product);
+        request.setAttribute("product", product);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);
     }
