@@ -404,7 +404,55 @@ function clickGoodsForSale(prodid) {
             }
         },
         error: function () {
+            alert("Error while send data.");
+        }
+    });
+}
 
+function clickAddCategories(productID, checkBoxSelect) {
+    //var mas = [];
+    for (var i = 0 ; i < checkBoxSelect.length; i++) {
+        if (checkBoxSelect[i].checked) {
+            //mas.push(checkBoxSelect[i].value);
+            $.ajax({
+                dataType: "xml",
+                url: url,
+                type: "POST",
+                data: {
+                    action: "addCategories",
+                    categoryID: checkBoxSelect[i].value
+                },
+                success: function (data) {
+                    if ("ok" === $(data).find("result").text().toLowerCase()) {
+
+                    }
+                },
+                error: function () {
+                    alert("Error while send data.");
+                }
+            });
+
+        }
+    }
+    sendCategories(productID);
+}
+
+function sendCategories(productID) {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickAddCategories",
+            productID: parseInt(productID)
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                alert("OK");
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
         }
     });
 }

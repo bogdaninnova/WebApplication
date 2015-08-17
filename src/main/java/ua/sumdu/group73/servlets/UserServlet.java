@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class UserServlet extends HttpServlet {
     private List<User> users;
     private List<Product> goods;
     private Product product;
+    private List<Integer> categoryID = new ArrayList<>();
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -159,6 +161,15 @@ public class UserServlet extends HttpServlet {
         } else if ("clickGoodsForSale".equals(request.getParameter("action"))) {
             request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
             sendResponse(response, "<result>OK</result>");
+        } else if ("addCategories".equals(request.getParameter("action"))) {
+           categoryID.add(Integer.parseInt(request.getParameter("categoryID")));
+            sendResponse(response, "<result>OK</result>");
+        } else if ("clickAddCategories".equals(request.getParameter("action"))) {
+            if(OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")), categoryID)) {
+                categoryList = null;
+                sendResponse(response, "<result>OK</result>");
+            }
+
         }
     }
 

@@ -1,14 +1,14 @@
-<%--<%@ page import="ua.sumdu.group73.model.objects.Category" %>--%>
-<%--<%@ page import="java.util.ArrayList" %>--%>
-<%--<%@ page import="java.util.List" %>--%>
-<%--<%@ page import="java.util.Iterator" %>--%>
-<%--<%@ page import="ua.sumdu.group73.model.objects.Product" %>--%>
+<%@ page import="ua.sumdu.group73.model.objects.Category" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="ua.sumdu.group73.model.objects.Product" %>
 <div class="container-user">
     <h2> Add lot</h2>
 
-    <%--<% Product product = (Product) request.getAttribute("product"); %>--%>
+    <% Product product = (Product) request.getAttribute("product"); %>
 
-    <%--<%! List<Category> categoryList; %>--%>
+    <%! List<Category> categoryList; %>
 
     <table>
         <form>
@@ -17,12 +17,12 @@
                 <td></td>
             </tr>
 
-            <%--<% if (product != null) { %>--%>
-            <%--<tr>--%>
-                <%--<td>New product id :</td>--%>
-                <%--<td><%= product.getId() %></td>--%>
-            <%--</tr>--%>
-            <%--<% } else { %>--%>
+            <% if (product != null) { %>
+            <tr>
+                <td>New product id :</td>
+                <td><%= product.getId() %></td>
+            </tr>
+            <% } else { %>
 
             <tr>
                 <td>Title :</td>
@@ -57,91 +57,102 @@
             </tr>
 
 
-            <%--<% } %>--%>
-            <%--<tr>--%>
-                <%--<td><br><h3>Step #2 : Categories</h3><hr><br></td>--%>
-                <%--<td></td>--%>
-            <%--</tr>--%>
+            <% } %>
+            <tr>
+                <td><br><h3>Step #2 : Categories</h3><hr><br></td>
+                <td></td>
+            </tr>
 
-            <%--<% if (product != null) { %>--%>
-            <%--<tr>--%>
-                <%--<td><br>Choose category :</td>--%>
-                <%--<td><% categoryList = (List<Category>) request.getAttribute("categories");--%>
-                    <%--if (categoryList != null) { %>--%>
+            <% if (product != null) { %>
+            <div id="flgs">
+            <tr>
+                <td><br>Choose category :</td>
+                <td><% categoryList = (List<Category>) request.getAttribute("categories");
+                    if (categoryList != null) { %>
 
-                    <%--<%! private StringBuilder menuHTML; %>--%>
-                    <%--<% List<Category> rootCategories = new ArrayList<Category>();--%>
-                    <%--menuHTML = new StringBuilder();--%>
-                    <%--for (Category c : categoryList) {--%>
-                        <%--if (c.getParentID() == 0) {--%>
-                            <%--rootCategories.add(c);--%>
-                        <%--}--%>
-                    <%--}--%>
+                    <%! private StringBuilder menuHTML; %>
+                    <% List<Category> rootCategories = new ArrayList<Category>();
+                    menuHTML = new StringBuilder();
+                    for (Category c : categoryList) {
+                        if (c.getParentID() == 0) {
+                            rootCategories.add(c);
+                        }
+                    }
 
-                    <%--categoryListToHTML(0, rootCategories);--%>
-                <%--%>--%>
-                    <%--<%! private void categoryListToHTML(int level, List<Category> childsList) {--%>
-                        <%--for (Category currentCat : childsList) {--%>
-                            <%--List<Category> listOfChildrens = new ArrayList<Category>();--%>
-                            <%--Iterator<Category> iterCat = categoryList.iterator();--%>
-                            <%--int count = 0;--%>
-                            <%--while (iterCat.hasNext()) {--%>
-                                <%--Category current = iterCat.next();--%>
+                    categoryListToHTML(0, rootCategories);
+                %>
+                    <%! private void categoryListToHTML(int level, List<Category> childsList) {
+                        for (Category currentCat : childsList) {
+                            List<Category> listOfChildrens = new ArrayList<Category>();
+                            Iterator<Category> iterCat = categoryList.iterator();
+                            int count = 0;
+                            while (iterCat.hasNext()) {
+                                Category current = iterCat.next();
 
-                                <%--if (currentCat.getId() == current.getParentID()) {--%>
-                                    <%--if (count == 0) {--%>
-<%--//                                        menuHTML.append("(" +currentCat.getName()+ ")" + " - ");--%>
-                                        <%--count += 1;--%>
-                                    <%--}--%>
-                                    <%--listOfChildrens.add(current);--%>
-                                    <%--iterCat.remove();--%>
-                                <%--}--%>
-                            <%--}--%>
-                            <%--if (!listOfChildrens.isEmpty()) {--%>
-                                <%--categoryListToHTML(++level, listOfChildrens);--%>
-                            <%--} else {--%>
-                                <%--menuHTML.append("<input type=\"checkbox\" name=\"" +--%>
-                                        <%--currentCat.getName() +--%>
-                                        <%--"\" value=\""+ currentCat.getName() + "\">" +--%>
-                                        <%--currentCat.getName() + " ");--%>
-                            <%--}--%>
-                        <%--}--%>
-                    <%--} %>--%>
-                    <%--<% } %>--%>
-                    <%--<%= menuHTML.toString() %></td>--%>
-            <%--</tr>--%>
-            <%--<tr>--%>
-                <%--<td></td>--%>
-                <%--<td><button onclick="">Add categories</button></td>--%>
-            <%--</tr>--%>
-            <%--<% } else { %>--%>
-                <%--<tr>--%>
-                    <%--<td>Please do the first step.</td>--%>
-                    <%--<td></td>--%>
-                <%--</tr>--%>
-            <%--<% } %>--%>
+                                if (currentCat.getId() == current.getParentID()) {
+                                    if (count == 0) {
+                                        count += 1;
+                                    }
+                                    listOfChildrens.add(current);
+                                    iterCat.remove();
+                                }
+                            }
+                            if (!listOfChildrens.isEmpty()) {
+                                categoryListToHTML(++level, listOfChildrens);
+                            } else {
+                                menuHTML.append("<input type=\"checkbox\" id=\"" +
+                                        currentCat.getId() +
+                                        "\" name=\"checkBoxSelect\" value=\""+  currentCat.getId() + "\">" +
+                                        currentCat.getName() + " ");
+                            }
+                        }
+                    } %>
+                    <% } %>
+                    <%= menuHTML.toString() %></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onclick="clickAddCategories(<%= product.getId() %>, document.getElementsByName('checkBoxSelect'));">Add categories</button></td>
+            </tr>
+            <% } else { %>
+                <tr>
+                    <td>Please do the first step.</td>
+                    <td></td>
+                </tr>
+            <% } %>
+            </div>
+            <tr>
+                <td><br><h3>Step #3 : Image</h3><hr><br></td>
+                <td></td>
+            </tr>
 
-            <%--<tr>--%>
-                <%--<td><br><h3>Step #3 : Image</h3><hr><br></td>--%>
-                <%--<td></td>--%>
-            <%--</tr>--%>
-
-            <%--<% if (product != null) { %>--%>
-        <%--</form>--%>
-        <%--<tr>--%>
-            <%--<td><br>Add image :</td>--%>
-            <%--<td></td>--%>
-        <%--</tr>--%>
-        <%--<tr>--%>
-            <%--<td></td>--%>
-            <%--<td><button onclick="">Add picture</button></td>--%>
-        <%--</tr>--%>
-        <%--<% } else { %>--%>
-        <%--<tr>--%>
-            <%--<td>Please do the first step.</td>--%>
-            <%--<td></td>--%>
-        <%--</tr>--%>
-        <%--<% } %>--%>
-
+            <% if (product != null) { %>
+        </form>
+        <tr>
+            <td><br>Add image :</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button onclick="">Add picture</button></td>
+        </tr>
+        <% } else { %>
+        <tr>
+            <td>Please do the first step.</td>
+            <td></td>
+        </tr>
+        <% } %>
+        <tr>
+            <td><br></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button onclick="">Create new lot</button></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><br></td>
+        </tr>
     </table>
 </div>
