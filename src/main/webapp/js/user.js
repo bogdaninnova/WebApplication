@@ -444,7 +444,7 @@ function sendCategories(productID) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                document.getElementById('buttonAddCategories').disabled = true;
+                window.location.replace(url);
             }
         },
         error: function () {
@@ -452,3 +452,4 @@ function sendCategories(productID) {
         }
     });
 }
+

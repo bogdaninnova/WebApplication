@@ -35,6 +35,8 @@ public class UserServlet extends HttpServlet {
     private List<Product> goods;
     private Product product;
     private List<Integer> categoryID = new ArrayList<>();
+    private boolean step2;
+    private boolean step3;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -167,6 +169,7 @@ public class UserServlet extends HttpServlet {
         } else if ("clickAddCategories".equals(request.getParameter("action"))) {
             if(OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")), categoryID)) {
                 categoryList = null;
+                step2 = true;
                 sendResponse(response, "<result>OK</result>");
             }
 
@@ -186,6 +189,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("users", users);
         request.setAttribute("goods", goods);
         request.setAttribute("product", product);
+        request.setAttribute("step2", step2);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);
     }

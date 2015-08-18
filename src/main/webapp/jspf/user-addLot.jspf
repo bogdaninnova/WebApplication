@@ -74,7 +74,8 @@
             <td></td>
         </tr>
         <form>
-            <% if (product != null) { %>
+            <% boolean step2 = (Boolean) request.getAttribute("step2"); %>
+            <% if (product != null && !step2) { %>
 
             <tr>
                 <td><br>Choose category :</td>
@@ -135,10 +136,17 @@
             </td>
         </tr>
         <% } else { %>
+        <% if (step2) { %>
+        <tr>
+            <td>Done</td>
+            <td></td>
+        </tr>
+        <% } else { %>
         <tr>
             <td>Please do the first step.</td>
             <td></td>
         </tr>
+        <% } %>
         <% } %>
 
         <tr>
