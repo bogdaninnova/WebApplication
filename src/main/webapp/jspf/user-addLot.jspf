@@ -130,7 +130,7 @@
         <tr>
             <td></td>
             <td>
-                <button id="buttonAddCategories" onclick="clickAddCategories(<%= product.getId() %>, document.getElementsByName('checkBoxSelect'));">
+                <button onclick="clickAddCategories(<%= product.getId() %>, document.getElementsByName('checkBoxSelect'));">
                     Add categories
                 </button>
             </td>
@@ -157,19 +157,22 @@
                 <br></td>
             <td></td>
         </tr>
-        <form>
-            <% if (product != null) { %>
 
+            <% if (product != null) { %>
+            <form id="addImage" enctype="multipart/form-data">
             <tr>
                 <td><br>Add image :</td>
-                <td></td>
+                <td><input type="file" id="sampleFile" name="sampleFile" accept="image/*" /><br></td>
             </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button onclick="">Add picture</button>
-                </td>
-            </tr>
+             <tr>
+                 <td></td>
+                  <td>
+                      <button onclick="clickAddImage();">Upload File</button>
+                  </td>
+             </tr>
+
+                </form>
+
             <% } else { %>
             <tr>
                 <td>Please do the first step.</td>
@@ -180,10 +183,10 @@
                 <td><br></td>
                 <td></td>
             </tr>
-        </form>
+
         <tr>
             <td>
-                <button onclick="">Create new lot</button>
+                <button onclick="clickNewLot();">Create new lot</button>
             </td>
             <td></td>
         </tr>

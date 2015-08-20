@@ -1,5 +1,9 @@
 package ua.sumdu.group73.servlets;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
@@ -14,8 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +38,8 @@ public class UserServlet extends HttpServlet {
     private List<Product> goods;
     private Product product;
     private List<Integer> categoryID = new ArrayList<>();
+    private List<String> productURL = new ArrayList<>();
     private boolean step2;
-    private boolean step3;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -173,6 +176,29 @@ public class UserServlet extends HttpServlet {
                 sendResponse(response, "<result>OK</result>");
             }
 
+        } else if ("clickNewLot".equals(request.getParameter("action"))) {
+            product = null;
+            step2 = false;
+            sendResponse(response, "<result>OK</result>");
+        } else {
+            String ajaxUpdateResult = "";
+            try {
+                List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+                for (FileItem item : items) {
+                    String fileName = item.getName();
+                    InputStream content = item.getInputStream();
+                    response.setContentType("text/plain");
+                    response.setCharacterEncoding("UTF-8");
+                    if (uploadImage(fileName, content)) {
+                        if (OracleDataBase.getInstance().addPicturesToProduct(product.getId(), productURL)) {
+                            ajaxUpdateResult = "File " + fileName + " is successfully uploaded\n\r";
+                        }
+                    }
+                }
+            } catch (FileUploadException e) {
+                log.error("Parsing file upload failed.", e);
+            }
+            response.getWriter().print(ajaxUpdateResult);
         }
     }
 
@@ -200,5 +226,36 @@ public class UserServlet extends HttpServlet {
         } catch (IOException e) {
             log.error(e);
         }
+    }
+
+    private synchronized boolean uploadImage(String fileName, InputStream content) {
+        OutputStream fos = null;
+        File file;
+        try {
+            file = new File("D:/NetCracker/GitHub/WebApplication/target/WebApplication/images/product-images/" + fileName);
+            productURL.clear();
+            productURL.add("../WebApplication/images/product-images/"+ fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+                fos = new FileOutputStream(file);
+                byte[] buffer = new byte[1000];
+                while (content.available() > 0) {
+                    int count = content.read(buffer);
+                    fos.write(buffer, 0, count);
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            log.error(e);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    log.error(e);
+                }
+            }
+        }
+        return false;
     }
 }

@@ -453,3 +453,35 @@ function sendCategories(productID) {
     });
 }
 
+function clickAddImage() {
+    var sampleFile = document.getElementById("sampleFile").files[0];
+    var formdata = new FormData();
+    formdata.append("sampleFile", sampleFile);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "user", true);
+    xhr.send(formdata);
+    xhr.onload = function(e) {
+        if (this.status == 200) {
+            alert(this.responseText);
+        }
+    };
+}
+
+function clickNewLot() {
+    $.ajax({
+        dataType: "xml",
+        url: url,
+        type: "POST",
+        data: {
+            action: "clickNewLot"
+        },
+        success: function (data) {
+            if ("ok" === $(data).find("result").text().toLowerCase()) {
+                window.location.replace(url);
+            }
+        },
+        error: function () {
+            alert("Error while send data.");
+        }
+    });
+}

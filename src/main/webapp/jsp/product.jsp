@@ -16,27 +16,22 @@
 <body>
 <div class="container-product">
     <% Product product = (Product) request.getAttribute("product");
-        List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");
-    %>
+        List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");%>
+        <% String image = "./images/no_image.png"; %>
     <% if (product != null) { %>
     <header>
         <div class="product-header">
             <duv class="product-img">
+
                 <% if (pictures != null) {
-                    String image = "";
-                    int count = 0;
                     for (Picture picture : pictures) {
                         if (picture.getProductID() == product.getId()) {
-                            if (count == 0) {
-                                image = picture.getURL();
-                                count += 1;
-                            }
-                %>
-                <img src="<%= image%>" alt="No photo" width="400" height="300">
-                <% } else { %>
-                <img src="./images/no_image.png" alt="No photo" width="400" height="300">
+                            image = picture.getURL();%>
                 <% }
+                }
                 } %>
+
+                <img src="<%= image%>" alt="No photo" width="400" height="300">
             </duv>
             <h1><%= product.getName()%></h1>
             <div class="product-buy">
@@ -116,8 +111,7 @@
             <br><br>
         </div>
     </footer>
-    <% }
-    } %>
+    <% } %>
 </div>
 </body>
 </html>
