@@ -1155,7 +1155,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	public boolean deleteCategory(int categoryID, List<Category> list) {
 		List<Integer> deleteList = new ArrayList<Integer>();
 		for (Category category : list) 
-			if (isCategoryChild(category, categoryID, list))
+			if (CategoriesTree.isCategoryChild(category, categoryID, list))
 				deleteList.add(category.getId());
 		deleteList.add(categoryID);
 		if (deleteCategoriesListProducts(deleteList))
@@ -1196,29 +1196,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         return result;
 	}
 	
-	private boolean isCategoryChild(Category category, int categoryID, List<Category> list) {
-		int parrentID = category.getParentID();
-		if (parrentID == categoryID)
-			return true;
-		if (parrentID == 0)
-			return false;
-		return isCategoryChild(getParentCategory(list, category.getParentID()), categoryID, list);
-	}
-	
-	private Category getParentCategory(List<Category> list, int categoryID) {
-		for (Category category : list)
-			if (category.getId() == categoryID)
-				return category;
-		return null;
-	}
-	
-	private boolean hasChilren(Category category, List<Category> list) {
-		for (Category c : list)
-			if (c.getParentID() == category.getId())
-				return true;
-		return false;
-	}
-  
+
+
     //------------------------------------------------------
     //--------------------XXX:PICTURES----------------------
     //------------------------------------------------------
@@ -1280,5 +1259,4 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return result;
 	}
-
 }

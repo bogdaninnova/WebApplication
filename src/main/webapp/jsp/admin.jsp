@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="ua.sumdu.group73.model.objects.*" %>
+<%@ page import="ua.sumdu.group73.model.*" %>
 <%@ page import="java.util.*" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -19,28 +20,6 @@
 		List<Category> categories = (ArrayList<Category>) request.getAttribute("categories");
     	List<Product> products = (ArrayList<Product>) request.getAttribute("products");
     	List<Picture> pictures = (ArrayList<Picture>) request.getAttribute("pictures");
-	
-	List<Category> list = new ArrayList<Category>();
-		
-		list.add(new Category(1, "1"));
-		list.add(new Category(2, "2"));
-		list.add(new Category(3, "3"));
-		list.add(new Category(31, 3, "31"));
-		list.add(new Category(32, 3, "32"));
-		list.add(new Category(33, 3, "33"));
-		list.add(new Category(4, "4"));
-		list.add(new Category(5, "5"));
-		list.add(new Category(51, 5, "51"));
-		list.add(new Category(52, 5, "52"));
-		list.add(new Category(521, 52, "521"));
-		list.add(new Category(522, 52, "522"));
-		list.add(new Category(523, 52, "523"));
-		list.add(new Category(524, 52, "524"));
-		list.add(new Category(5241, 524, "5241"));
-		list.add(new Category(53, 5, "53"));
-		list.add(new Category(54, 5, "54"));
-		list.add(new Category(6, "6"));
-	
 	 %>
 	
 	
@@ -127,11 +106,7 @@
 </form>
 <br>
 
-
-
-
-
-<%=printCategories(categories) %>
+<%= CategoriesTree.printCategories(categories) %>
 
 Categories name: <input type="text" id="categoryName" size="10" maxlength="30">
 
@@ -141,64 +116,9 @@ Categories name: <input type="text" id="categoryName" size="10" maxlength="30">
 <button onclick="sendCategoryData('change', $('#categoryName').val(), window.location.href);"> Change </button>
 <button onclick="sendCategoryData('delete', $('#categoryName').val(), window.location.href);"> Delete </button>
 
-<%!
-	 public static String printCategories(List<Category> list) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<div id=\"multi-derevo\">\n");
-		sb.append("<a href=\"#\">CATEGORIES</a>\n");
-		sb.append("<ul>\n");
-		Map<Category, Boolean> map = new HashMap<Category, Boolean>();
-		for (Category category : list)
-			map.put(category, true);
-
-		for (Category category : map.keySet())
-			if (map.get(category) && (category.getParentID() == 0))
-				printSubcategories(map, category, sb);
-		sb.append("</ul>\n");
-		sb.append("</div>\n");
-		return sb.toString();
-	}
-%>
-	
-<%!
-	private static void printSubcategories(Map<Category, Boolean> map, Category category, StringBuilder sb) {
-		
-		map.put(category, false);
-		boolean hasSubcategory = getSubcategory(map, category) != null;
-		
-		sb.append("<li>\n");
-		
-		sb.append("<span><a href=\"#" + category.getId() + "\">" + category.getName() + "</a></span>\n");
-		
-		if (hasSubcategory)
-			sb.append("<ul>\n");
-		
-		while (getSubcategory(map, category) != null)
-			printSubcategories(map, getSubcategory(map, category), sb);
-
-		if (hasSubcategory)
-			sb.append("</ul>\n");
-			
-		sb.append("</li>\n");
-		
-	}
-%>
-	
-<%!
-	private static Category getSubcategory(Map<Category, Boolean> map, Category category) {
-		for (Category cat : map.keySet())
-			if ((map.get(cat)) && cat.getParentID() == category.getId())
-				return cat;
-		return null;
-	}
-%>
-
-<%! int selectedCategoryID; %>
-
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
-
 $('#multi-derevo li:has("ul")').find('a:first').prepend('<em class="marker"></em>');
 $('#multi-derevo li span').click(function () {
   $('a.current').removeClass('current'); 
@@ -217,10 +137,6 @@ $('#multi-derevo li span').click(function () {
 });
 });
 </script>
-
-
-
-
 
 <br><br>
 
