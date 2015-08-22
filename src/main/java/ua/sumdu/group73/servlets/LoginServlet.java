@@ -29,16 +29,24 @@ public class LoginServlet extends HttpServlet {
             User user = OracleDataBase.getInstance().authorization(request.getParameter("login"), request.getParameter("password"));
             log.info("USER - " + user);
             if (user != null) {
-                request.getSession().setAttribute("user", user);
-                sendResponse(response, "<result>OK</result>");
+                if (!user.isBanned()) {
+                    request.getSession().setAttribute("user", user);
+                    sendResponse(response, "<result>OK</result>");
+                } else {
+                    sendResponse(response, "<result>You are banned</result>");
+                }
             } else {
                 sendResponse(response, "<result>Login incorrect.</result>");
             }
         } else if ("loginEmail".equals(request.getParameter("action"))) {
             User res = OracleDataBase.getInstance().authorizationByEmail(request.getParameter("login"), request.getParameter("password"));
             if (res != null) {
-                request.getSession().setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
-                sendResponse(response, "<result>OK</result>");
+                if (!res.isBanned()) {
+                    request.getSession().setAttribute("user", OracleDataBase.getInstance().getUser(res.getId()));
+                    sendResponse(response, "<result>OK</result>");
+                } else {
+                    sendResponse(response, "<result>You are banned</result>");
+                }
             } else {
                 sendResponse(response, "<result>Email incorrect.</result>");
             }
@@ -50,6 +58,12 @@ public class LoginServlet extends HttpServlet {
         rd.forward(request, response);
     }
 
+    /**
+     * This method send response.
+     *
+     * @param response - HttpServletResponse.
+     * @param text     - message.
+     */
     private void sendResponse(HttpServletResponse response, String text) {
         try (PrintWriter pw = response.getWriter()) {
             pw.println(text);
