@@ -6,14 +6,16 @@ import ua.sumdu.group73.model.objects.Product;
 
 public class ServerTimerTask {
 
-	private static final int DELAY = 30000;//Every 30 seconds
+	private static final int DELAY = 300000;//Every 300 seconds
+	private static Timer timer = null;
 	
 	private static ServerTimerTask instance;
 	
-	public static ServerTimerTask getInstance() {
+	public static void run() {
+		if (timer == null)
+			timer = new Timer();
 		if (instance == null)
 			instance = new ServerTimerTask();
-		return instance;
 	}
 	
 	private ServerTimerTask() {
@@ -24,7 +26,14 @@ public class ServerTimerTask {
 		    	OracleDataBase.getInstance().removeUnactivatedUsers();
 			}
 		};
-		new Timer().schedule(st, DELAY, DELAY);
+		timer.schedule(st, DELAY, DELAY);
+	}
+	
+	public static void stop() {
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
 	}
 	
 	private static void finishAuctions() {
