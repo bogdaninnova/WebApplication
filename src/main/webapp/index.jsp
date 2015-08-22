@@ -5,6 +5,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="ua.sumdu.group73.model.objects.Picture" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -193,7 +194,8 @@
                     </assaid>
                     <footer>
                         <div class="container-lots-time">
-                            Close: <%=product.getEndDate()%>
+                            <% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
+                            Close : <%= dateFormat.format(product.getEndDate()) %>
                         </div>
                         <div class="container-lots-buyer">
                             <% if (product.getCurrentBuyerID() != 0) {
@@ -226,13 +228,9 @@
             </div>
         </footer>
     </aside>
+    <%@include file="jspf/user-footer.jspf"%>
 </div>
 
-<footer id="footer">
-    <div class="container" align="right">
-        <p>Group 7.3</p>
-    </div>
-</footer>
 
 </body>
 </html>
