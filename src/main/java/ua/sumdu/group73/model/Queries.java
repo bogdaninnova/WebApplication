@@ -2,8 +2,6 @@ package ua.sumdu.group73.model;
 
 import java.util.List;
 
-import ua.sumdu.group73.model.objects.Category;
-
 public class Queries {
 
     //------------------------------------------------------
@@ -293,6 +291,11 @@ public class Queries {
 		sb.append(productsID.get(productsID.size() - 1) + " )");
 		return sb.toString();
 	}
+	
+	public static final String GET_PRODUCT_SELLER =
+			"SELECT USERS.* FROM USERS"
+			+ " JOIN PRODUCTS ON USERS.ID = PRODUCTS.SELLER_ID"
+			+ " WHERE PRODUCTS.ID = ?";
 
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------

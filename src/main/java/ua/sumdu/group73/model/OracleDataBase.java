@@ -218,9 +218,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int age = rs.getInt("AGE");
 		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
 		            
-		            if (rs.getString("PASSWORD").equals(password) &&
-				       (!status.equals("unactivated")) &&
-				       (!status.equals("banned")))
+		            if (rs.getString("PASSWORD").equals(password))
 		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
@@ -250,9 +248,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            int age = rs.getInt("AGE");
 		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
 		            
-		            if (rs.getString("PASSWORD").equals(password) &&
-		            	(!status.equals("unactivated")) &&
-		            	(!status.equals("banned")))
+		            if (rs.getString("PASSWORD").equals(password))
 		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
 	            }
             }
@@ -724,8 +720,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     public boolean makeBet(int productID, int buyerID, int price) {
     	log.info("Method makeBet starts.....");
     	boolean result = bet(productID, buyerID, price);
-    	if (result && !isFollowProduct(buyerID, productID))
+    	if (result && !isFollowProduct(buyerID, productID)) {
+    		Messager.sendBetMessage(productID);
     		followProduct(productID, buyerID);
+    	}
         return result;
     }
     
@@ -766,8 +764,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     
     public boolean buyout(int productID, int buyerID) {
     	if (buyoutProduct(productID, buyerID))
-    		if(finishProductFollowings(productID))
+    		if(finishProductFollowings(productID)) {
+    			Messager.sendEndAuctionMessage(productID);
     			return true;
+    		}
     	return false;
     }
 
@@ -900,6 +900,34 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return list;
     }
+	
+	public User getProductSeller(int productID) {
+	   	log.info("Method getProductSeller starts.....");
+    	User user = null;
+    	initConnection();
+    	try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.GET_PRODUCT_SELLER)) {
+            preparedStatement.setInt(1, productID);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+	            rs.next();
+	            int id = rs.getInt("ID");
+	            String login = rs.getString("LOGIN");
+	            String password = rs.getString("PASSWORD");
+	            String name = rs.getString("NAME");
+	            String secondName = rs.getString("SECOND_NAME");
+	            String eMail = rs.getString("EMAIL");
+	            String phone = rs.getString("PHONE");
+	            String status = rs.getString("STATUS");
+	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            
+	            user = new User(id, login, password, name, secondName, 0, eMail, phone, status, regDate);
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getProductSeller()", e);
+        } finally {
+        	closeConnection();
+        }
+        return user;
+	}
 	
 	@Override
 	public boolean deleteProducts(List<Integer> productsID) {
