@@ -21,14 +21,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This servlet working with user.jsp.
- *
+ * <p/>
  * Created by Greenberg Dima <gdvdima2008@yandex.ru>
  */
 public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
+    private static final String LOCAL_ADDRESS = "D:/NetCracker/GitHub/WebApplication/target/WebApplication/images/product-images/";
+    private static final String URL_ADDRESS = "../WebApplication/images/product-images/";
     private String showContent;
     private List<Category> categoryList;
     private List<Product> purchasedList;
@@ -92,7 +95,7 @@ public class UserServlet extends HttpServlet {
                 User user = (User) request.getSession().getAttribute("user");
                 if (OracleDataBase.getInstance().changeData(user.getId(), request.getParameter("name"),
                         request.getParameter("secondName"), request.getParameter("phone"))) {
-                        request.getSession().setAttribute("user", null);
+                    request.getSession().setAttribute("user", null);
                     sendResponse(response, "<result>OK</result>");
                 }
             } else {
@@ -167,10 +170,10 @@ public class UserServlet extends HttpServlet {
             request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
             sendResponse(response, "<result>OK</result>");
         } else if ("addCategories".equals(request.getParameter("action"))) {
-           categoryID.add(Integer.parseInt(request.getParameter("categoryID")));
+            categoryID.add(Integer.parseInt(request.getParameter("categoryID")));
             sendResponse(response, "<result>OK</result>");
         } else if ("clickAddCategories".equals(request.getParameter("action"))) {
-            if(OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")), categoryID)) {
+            if (OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")), categoryID)) {
                 categoryList = null;
                 step2 = true;
                 sendResponse(response, "<result>OK</result>");
@@ -181,22 +184,17 @@ public class UserServlet extends HttpServlet {
             step2 = false;
             sendResponse(response, "<result>OK</result>");
         } else {
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
             String ajaxUpdateResult = "";
-            try {
-                List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                for (FileItem item : items) {
-                    String fileName = item.getName();
-                    InputStream content = item.getInputStream();
-                    response.setContentType("text/plain");
-                    response.setCharacterEncoding("UTF-8");
-                    if (uploadImage(fileName, content)) {
-                        if (OracleDataBase.getInstance().addPicturesToProduct(product.getId(), productURL)) {
-                            ajaxUpdateResult = "File " + fileName + " is successfully uploaded\n\r";
-                        }
-                    }
+            if (uploadImage(request)) {
+                if (OracleDataBase.getInstance().addPicturesToProduct(product.getId(), productURL)) {
+                    ajaxUpdateResult = "File is successfully uploaded\n\r";
+                } else {
+                    ajaxUpdateResult = "Error: Add to pictures \n\r";
                 }
-            } catch (FileUploadException e) {
-                log.error("Parsing file upload failed.", e);
+            } else {
+                ajaxUpdateResult = "Error: File is not upload \n\r";
             }
             response.getWriter().print(ajaxUpdateResult);
         }
@@ -220,6 +218,13 @@ public class UserServlet extends HttpServlet {
         rd.forward(request, response);
     }
 
+
+    /**
+     * This method send response.
+     *
+     * @param response - HttpServletResponse.
+     * @param text     - message.
+     */
     private void sendResponse(HttpServletResponse response, String text) {
         try (PrintWriter pw = response.getWriter()) {
             pw.println(text);
@@ -228,33 +233,87 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private synchronized boolean uploadImage(String fileName, InputStream content) {
+    /**
+     * This method upload image.
+     *
+     * @param request - image.
+     * @return true or false.
+     */
+    private boolean uploadImage(HttpServletRequest request) {
+        InputStream content = null;
         OutputStream fos = null;
-        File file;
+        String fileName = null;
         try {
-            file = new File("D:/NetCracker/GitHub/WebApplication/target/WebApplication/images/product-images/" + fileName);
-            productURL.clear();
-            productURL.add("../WebApplication/images/product-images/"+ fileName);
+
+            List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+            for (FileItem item : items) {
+                fileName = item.getName();
+                content = item.getInputStream();
+            }
+
+            File file = new File(LOCAL_ADDRESS + fileName);
             if (!file.exists()) {
+                productURL.clear();
+                productURL.add(URL_ADDRESS + fileName);
                 file.createNewFile();
                 fos = new FileOutputStream(file);
-                byte[] buffer = new byte[1000];
-                while (content.available() > 0) {
-                    int count = content.read(buffer);
-                    fos.write(buffer, 0, count);
+                int x = 0;
+                byte[] buffer = new byte[256];
+                while ((x = content.read(buffer)) != -1) {
+                    fos.write(buffer, 0, x);
+                }
+            } else {
+                log.info("Create new file name");
+                String newFileName = randomName(fileName);
+                File newFile = new File(LOCAL_ADDRESS + newFileName);
+                productURL.clear();
+                productURL.add(URL_ADDRESS + newFileName);
+                newFile.createNewFile();
+                fos = new FileOutputStream(newFile);
+                int x = 0;
+                byte[] buffer = new byte[256];
+                while ((x = content.read(buffer)) != -1) {
+                    fos.write(buffer, 0, x);
                 }
             }
+            fos.flush();
             return true;
-        } catch (IOException e) {
-            log.error(e);
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    log.error(e);
-                }
+        } catch (FileUploadException | IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * This method create new file name.
+     *
+     * @param fileName - old file name.
+     * @return new file name.
+     */
+    private String randomName(String fileName) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        do {
+            if (sb.length() > 0) {
+                sb.delete(0, sb.length());
             }
+            sb.append(fileName.substring(0, fileName.lastIndexOf(".")));
+            sb.append(String.valueOf(random.nextInt()));
+            sb.append(fileName.substring(fileName.lastIndexOf(".")));
+        } while (!checkRandom(sb.toString()));
+        return sb.toString();
+    }
+
+    /**
+     * This method checks for file.
+     *
+     * @param name - name file.
+     * @return true or false.
+     */
+    private boolean checkRandom(String name) {
+        File nFile = new File(LOCAL_ADDRESS + name);
+        if (!nFile.exists()) {
+            return true;
         }
         return false;
     }
