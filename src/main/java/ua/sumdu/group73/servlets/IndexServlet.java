@@ -37,6 +37,7 @@ public class IndexServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         log.info("Init UserServlet");
+        ServerTimerTask.run();
         products = null;
         products = OracleDataBase.getInstance().getAllActiveProducts();
         log.info("Init products");
@@ -98,7 +99,6 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	ServerTimerTask.getInstance();
     	showProduct.clear();
     	if (products != null) {
             for (Product product : products) {
@@ -122,6 +122,10 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
         rd.forward(request, response);
+    }
+    
+    public void destroy() {
+    	ServerTimerTask.stop();
     }
 
     private void sendResponse(HttpServletResponse response, String text) {
