@@ -30,8 +30,6 @@ public class AdminServlet extends HttpServlet {
     private List<Picture> pictures = null;
     private List<User> users = null;
     
-
-    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 				

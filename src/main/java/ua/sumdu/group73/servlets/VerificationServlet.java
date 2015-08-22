@@ -1,8 +1,10 @@
 package ua.sumdu.group73.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +35,9 @@ public class VerificationServlet extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			else {
 				OracleDataBase.getInstance().activateUser(login);
-				response.sendRedirect("login");
+				request.setAttribute("Verification","Account verification was success");
+				RequestDispatcher rd = request.getRequestDispatcher("jsp/login.jsp");
+		        rd.forward(request, response);
 			}
 		} else if (emailToken != null) {
 			emailToken = emailToken.replaceAll(" ", "+");

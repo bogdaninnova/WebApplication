@@ -40,5 +40,10 @@
         </tr>
     </table>
 </div>
+
+<% if (request.getAttribute("Verification") != null) {%>
+<center><h3><%=request.getAttribute("Verification") %></h3></center>
+<% } %>
+
 </body>
 </html>

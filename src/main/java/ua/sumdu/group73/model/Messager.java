@@ -14,16 +14,11 @@ public class Messager {
 			"http://localhost:7001/WebApplication/Verification";
 	
 	public static void sendEndAuctionMessage(int productID) {
-		
 		log.info("Method sendEndAuctionMessage starts.....");
-		
 		MailSender mailer = MailSender.getInstance();
-		
 		Product product = OracleDataBase.getInstance().getProduct(productID);
-		
 		if (product.getCurrentPrice() == 0) 
 			return;
-		
 		User buyer = OracleDataBase.getInstance().getUser(product.getCurrentBuyerID());
 		User seller = OracleDataBase.getInstance().getUser(product.getSellerID());
 		
@@ -56,15 +51,27 @@ public class Messager {
 		sellerTextSB.append("This mail was generated automatically, please don't answer on it");
 		
 		mailer.send("Auction Lab3: SELL", sellerTextSB.toString(), sellerMail);
+	}
+	
+	public static void sendBetMessage(int productID) {
+		log.info("Method sendEndAuctionMessage starts.....");
+	
+		User user = OracleDataBase.getInstance().getProductSeller(productID);
+		Product product = OracleDataBase.getInstance().getProduct(productID);
+		MailSender mailer = MailSender.getInstance();
 
+		StringBuilder sb = new StringBuilder();
+		sb.append("Hello, " + user.getName() +"!\n");
+		sb.append("Someone made a bet in auction with " + product.getName() + "!\n");
+		sb.append("Current price: " + product.getCurrentPrice() + ".\n");
+		sb.append("This mail was generated automatically, please don't answer on it");
+		
+		mailer.send("Auction Lab3: BUY", sb.toString(), user.geteMail());
 	}
 	
 	public static void registrationMail(String login, String name, String mail) {
-		
 		log.info("Method registrationMail starts.....");
-		
 		MailSender mailer = MailSender.getInstance();
-		
 		StringBuilder textSB = new StringBuilder();
 
 		textSB.append("Hello, " + name +"! <br>");
@@ -80,14 +87,10 @@ public class Messager {
 	}
 	
 	public static boolean changeMail(String login, String mail) {
-		
 		log.info("Method changeMailLetter starts.....");
-		
 		if (!OracleDataBase.getInstance().isEmailFree(mail))
 			return false;
-		
 		MailSender mailer = MailSender.getInstance();
-		
 		StringBuilder textSB = new StringBuilder();
 
 		textSB.append("Hello, " + login +"! <br>");
@@ -99,9 +102,7 @@ public class Messager {
 				"\" target=\"_blank\">Use this link for verifying new email</a>");
 		
 		textSB.append("This mail was generated automatically, please don't answer on it");
-		
 		mailer.send("Auction Lab3: MAIL CHANGING", textSB.toString(), mail);
-		
 		return true;
 	}
 	

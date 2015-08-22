@@ -29,5 +29,7 @@ public interface ProductDBInterface {
 	
 	public List<Product> findProducts(String substring);
 	
+	public User getProductSeller(int productID);
+	
 	public boolean deleteProducts(List<Integer> productsID);
 }
