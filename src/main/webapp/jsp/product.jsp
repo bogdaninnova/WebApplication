@@ -2,6 +2,7 @@
 <%@ page import="ua.sumdu.group73.model.objects.Picture" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ua.sumdu.group73.model.objects.User" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page language="java" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -93,7 +94,9 @@
                 </div>
                 <div class="product-status-closeTime">
                     <br>
-                    Close time : <%= product.getEndDate() %>
+
+                    <% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
+                    Close time : <%= dateFormat.format(product.getEndDate()) %>
                 </div>
             </div>
         </div>
