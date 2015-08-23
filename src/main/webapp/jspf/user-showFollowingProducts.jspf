@@ -40,7 +40,8 @@
             </assaid>
             <footer>
                 <div class="container-lots-time">
-                    Close: <%=followingProduct.getEndDate()%>
+                    <% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
+                    Close : <%= dateFormat.format(followingProduct.getEndDate()) %>
                 </div>
                 <div class="container-lots-buyer">
                     <% if (followingProduct.getCurrentBuyerID() != 0) {

@@ -1,3 +1,4 @@
+<%@ page import="java.text.SimpleDateFormat" %>
 <div class="container-user">
     <h2> Information about user</h2>
     <% if (user != null) { %>
@@ -32,7 +33,8 @@
         </tr>
         <tr>
             <td>Registration Date :</td>
-            <td><%= user.getRegistrationDate()%></td>
+            <td><% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
+                <%= dateFormat.format(user.getRegistrationDate()) %></td>
         </tr>
     </table>
     <% } %>
