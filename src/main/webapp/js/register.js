@@ -2,7 +2,7 @@
  * Created by Created by Greenberg Dima <gdvdima2008@yandex.ru>.
  */
 
-function validData(login, password, confirmPassword, firstName, secondName, age, email, phone) {
+function validData(login, password, confirmPassword, firstName, secondName, age, email, phone, captcha) {
     if (login.length > 0 && password.length > 0 && confirmPassword.length > 0 && firstName.length > 0 && secondName.length > 0 && age.length > 0 && email.length > 0) {
         if (login.length <= 3) {
             alert("Short login.");
@@ -15,7 +15,7 @@ function validData(login, password, confirmPassword, firstName, secondName, age,
         } else if (!(isEmail(email))) {
             alert("Incorrect Email address.");
         } else {
-            sendRegisterData(login, password, firstName, secondName, age, email, phone);
+            sendRegisterData(login, password, firstName, secondName, age, email, phone, captcha);
         }
     } else alert("Fill in all required fields.");
 }
@@ -26,7 +26,7 @@ function isEmail(checkEmail) {
 }
 
 
-function sendRegisterData(login, password, firstName, secondName, age, email, phone) {
+function sendRegisterData(login, password, firstName, secondName, age, email, phone, captcha) {
     var url = "register";
     $.ajax({
         dataType: "xml",
@@ -40,12 +40,14 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
             secondName: secondName,
             age: Date.parse(age),
             email: email,
-            phone: phone
+            phone: phone,
+            captcha: captcha
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 window.location.replace("index");
             } else {
+            	refreshCaptcha();
                 alert($(data).find("result").text());
             }
         },
@@ -53,6 +55,13 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
             alert("Error while send register data.");
         }
     });
+}
+
+function refreshCaptcha() {
+    var captchaImage = document.getElementById("captchaImage");
+    captchaImage.src = "/WebApplication/jcaptcha.jpg";
+    var captchaField = document.getElementById("captcha");
+    captchaField.value = "";
 }
 
 function clickBack() {

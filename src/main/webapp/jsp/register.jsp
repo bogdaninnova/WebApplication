@@ -55,6 +55,16 @@
                 <td>Phone number:</td>
                 <td><input type="text" id="phone" size="10" maxlength="20"></td>
             </tr>
+            <tr>
+	            <td></td>
+	            <td>
+					<img src="/WebApplication/jcaptcha.jpg" id="captchaImage" onClick="refreshCaptcha();">
+	            </td>
+	            <td>
+	            	Captcha:<br>
+					<input type="text" id="captcha" size="10" maxlength="20">
+	            </td>
+	        </tr>
         </form>
 
         <tr>
@@ -63,7 +73,7 @@
                 <button onclick="clickBack();"> Back</button>
             </td>
             <td>
-                <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val());">
+                <button onclick="validData($('#login').val(), $('#password').val(), $('#confirmPassword').val(), $('#firstName').val(), $('#secondName').val(), $('#age').val(), $('#email').val(), $('#phone').val(), $('#captcha').val());">
                     Sign up
                 </button>
             </td>

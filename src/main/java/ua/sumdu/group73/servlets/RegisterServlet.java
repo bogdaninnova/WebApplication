@@ -2,6 +2,9 @@ package ua.sumdu.group73.servlets;
 
 import org.apache.log4j.Logger;
 
+import com.octo.captcha.service.CaptchaServiceException;
+
+import ua.sumdu.group73.model.CaptchaServiceSingleton;
 import ua.sumdu.group73.model.Messager;
 import ua.sumdu.group73.model.OracleDataBase;
 
@@ -28,8 +31,22 @@ public class RegisterServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("UTF-8");
 
-
-        if ("registerData".equals(request.getParameter("action"))) {
+	    boolean isResponseCorrect = false;
+        String captchaId = request.getSession().getId();
+        String captcha = request.getParameter("captcha");
+        
+        System.out.println(captcha);
+        
+        try {
+        	isResponseCorrect =
+        		CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, captcha);
+        } catch (CaptchaServiceException e) {
+        	e.printStackTrace();
+        }
+                     
+        if (!isResponseCorrect) {
+        	sendResponse(response, "<result>Wrong captcha!</result>"); 
+        } else if ("registerData".equals(request.getParameter("action"))) {
             if (!OracleDataBase.getInstance().isLoginFree(request.getParameter("login"))) {
                 sendResponse(response, "<result>This login is busy</result>");
             } else if (!OracleDataBase.getInstance().isEmailFree(request.getParameter("email"))) {
