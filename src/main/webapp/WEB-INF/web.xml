@@ -45,6 +45,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
+        <servlet-name>jcaptcha</servlet-name>
+        <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+	</servlet>
+    <servlet>
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.AdminServlet</servlet-class>
     </servlet>
@@ -70,10 +74,20 @@
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.UserServlet</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>ImageCaptchaServlet</servlet-name>
+        <servlet-class>ua.sumdu.group73.servlets.ImageCaptchaServlet</servlet-class>
+  		<load-on-startup>0</load-on-startup>
+    </servlet> 
+    
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageCaptchaServlet</servlet-name>
+        <url-pattern>/jcaptcha.jpg</url-pattern>
+	</servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
@@ -98,6 +112,7 @@
     	<servlet-name>VerificationServlet</servlet-name>
     	<url-pattern>/Verification</url-pattern>
     </servlet-mapping>
+    
     <welcome-file-list>
         <welcome-file>/index</welcome-file>
     </welcome-file-list>
