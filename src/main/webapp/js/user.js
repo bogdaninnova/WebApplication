@@ -463,6 +463,7 @@ function clickAddImage() {
     xhr.onload = function(e) {
         if (this.status == 200) {
             alert(this.responseText);
+            window.location.replace(url);
         }
     };
 }

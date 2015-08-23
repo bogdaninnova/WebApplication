@@ -1,0 +1,29 @@
+
+<table>
+    <tr>
+        <td><br>
+
+            <h3>Step #3 : Image</h3>
+            <hr>
+            <br></td>
+        <td></td>
+    </tr>
+        <% if (product != null) { %>
+    <form id="addImage" enctype="multipart/form-data">
+        <tr>
+            <td><br>Add image :</td>
+            <td><input type="file" id="sampleFile" name="sampleFile" accept="image/*" /><br></td>
+        </tr>
+    </form>
+    <tr>
+        <td></td>
+        <td>
+            <button onclick="clickAddImage();">Upload File</button>
+        </td>
+    </tr>
+<% } %>
+    <tr>
+        <td></td>
+        <td><br></td>
+    </tr>
+</table>

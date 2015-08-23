@@ -1,0 +1,44 @@
+<table>
+    <form>
+        <tr>
+            <td><h3>Step #1 : </h3>
+                <hr>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Title :</td>
+            <td><input type="text" id="addTitle" size="15" maxlength="100" required autofocus></td>
+        </tr>
+        <tr>
+            <td>Description :</td>
+            <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500"
+                          style="max-width: 600px; max-height: 300px;" required></textarea></td>
+        </tr>
+        <tr>
+            <td>End date :</td>
+            <td><input type="date" id="addAge" size="10" maxlength="50" required></td>
+        </tr>
+        <tr>
+            <td>Start price :</td>
+            <td><input type="number" id="addStartPrice" size="15" required> $</td>
+        </tr>
+        <tr>
+            <td>Buy it now price :</td>
+            <td><input type="number" id="addBuyPrice" size="15" required> $</td>
+        </tr>
+
+        <tr>
+            <td><br></td>
+            <td></td>
+        </tr>
+    </form>
+    <tr>
+        <td></td>
+        <td>
+            <button onclick="validLot($('#addTitle').val(), $('#addDescription').val(),
+                        $('#addAge').val(), $('#addStartPrice').val(), $('#addBuyPrice').val());">Add lot
+            </button>
+        </td>
+    </tr>
+</table>

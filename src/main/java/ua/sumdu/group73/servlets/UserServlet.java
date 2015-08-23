@@ -43,6 +43,7 @@ public class UserServlet extends HttpServlet {
     private List<Integer> categoryID = new ArrayList<>();
     private List<String> productURL = new ArrayList<>();
     private boolean step2;
+    private boolean step3;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -182,21 +183,21 @@ public class UserServlet extends HttpServlet {
         } else if ("clickNewLot".equals(request.getParameter("action"))) {
             product = null;
             step2 = false;
+            step3 = false;
             sendResponse(response, "<result>OK</result>");
         } else {
             response.setContentType("text/plain");
             response.setCharacterEncoding("UTF-8");
-            String ajaxUpdateResult = "";
             if (uploadImage(request)) {
                 if (OracleDataBase.getInstance().addPicturesToProduct(product.getId(), productURL)) {
-                    ajaxUpdateResult = "File is successfully uploaded\n\r";
+                    step3 = true;
+                    response.getWriter().print("File is successfully uploaded \r\n");
                 } else {
-                    ajaxUpdateResult = "Error: Add to pictures \n\r";
+                    response.getWriter().print("Error: Add to pictures \r\n");
                 }
             } else {
-                ajaxUpdateResult = "Error: File is not upload \n\r";
+                response.getWriter().print("Error: File is not upload \r\n");
             }
-            response.getWriter().print(ajaxUpdateResult);
         }
     }
 
@@ -214,6 +215,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("goods", goods);
         request.setAttribute("product", product);
         request.setAttribute("step2", step2);
+        request.setAttribute("step3", step3);
         RequestDispatcher rd = request.getRequestDispatcher("jsp/user.jsp");
         rd.forward(request, response);
     }
@@ -277,6 +279,7 @@ public class UserServlet extends HttpServlet {
                 }
             }
             fos.flush();
+            fos.close();
             return true;
         } catch (FileUploadException | IOException e) {
             e.printStackTrace();
