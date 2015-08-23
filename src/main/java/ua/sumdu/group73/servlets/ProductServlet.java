@@ -86,6 +86,12 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
+    /**
+     * This method send response.
+     *
+     * @param response - HttpServletResponse.
+     * @param text     - message.
+     */
     private void sendResponse(HttpServletResponse response, String text) {
         try (PrintWriter pw = response.getWriter()) {
             pw.println(text);
