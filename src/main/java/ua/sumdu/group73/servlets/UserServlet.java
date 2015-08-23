@@ -119,24 +119,38 @@ public class UserServlet extends HttpServlet {
         } else if ("clickAddLot".equals(request.getParameter("action"))) {
             if (request.getSession().getAttribute("user") != null) {
                 User user = (User) request.getSession().getAttribute("user");
-                if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
-                        Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
-                    if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
-                        int productID = OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
-                                request.getParameter("description"), Long.parseLong(request.getParameter("endDate")),
-                                Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")));
-                        if (productID != -1 && productID != 0) {
-                            product = null;
-                            product = OracleDataBase.getInstance().getProduct(productID);
-                            sendResponse(response, "<result>OK</result>");
+                int hours = Integer.parseInt(request.getParameter("hours"));
+                int minutes = Integer.parseInt(request.getParameter("minutes"));
+                if (hours >= 0 && hours < 24) {
+                    if (minutes >= 0 && minutes < 60) {
+                        long date = Long.parseLong(request.getParameter("endDate"));
+                        long newDate = date + hours * 3600000 + minutes * 60000;
+//                        System.out.println("DATE - " + date);
+//                        System.out.println("NEWDATE - " + newDate);
+                        if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
+                                Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
+                            if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
+                                int productID = OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
+                                        request.getParameter("description"), newDate,
+                                        Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")));
+                                if (productID != -1 && productID != 0) {
+                                    product = null;
+                                    product = OracleDataBase.getInstance().getProduct(productID);
+                                    sendResponse(response, "<result>OK</result>");
+                                } else {
+                                    sendResponse(response, "<result>Incorrect product number</result>");
+                                }
+                            } else {
+                                sendResponse(response, "<result>By it now less than start price</result>");
+                            }
                         } else {
-                            sendResponse(response, "<result>Incorrect product number</result>");
+                            sendResponse(response, "<result>Incorrect price.</result>");
                         }
                     } else {
-                        sendResponse(response, "<result>By it now less than start price</result>");
+                        sendResponse(response, "<result>Incorrect minutes.</result>");
                     }
                 } else {
-                    sendResponse(response, "<result>Incorrect price.</result>");
+                    sendResponse(response, "<result>Incorrect hours.</result>");
                 }
             }
         } else if ("showLotsPurchased".equals(request.getParameter("action"))) {

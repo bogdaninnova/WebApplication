@@ -13,11 +13,19 @@
         <tr>
             <td>Description :</td>
             <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500"
-                          style="max-width: 600px; max-height: 300px;" required></textarea></td>
+                          style="max-width: 400px; max-height: 300px;" required></textarea></td>
         </tr>
         <tr>
             <td>End date :</td>
             <td><input type="date" id="addAge" size="10" maxlength="50" required></td>
+        </tr>
+        <tr>
+            <td>Hours :</td>
+            <td><input type="number" id="addTimeHour" size="15" required></td>
+        </tr>
+        <tr>
+            <td>Minutes :</td>
+            <td><input type="number" id="addTimeMinute" size="15" required></td>
         </tr>
         <tr>
             <td>Start price :</td>
@@ -37,7 +45,8 @@
         <td></td>
         <td>
             <button onclick="validLot($('#addTitle').val(), $('#addDescription').val(),
-                        $('#addAge').val(), $('#addStartPrice').val(), $('#addBuyPrice').val());">Add lot
+                        $('#addAge').val(), $('#addTimeHour').val(), $('#addTimeMinute').val(),
+                        $('#addStartPrice').val(), $('#addBuyPrice').val());">Add lot
             </button>
         </td>
     </tr>

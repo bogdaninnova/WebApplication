@@ -271,22 +271,23 @@ function clickAddLotPage() {
     });
 }
 
-function validLot(title, description, endDate, startPrice, buyOutPrice) {
+function validLot(title, description, endDate, hours, minutes, startPrice, buyOutPrice) {
     if (title.length > 0 && description.length > 0 && endDate.length > 0 &&
+            hours.length > 0 && minutes.length > 0 &&
             startPrice.length > 0 && buyOutPrice.length > 0) {
         if (title.length < 3) {
             alert("Short title.");
         } else if(description.length < 3) {
             alert("Short description.");
         } else {
-            clickAddLot(title, description, Date.parse(endDate), startPrice, buyOutPrice);
+            clickAddLot(title, description, Date.parse(endDate), hours, minutes, startPrice, buyOutPrice);
         }
     } else {
         alert("Please fill in all required fields.");
     }
 }
 
-function clickAddLot(title, description, endDate, startPrice, buyOutPrice) {
+function clickAddLot(title, description, endDate, hours, minutes, startPrice, buyOutPrice) {
     $.ajax({
         dataType: "xml",
         url: url,
@@ -296,6 +297,8 @@ function clickAddLot(title, description, endDate, startPrice, buyOutPrice) {
             title: title,
             description: description,
             endDate: endDate,
+            hours: hours,
+            minutes: minutes,
             startPrice: startPrice,
             buyOutPrice: buyOutPrice
         },
