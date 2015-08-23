@@ -1,28 +1,46 @@
 <div class="container-user">
     <h2>Sold goods </h2>
 
-    <% List<Product> soldGoodsList = (List<Product>) request.getAttribute("goods");
-        if (soldGoodsList != null) { %>
-    <table border="1" style="min-width: 40%; text-align: center;">
-        <thead style="background-color: lightgrey;">
-        <tr>
-            <td>Lot</td>
-            <td>Price</td>
-        </tr>
-        </thead>
+    <div align="center">
+        <% List<Product> soldGoodsList = (List<Product>) request.getAttribute("goods");
+            if (soldGoodsList != null) { %>
+
+
         <% for (Product soldGoods : soldGoodsList) { %>
         <% if (!soldGoods.isActive()) { %>
+        <div class="container-lots" onclick="">
 
-        <tbody>
-        <tr>
-            <td style="text-align: left"><%= soldGoods.getName() %>
-            </td>
-            <td style="text-align: right"><%= soldGoods.getBuyoutPrice() %> $</td>
-        </tr>
-        </tbody>
-
+            <div class="container-lots-image">
+                <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
+                <% String image = "./images/no_image.png"; %>
+                <% if (pictures != null) {
+                    for (Picture picture : pictures) {
+                        if (picture.getProductID() == soldGoods.getId()) {
+                            image = picture.getURL();%>
+                <% }
+                }
+                } %>
+                <img src="<%= image%>" alt="No photo" width="150" height="100">
+            </div>
+            <div class="container-lots-price">
+                <% if (soldGoods.getCurrentPrice() != 0) { %>
+                <%=soldGoods.getCurrentPrice()%> $
+                <% } else {%>
+                <%=soldGoods.getStartPrice()%> $
+                <% } %>
+            </div>
+            <header>
+                <%=soldGoods.getName()%>
+            </header>
+            <assaid>
+                <div class="container-lots-description" align="left">
+                    <%=soldGoods.getDescription()%>
+                </div>
+            </assaid>
+            <br><br>
+        </div>
         <% } %>
         <% } %>
-    </table>
-    <% } %>
+        <% } %>
+    </div>
 </div>
