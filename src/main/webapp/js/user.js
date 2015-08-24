@@ -489,3 +489,16 @@ function clickNewLot() {
         }
     });
 }
+
+$(document).ready(function () {
+    setInterval(activateButton, 1000);
+});
+
+function activateButton() {
+    var isFile = document.getElementById("sampleFile").files[0];
+    if (isFile != null && isFile != "") {
+        document.getElementById("addImageButton").disabled = false;
+    } else {
+        document.getElementById("addImageButton").disabled = true;
+    }
+}

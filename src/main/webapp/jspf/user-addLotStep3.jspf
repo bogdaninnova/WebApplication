@@ -18,7 +18,7 @@
     <tr>
         <td></td>
         <td>
-            <button onclick="clickAddImage();">Upload File</button>
+            <button id="addImageButton" onclick="clickAddImage();" disabled>Upload File</button>
         </td>
     </tr>
 <% } %>
