@@ -32,7 +32,7 @@ public class AdminServlet extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-				
+       
 		if (request.getParameter("saveUsers") != null) {
 			OracleDataBase.getInstance().unBanAllUsers();
 			String[] s = request.getParameterValues("ban");
@@ -69,6 +69,9 @@ public class AdminServlet extends HttpServlet {
 			
 			if ("create".equals(request.getParameter("categories"))) {
 				if (!categoryName.equals("")) {
+					
+					System.out.println(categoryName);
+					
 					if (categoryID != -1) {
 						result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
 					} else {
