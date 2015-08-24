@@ -47,7 +47,7 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
             if ("ok" === $(data).find("result").text().toLowerCase()) {
                 window.location.replace("index");
             } else {
-            	refreshCaptcha();
+//            	refreshCaptcha();
                 alert($(data).find("result").text());
             }
         },
@@ -57,12 +57,12 @@ function sendRegisterData(login, password, firstName, secondName, age, email, ph
     });
 }
 
-function refreshCaptcha() {
-    var captchaImage = document.getElementById("captchaImage");
-    captchaImage.src = "/WebApplication/jcaptcha.jpg";
-    var captchaField = document.getElementById("captcha");
-    captchaField.value = "";
-}
+//function refreshCaptcha() {
+//    var captchaImage = document.getElementById("captchaImage");
+//    captchaImage.src = "/WebApplication/jcaptcha.jpg";
+//    var captchaField = document.getElementById("captcha");
+//    captchaField.value = "";
+//}
 
 function clickBack() {
     window.location.replace("index");
