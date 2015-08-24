@@ -21,6 +21,7 @@ public class CharEncodingFilter implements Filter {
         response.setContentType("text/xml");
         ((HttpServletResponse) response).setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
 		chain.doFilter(request, response);
 	}
 }
