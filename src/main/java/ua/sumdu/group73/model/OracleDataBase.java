@@ -1146,6 +1146,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	public boolean addCategoriesToProduct(int productID, List<Integer> categories) {
     	log.info("Method addCategoriesToProduct starts.....");
     	boolean result = false;
+    	if (categories.isEmpty())
+    		return true;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(
     			Queries.setCategoriesToProductQuery(productID, categories))) {    		
