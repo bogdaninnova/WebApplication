@@ -7,7 +7,7 @@
 
         <% for (Product goodsForSale : goodsForSaleList) { %>
         <% if (goodsForSale.isActive()) { %>
-        <div class="container-lots" onclick="clickGoodsForSale(<%= goodsForSale.getId()%>);">
+        <div class="container-lots" onClick='location.href="product?id=<%=goodsForSale.getId()%>"'>
 
             <div class="container-lots-image">
                 <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
