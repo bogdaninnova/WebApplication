@@ -90,7 +90,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, name);
             preparedStatement.setString(4, secondName);
-            preparedStatement.setDate(5, new java.sql.Date(birthDate));
+            preparedStatement.setTimestamp(5, new Timestamp(birthDate));
             preparedStatement.setString(6, eMail);
             preparedStatement.setString(7, phone);
             preparedStatement.setString(8, "unactivated");
@@ -620,7 +620,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, sellerID);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, description);
-            preparedStatement.setDate(4, new java.sql.Date(endDate));
+            preparedStatement.setTimestamp(4, new Timestamp(endDate));
             preparedStatement.setInt(5, startPrice);
             preparedStatement.setInt(6, buyoutPrice);
             preparedStatement.executeUpdate();
