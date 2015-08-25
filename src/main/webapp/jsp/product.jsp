@@ -52,17 +52,20 @@
                             <h3><%= product.getStartPrice()%> $</h3>
                             <% } %>
                         </div>
+
                         <div class="product-bet-yourprice">
                             Your bet
-                            <form>
+                            <form onsubmit="return false">
                                 <br>
                                 <input type="text" id="yourPrice" size="5" maxlength="30" autofocus> $
+
                             </form>
                         </div>
                         <div class="product-bet">
                             <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%= age%>,
                                 <%= product.getId()%>, <%= user.getId()%>);">Bet</button>
                         </div>
+
                     </div>
                     <div class="product-buy-container">
                         <div class="product-buy-price">
@@ -71,7 +74,7 @@
                             </h3>
                         </div>
                         <div class="product-buy-button">
-                            <button onclick="clickBuy();">Buy</button>
+                            <button onClick='location.href="product?id=" + <%=product.getId()%> + "&page=buy"'>Buy</button>
                         </div>
                     </div>
                 </div>
@@ -109,7 +112,7 @@
             </div>
             <br>
             <div class="product-back">
-                <label onclick="clickBack();"><b>[ Back ]</b></label>
+                <a href="index" style="text-decoration: none">[<b>Back</b>]</a>
             </div>
             <br><br>
         </div>

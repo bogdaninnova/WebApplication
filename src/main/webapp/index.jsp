@@ -163,7 +163,7 @@
                 <% List<Product> products = (List<Product>) request.getAttribute("products");
                     if (products != null) { %>
                 <% for (Product product : products) { %>
-                <div class="container-lots" onclick="clickProduct(<%=product.getId()%>);">
+                <div class="container-lots" onClick='location.href="product?id=<%=product.getId()%>"'>
 
                     <div class="container-lots-image">
                         <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>

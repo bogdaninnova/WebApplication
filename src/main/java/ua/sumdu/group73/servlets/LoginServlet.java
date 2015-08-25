@@ -30,8 +30,12 @@ public class LoginServlet extends HttpServlet {
             log.info("USER - " + user);
             if (user != null) {
                 if (!user.isBanned()) {
-                    request.getSession().setAttribute("user", user);
-                    sendResponse(response, "<result>OK</result>");
+                    if (user.isActivated()) {
+                        request.getSession().setAttribute("user", user);
+                        sendResponse(response, "<result>OK</result>");
+                    } else {
+                        sendResponse(response, "<result>Account don't active</result>");
+                    }
                 } else {
                     sendResponse(response, "<result>You are banned</result>");
                 }

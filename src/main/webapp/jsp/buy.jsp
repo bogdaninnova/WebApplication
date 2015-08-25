@@ -66,11 +66,15 @@
             </form>
                 <tr>
                     <td></td>
-                    <td><button onclick="clickBreak();">Break</button></td>
+                    <td><button onclick='location.href="product?id=<%=product.getId()%>"'>Break</button></td>
                     <% if (user != null) {%>
                     <td><button onclick="realBuy(<%= product.getId()%>, <%= user.getId()%>);">Buy</button></td>
                     <% } %>
                 </tr>
+            <tr>
+                <td><br></td>
+                <td><br></td>
+            </tr>
         </table>
     </div>
     <% } %>

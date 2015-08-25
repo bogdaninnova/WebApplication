@@ -85,10 +85,10 @@ public class IndexServlet extends HttpServlet {
                 products = OracleDataBase.getInstance().getAllActiveProducts();
             }
             sendResponse(response, "<result>OK</result>");
-        } else if ("product".equals(request.getParameter("action"))) {
-            log.info("Click product");
-            request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
-            sendResponse(response, "<result>OK</result>");
+//        } else if ("product".equals(request.getParameter("action"))) {
+//            log.info("Click product");
+//            request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
+//            sendResponse(response, "<result>OK</result>");
         } else if ("admin".equals(request.getParameter("action"))) {
             log.info("Click admin");
             sendResponse(response, "<result>OK</result>");

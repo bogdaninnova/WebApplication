@@ -4,26 +4,26 @@
 
 var url = "product";
 
-function clickBack() {
-    $.ajax({
-        dataType: "xml",
-        url: url,
-        type: "POST",
-        data: {
-            action: "back"
-        },
-        success: function (data) {
-            if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("index");
-            } else {
-                alert($(data).find("result").text());
-            }
-        },
-        error: function () {
-            alert("Error while send data.");
-        }
-    });
-}
+//function clickBack() {
+//    $.ajax({
+//        dataType: "xml",
+//        url: url,
+//        type: "POST",
+//        data: {
+//            action: "back"
+//        },
+//        success: function (data) {
+//            if ("ok" === $(data).find("result").text().toLowerCase()) {
+//                window.location.replace("index");
+//            } else {
+//                alert($(data).find("result").text());
+//            }
+//        },
+//        error: function () {
+//            alert("Error while send data.");
+//        }
+//    });
+//}
 
 function validData(bet, currentPrice, age, productID, buyerID) {
     if(isBet(bet) && bet > currentPrice) {
@@ -59,49 +59,7 @@ function clickBet(productID, buyerID, bet) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("product");
-            } else {
-                alert($(data).find("result").text());
-            }
-        },
-        error: function () {
-            alert("Error while send data.");
-        }
-    });
-}
-
-function clickBuy() {
-    $.ajax({
-        dataType: "xml",
-        url: url,
-        type: "POST",
-        data: {
-            action: "clickBuy"
-        },
-        success: function (data) {
-            if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url);
-            } else {
-                alert($(data).find("result").text());
-            }
-        },
-        error: function () {
-            alert("Error while send data.");
-        }
-    });
-}
-
-function clickBreak() {
-    $.ajax({
-        dataType: "xml",
-        url: url,
-        type: "POST",
-        data: {
-            action: "break"
-        },
-        success: function (data) {
-            if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url);
+                window.location.replace("product?id=" + productID);
             } else {
                 alert($(data).find("result").text());
             }
@@ -124,7 +82,7 @@ function realBuy(productID, userID) {
         },
         success: function (data) {
             if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace(url);
+                window.location.replace("product?id=" + productID);
             } else {
                 alert($(data).find("result").text());
             }
