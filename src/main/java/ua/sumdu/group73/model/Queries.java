@@ -2,6 +2,8 @@ package ua.sumdu.group73.model;
 
 import java.util.List;
 
+import ua.sumdu.group73.model.interfaces.ProductDBInterface;
+
 public class Queries {
 
     //------------------------------------------------------
@@ -22,7 +24,7 @@ public class Queries {
 					+ "STATUS)"
 			+ "VALUES("
 					+ "USER_ID_S.NEXTVAL,"
-					+ "LOWER(?),"
+					+ "?,"
 					+ "?,"
 					+ "?,"
 					+ "?,"
@@ -56,10 +58,10 @@ public class Queries {
 					+ " STATUS,"
 					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
-			+ " FROM USERS WHERE LOGIN = LOWER(?)";
+			+ " FROM USERS WHERE LOGIN = ?";
 	
 	public static final String IS_LOGIN_FREE =
-			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
+			"SELECT * FROM USERS WHERE LOGIN = ?";
 	
 	public static final String IS_EMAIL_FREE =
 			"SELECT * FROM USERS WHERE EMAIL = LOWER(?)";
@@ -76,7 +78,7 @@ public class Queries {
 					+ " STATUS,"
 					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
-			+ " FROM USERS WHERE LOGIN = LOWER(?)";
+			+ " FROM USERS WHERE LOGIN = ?";
     
 	public static final String AUTHORIZATION_BY_EMAIL =
 			"SELECT"
@@ -113,7 +115,7 @@ public class Queries {
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
 	public static final String ACTIVATE_USER =
-			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = LOWER(?)";
+			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 	
 	
 	public static String setUserBanQuery(List<Integer> usersID) {
@@ -135,11 +137,10 @@ public class Queries {
 			"UPDATE USERS SET PASSWORD = ? WHERE ID = ? AND PASSWORD = ?";
 	
 	public static final String CHANGE_DATA =
-			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, PHONE = ?"
-			+ " WHERE ID = ?";
+			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, PHONE = ? WHERE ID = ?";
 	
 	public static final String CHANGE_EMAIL =
-			"UPDATE USERS SET EMAIL = LOWER(?) WHERE LOGIN = LOWER(?)";
+			"UPDATE USERS SET EMAIL = LOWER(?) WHERE LOGIN = ?";
 	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"
@@ -297,6 +298,51 @@ public class Queries {
 			+ " JOIN PRODUCTS ON USERS.ID = PRODUCTS.SELLER_ID"
 			+ " WHERE PRODUCTS.ID = ?";
 
+	public static String getProductCountQuery(int categoryID, int minPrice, int maxPrice) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCT_CATEGORY ");
+		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE ");
+
+		if (categoryID != 0)
+			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND");
+		
+		sb.append(" (START_PRICE BETWEEN " + minPrice + " AND ");
+		if (maxPrice == 0)
+			sb.append("BINARY_DOUBLE_INFINITY)");
+		else
+			sb.append(maxPrice + ")");
+		return sb.toString();
+	}
+	
+	public static String getProductsQuery(
+			int categoryID, int minPrice, int maxPrice, int position) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( ");
+		sb.append(" SELECT PRODUCTS.* FROM PRODUCT_CATEGORY ");
+		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE");
+		if (categoryID != 0)
+			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND ");
+		sb.append(" (START_PRICE BETWEEN " + minPrice + " AND ");
+		if (maxPrice == 0)
+			sb.append(" BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(maxPrice);
+		sb.append(") AND (IS_ACTIVE = 'active') ) T) ");
+		sb.append("WHERE (RN > (" +
+				ProductDBInterface.LOTS_ON_PAGE + " * " + position + ") - " + 
+				ProductDBInterface.LOTS_ON_PAGE + ")"
+				+ " AND (RN <= " + position + " * " +
+				ProductDBInterface.LOTS_ON_PAGE + ") ORDER BY ID DESC");
+		return sb.toString();
+				
+	}
+	
+	
+	
+	
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
     //------------------------------------------------------
