@@ -1009,6 +1009,66 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
 	}
+	
+	@Override
+	public List<Product> getProducts(int postiton, int categoryID, int minPrice, int maxPrice) {
+    	log.info("Method getPages starts.....");
+    	List<Product> list = new ArrayList<Product>();
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.getProductsQuery(categoryID, minPrice, maxPrice, postiton))) {
+            try(ResultSet rs = preparedStatement.executeQuery()){
+
+	            while (rs.next()) {
+	            	list.add(
+	                		new Product(
+	                				rs.getInt("ID"),
+	                				rs.getInt("SELLER_ID"),
+	                				rs.getString("NAME"),
+	                				rs.getString("DESCRIPTION"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
+	                				rs.getInt("START_PRICE"),
+	                				rs.getInt("BUYOUT_PRICE"),
+	                				rs.getInt("CURRENT_PRICE"),
+	                				rs.getInt("CURRENT_BUYER_ID"),
+	                				true)//is active
+	                		);
+	            }
+            	
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getPages()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+	}
+
+	/**
+	 * categoryID: 0 if without categories;
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity.
+	 * */
+	@Override
+	public int getCount(int categoryID, int minPrice, int maxPrice) {
+    	log.info("Method getPages starts.....");
+    	int count = -1;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.getProductCountQuery(categoryID, minPrice, maxPrice))) {
+            try(ResultSet rs = preparedStatement.executeQuery()){
+	            rs.next();
+	            count = rs.getInt("COUNT");
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getPages()", e);
+        } finally {
+        	closeConnection();
+        }
+        return count;
+	}
+
 
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
