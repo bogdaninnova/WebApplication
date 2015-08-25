@@ -32,6 +32,7 @@ public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private static final String LOCAL_ADDRESS = "D:/NetCracker/GitHub/WebApplication/target/WebApplication/images/product-images/";
 //    private static final String LOCAL_ADDRESS = "D:\\GitHub\\WebApplication\\target\\WebApplication\\images\\product-images\\";
+//    private static final String LOCAL_ADDRESS = "C:/Document and Settings/User/IdeaProjects/WebApplication/images/product-images/"; // Laptop
     private static final String URL_ADDRESS = "../WebApplication/images/product-images/";
     private String showContent;
     private List<Category> categoryList;
@@ -124,15 +125,11 @@ public class UserServlet extends HttpServlet {
                 int minutes = Integer.parseInt(request.getParameter("minutes"));
                 if (hours >= 0 && hours < 24) {
                     if (minutes >= 0 && minutes < 60) {
-                        long date = Long.parseLong(request.getParameter("endDate"));
-                        long newDate = date + hours * 3600000 + minutes * 60000;
-//                        System.out.println("DATE - " + date);
-//                        System.out.println("NEWDATE - " + newDate);
                         if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
                                 Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
                             if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
                                 int productID = OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
-                                        request.getParameter("description"), newDate,
+                                        request.getParameter("description"), Long.parseLong(request.getParameter("endDate")) + hours * 3600000 + minutes * 60000,
                                         Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")));
                                 if (productID != -1 && productID != 0) {
                                     product = null;

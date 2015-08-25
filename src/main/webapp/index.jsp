@@ -222,9 +222,7 @@
         </header>
         <footer>
             <div align="center">
-                <% if (products != null && products.size() > 10) { %>
-                //todo display page numbers
-                <% } %>
+
             </div>
         </footer>
     </aside>

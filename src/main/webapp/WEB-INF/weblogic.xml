@@ -2,6 +2,7 @@
     <wls:virtual-directory-mapping>
         <wls:local-path>
             <!-- D:\GitHub\WebApplication\target\WebApplication -->
+             <!--C:/Document and Settings/User/IdeaProjects/WebApplication -->
        		D:/NetCracker/GitHub/WebApplication/target/WebApplication 
         </wls:local-path>
         <wls:url-pattern>/images/product-images/*</wls:url-pattern>
