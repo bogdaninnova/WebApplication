@@ -32,7 +32,7 @@ public class UserServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(UserServlet.class);
     private static final String LOCAL_ADDRESS = "D:/NetCracker/GitHub/WebApplication/target/WebApplication/images/product-images/";
 //    private static final String LOCAL_ADDRESS = "D:\\GitHub\\WebApplication\\target\\WebApplication\\images\\product-images\\";
-//    private static final String LOCAL_ADDRESS = "C:/Document and Settings/User/IdeaProjects/WebApplication/images/product-images/"; // Laptop
+//    private static final String LOCAL_ADDRESS = "C:/Documents and Settings/User/IdeaProjects/WebApplication/target/WebApplication/images/product-images/"; // Laptop
     private static final String URL_ADDRESS = "../WebApplication/images/product-images/";
     private String showContent;
     private List<Category> categoryList;
