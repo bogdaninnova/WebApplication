@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Queries {
 
+	public static final int LOTS_ON_PAGE = 2;
+	
     //------------------------------------------------------
     //-----------------------XXX:USER-----------------------
     //------------------------------------------------------
@@ -297,6 +299,49 @@ public class Queries {
 			+ " JOIN PRODUCTS ON USERS.ID = PRODUCTS.SELLER_ID"
 			+ " WHERE PRODUCTS.ID = ?";
 
+	public static String getProductCountQuery(int categoryID, int minPrice, int maxPrice) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCT_CATEGORY ");
+		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE ");
+
+		if (categoryID != 0)
+			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND");
+		
+		sb.append(" (START_PRICE BETWEEN " + minPrice + " AND ");
+		if (maxPrice == 0)
+			sb.append("BINARY_DOUBLE_INFINITY)");
+		else
+			sb.append(maxPrice + ")");
+		return sb.toString();
+	}
+	
+	public static String getProductsQuery(
+			int categoryID, int minPrice, int maxPrice, int position) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( ");
+		sb.append(" SELECT PRODUCTS.* FROM PRODUCT_CATEGORY ");
+		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE");
+		if (categoryID != 0)
+			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND ");
+		sb.append(" (START_PRICE BETWEEN " + minPrice + " AND ");
+		if (maxPrice == 0)
+			sb.append(" BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(maxPrice);
+		sb.append(") AND (IS_ACTIVE = 'active') ) T) ");
+		sb.append("WHERE (RN > (" +	LOTS_ON_PAGE + " * " + position + ") - " + LOTS_ON_PAGE + ")"
+				+ " AND (RN <= " + position + " * " +
+				LOTS_ON_PAGE + ") ORDER BY ID DESC");
+		return sb.toString();
+				
+	}
+	
+	
+	
+	
     //------------------------------------------------------
     //--------------------XXX:CATEGORY----------------------
     //------------------------------------------------------

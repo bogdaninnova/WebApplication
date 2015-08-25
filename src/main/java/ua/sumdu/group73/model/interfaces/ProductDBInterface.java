@@ -32,4 +32,14 @@ public interface ProductDBInterface {
 	public User getProductSeller(int productID);
 	
 	public boolean deleteProducts(List<Integer> productsID);
+	
+	public List<Product> getProducts(
+			int postiton, int categoryID, int minPrice, int maxPrice);
+	
+	/**
+	 * categoryID: 0 if without categories;
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity.
+	 * */
+	public int getCount(int categoryID, int minPrice, int maxPrice);
 }
