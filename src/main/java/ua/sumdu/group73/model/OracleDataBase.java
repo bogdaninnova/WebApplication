@@ -21,7 +21,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	private static final Logger log = Logger.getLogger(OracleDataBase.class);
 	
     private static OracleDataBase instance;
-    
+    private static final long TIME_ZONE_HOURS = -2 * 3600000;
     
     private Connection conn = null;
     
@@ -90,7 +90,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, name);
             preparedStatement.setString(4, secondName);
-            preparedStatement.setDate(5, new java.sql.Date(birthDate));
+            preparedStatement.setTimestamp(5, new Timestamp(birthDate));
             preparedStatement.setString(6, eMail);
             preparedStatement.setString(7, phone);
             preparedStatement.setString(8, "unactivated");
@@ -120,7 +120,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
-	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            Date regDate = addTimeZoneDif(rs.getTimestamp("REGISTRATION_DATE"));
 	            
 	            user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
             }
@@ -148,7 +148,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            String eMail = rs.getString("EMAIL");
 	            String phone = rs.getString("PHONE");
 	            String status = rs.getString("STATUS");
-	            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+	            Date regDate = addTimeZoneDif(rs.getTimestamp("REGISTRATION_DATE"));
 	            
 	            user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
             }
@@ -216,7 +216,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
 		            int age = rs.getInt("AGE");
-		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+		            Date regDate = addTimeZoneDif(rs.getTimestamp("REGISTRATION_DATE"));
 		            
 		            if (rs.getString("PASSWORD").equals(password))
 		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
@@ -246,7 +246,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
 		            int age = rs.getInt("AGE");
-		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+		            Date regDate = addTimeZoneDif(rs.getTimestamp("REGISTRATION_DATE"));
 		            
 		            if (rs.getString("PASSWORD").equals(password))
 		            		user = new User(id, login, password, name, secondName, age, eMail, phone, status, regDate);
@@ -292,8 +292,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -323,8 +323,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -358,7 +358,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		            String eMail = rs.getString("EMAIL");
 		            String phone = rs.getString("PHONE");
 		            String status = rs.getString("STATUS");
-		            Date regDate = rs.getTimestamp("REGISTRATION_DATE");
+		            Date regDate = addTimeZoneDif(rs.getTimestamp("REGISTRATION_DATE"));
 		            
 		            list.add(new User(id, login, password, name, secondName, age, eMail, phone, status, regDate));
     			}
@@ -552,8 +552,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -620,7 +620,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             preparedStatement.setInt(1, sellerID);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, description);
-            preparedStatement.setDate(4, new java.sql.Date(endDate));
+            preparedStatement.setTimestamp(4, new Timestamp(endDate));
             preparedStatement.setInt(5, startPrice);
             preparedStatement.setInt(6, buyoutPrice);
             preparedStatement.executeUpdate();
@@ -645,8 +645,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            int sellerID = rs.getInt("SELLER_ID");
 	            String name = rs.getString("NAME");
 	            String description = rs.getString("DESCRIPTION");
-	            Date startDate = rs.getTimestamp("START_DATE");
-	            Date endDate = rs.getTimestamp("END_DATE");
+	            Date startDate = addTimeZoneDif(rs.getTimestamp("START_DATE"));
+	            Date endDate = addTimeZoneDif(rs.getTimestamp("END_DATE"));
 	            int startPrice = rs.getInt("START_PRICE");
 	            int buyoutPrice = rs.getInt("BUYOUT_PRICE");
 	            int currentPrice = rs.getInt("CURRENT_PRICE");
@@ -663,6 +663,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return product;
+    }
+    
+    private static Date addTimeZoneDif(Date date) {
+    	return new Date(date.getTime() + TIME_ZONE_HOURS);
     }
 
     public boolean disactivateProduct(int productID) {
@@ -787,8 +791,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -817,8 +821,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -850,8 +854,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -884,8 +888,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
@@ -1124,8 +1128,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	                				rs.getInt("SELLER_ID"),
 	                				rs.getString("NAME"),
 	                				rs.getString("DESCRIPTION"),
-	                				rs.getTimestamp("START_DATE"),
-	                				rs.getTimestamp("END_DATE"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
 	                				rs.getInt("START_PRICE"),
 	                				rs.getInt("BUYOUT_PRICE"),
 	                				rs.getInt("CURRENT_PRICE"),
