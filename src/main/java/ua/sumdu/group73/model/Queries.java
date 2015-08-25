@@ -24,7 +24,7 @@ public class Queries {
 					+ "STATUS)"
 			+ "VALUES("
 					+ "USER_ID_S.NEXTVAL,"
-					+ "LOWER(?),"
+					+ "?,"
 					+ "?,"
 					+ "?,"
 					+ "?,"
@@ -58,10 +58,10 @@ public class Queries {
 					+ " STATUS,"
 					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
-			+ " FROM USERS WHERE LOGIN = LOWER(?)";
+			+ " FROM USERS WHERE LOGIN = ?";
 	
 	public static final String IS_LOGIN_FREE =
-			"SELECT * FROM USERS WHERE LOGIN = LOWER(?)";
+			"SELECT * FROM USERS WHERE LOGIN = ?";
 	
 	public static final String IS_EMAIL_FREE =
 			"SELECT * FROM USERS WHERE EMAIL = LOWER(?)";
@@ -78,7 +78,7 @@ public class Queries {
 					+ " STATUS,"
 					+ " REGISTRATION_DATE,"
 					+ " TRUNC((SYSDATE - BIRTH)/365) AS \"AGE\""
-			+ " FROM USERS WHERE LOGIN = LOWER(?)";
+			+ " FROM USERS WHERE LOGIN = ?";
     
 	public static final String AUTHORIZATION_BY_EMAIL =
 			"SELECT"
@@ -115,7 +115,7 @@ public class Queries {
 			"SELECT * FROM USERS WHERE ID = ? AND STATUS = 'admin'";
     
 	public static final String ACTIVATE_USER =
-			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = LOWER(?)";
+			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 	
 	
 	public static String setUserBanQuery(List<Integer> usersID) {
@@ -137,11 +137,10 @@ public class Queries {
 			"UPDATE USERS SET PASSWORD = ? WHERE ID = ? AND PASSWORD = ?";
 	
 	public static final String CHANGE_DATA =
-			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, PHONE = ?"
-			+ " WHERE ID = ?";
+			"UPDATE USERS SET NAME = ?, SECOND_NAME = ?, PHONE = ? WHERE ID = ?";
 	
 	public static final String CHANGE_EMAIL =
-			"UPDATE USERS SET EMAIL = LOWER(?) WHERE LOGIN = LOWER(?)";
+			"UPDATE USERS SET EMAIL = LOWER(?) WHERE LOGIN = ?";
 	
 	public static final String DELETE_UNACTIVATED_USERS = 
 			"DELETE FROM USERS WHERE STATUS = 'unactivated' AND"

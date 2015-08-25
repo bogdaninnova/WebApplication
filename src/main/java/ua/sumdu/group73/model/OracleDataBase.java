@@ -723,6 +723,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 
     public boolean makeBet(int productID, int buyerID, int price) {
     	log.info("Method makeBet starts.....");
+    	Product product = getProduct(productID);
+    	if (price >= product.getBuyoutPrice()) 
+    		return buyout(productID, buyerID);
+    	
     	boolean result = bet(productID, buyerID, price);
     	if (result && !isFollowProduct(buyerID, productID)) {
     		Messager.sendBetMessage(productID);

@@ -9,6 +9,8 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/style-admin.css"/>
+	<script src="./js/bootstrap.js"></script>
+    <script src="./js/jquery-2.1.3.js"></script>
 	<script src="js/admin.js"></script>
 	<title>Admin</title>
 </head>
