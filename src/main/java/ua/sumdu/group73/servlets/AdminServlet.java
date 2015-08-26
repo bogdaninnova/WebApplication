@@ -55,12 +55,7 @@ public class AdminServlet extends HttpServlet {
 				OracleDataBase.getInstance().deleteProducts(deleteList);
 			}
 			doGet(request, response);
-		}
-		
-		else if (request.getParameter("BackButton") != null) {
-			response.sendRedirect("index");
-		}
-		
+		}		
 		else if (request.getParameter("categories") != null) {
 			
 			boolean result = false;
@@ -68,32 +63,24 @@ public class AdminServlet extends HttpServlet {
 			int categoryID = getCategoryID(request.getParameter("catID"));
 			
 			if ("create".equals(request.getParameter("categories"))) {
-				if (!categoryName.equals("")) {
-					
-					System.out.println(categoryName);
-					
-					if (categoryID != -1) {
-						result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
-					} else {
-						result = OracleDataBase.getInstance().addCategory(categoryName);
-					}
-				}
-			}
-			
-			else if ("change".equals(request.getParameter("categories"))) {
-				if ((categoryID != -1) && (!categoryName.equals(""))) {
+				if ((!categoryName.equals("")) && (categoryID != -1)) 
+					result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
+			} else if ("createRoot".equals(request.getParameter("categories"))) {
+				if (!categoryName.equals(""))
+					result = OracleDataBase.getInstance().addCategory(categoryName);
+			} else if ("change".equals(request.getParameter("categories"))) {
+				if ((categoryID != -1) && (!categoryName.equals(""))) 
 					result = OracleDataBase.getInstance().changeCategory(categoryID, categoryName);
-				}
 			} else if ("delete".equals(request.getParameter("categories"))) {
-				if (categoryID != -1) {
+				if (categoryID != -1) 
 					result = OracleDataBase.getInstance().deleteCategory(categoryID, categoryList);
-				}
 			}
 			if (result)
 				sendResponse(response, "<result>OK</result>");
 			else
 				sendResponse(response, "<result>ERROR</result>");
 		}
+		
 	}
 	
     private void sendResponse(HttpServletResponse response, String text) {
