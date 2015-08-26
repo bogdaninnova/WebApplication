@@ -15,7 +15,8 @@
 	<title>Admin</title>
 </head>
 <body>
-	<center><h1>ADMIN'S PAGE</h1></center>
+
+<%@include file="../jspf/user-header.jspf" %>
 		
 	<%
 		List<User> users = (ArrayList<User>) request.getAttribute("users");
@@ -24,101 +25,120 @@
     	List<Picture> pictures = (ArrayList<Picture>) request.getAttribute("pictures");
 	 %>
 	
-	
-	<center><h3>USERS</h3></center>
-<form action="admin" method="POST">
-	<table border="1" style="width:100%">
-	  <tr>
-	    <td>ID</td>
-	    <td>Login</td>
-	    <td>Name</td>		
-	    <td>Second Name</td>
-	    <td>Age</td>
-	    <td>Mail</td>
-	    <td>Phone</td>
-	    <td>Registration date</td>
-	    <td>Ban</td>
-	    <td>Activated</td>
-	    <td>Admin</td>
-	  </tr>
-	 <%
-		for (User user : users) {
-	 %>
-	  <tr>
-	  	<%
-	  		String phone = (user.getPhone() == null) ? "----------" : user.getPhone();
-	  	 %>
-	    <td><%=user.getId() %></td>
-	    <td><%=user.getLogin() %></td>
-	    <td><%=user.getName() %></td>		
-	    <td><%=user.getSecondName() %></td>
-	    <td><%=user.getAge() %></td>	
-	    <td><%=user.geteMail() %></td>	
-	    <td><%=phone %></td>	
-	    <td><%=user.getRegistrationDate() %></td>
-	    
-	    <td><input type="checkbox" name="ban" <% if (user.isBanned()) { %> checked <%} %> value=<%=user.getId() %> ></td>
-	    <td><input type="checkbox" name=<%="activated" %> onclick="return false" <% if (user.isActivated()) { %> checked <%} %>></td>
-	    <td><input type="checkbox" name=<%="admin" %> onclick="return false" <% if (user.isAdmin()) { %> checked <%} %>></td>
-	  </tr>
-		<% } %>
-	</table>
-	<input type="submit" name="saveUsers" value="Save" />
-</form>
+<br>
+
+<div class="tableStyle">
+	<center>
+		<h1>CATEGORIES</h1>
+		<br>
+		<button onclick="sendCategoryData('create', $('#categoryName').val(), window.location.href);"> Create Child Category </button>
+		<button onclick="sendCategoryData('createRoot', $('#categoryName').val(), window.location.href);"> Create Root Category  </button>
+		<br><br>
+		<button onclick="sendCategoryData('change', $('#categoryName').val(), window.location.href);"> Change </button>
+		<button onclick="sendCategoryData('delete', $('#categoryName').val(), window.location.href);"> Delete </button>
+		<br><br>
+		Categories name: <input type="text" id="categoryName" size="10" maxlength="30">
+		<br><br><br>
+		<%= CategoriesTree.printCategories(categories) %>
+		<br><br>
+	</center>
+</div>
 
 <br>
 
-	<center><h3>PRODUCTS</h3></center>
-<form action="admin" method="POST">
-	<table border="1" style="width:100%">
-	  <tr>
-	    <td>ID</td>
-	    <td>Name</td>
-	    <td>Description</td>
-	    <td>StartPrice</td>
-	    <td>BuyoutPrice</td>
-	    <td>CurrentPrice</td>
-	    <td>Start Date</td>
-	    <td>End Date</td>
-	    <td>Seller ID</td>
-	    <td>Buyer ID</td>
-	    <td>Status</td>
-		<td>Delete</td>
-	  </tr>
-	 <%
-		for (Product product : products) {
-	 %>
-	  <tr>
-	    <td><%=product.getId() %></td>
-	    <td><%=product.getName() %></td>
-	    <td><%=product.getDescription() %></td>
-	    <td><%=product.getStartPrice() %></td>
-	    <td><%=product.getBuyoutPrice() %></td>
-	    <td><%=product.getCurrentPrice() %></td>
-	    <td><%=product.getStartDate() %></td>
-	    <td><%=product.getEndDate() %></td>
-	    <td><%=product.getSellerID() %></td>
-	    <td><%=product.getCurrentBuyerID() %></td>
-	    <td><% if (product.isActive()) {%> active <% } else { %> disactive <% } %> </td>
-	    <td><input type="checkbox" name="deleteCheckBox" value=<%=product.getId() %> ></td>
-	  </tr>
-		<% } %>
-	</table>
-	<input type="submit" name="deleteProduct" value="Delete Selected" />
-</form>
+<div class="tableStyle">
+	<center><h1>USERS</h1></center>
+	<form action="admin" method="POST">
+		<table border="1" style="width:100%">
+		  <tr>
+		    <td>ID</td>
+		    <td>Login</td>
+		    <td>Name</td>		
+		    <td>Second Name</td>
+		    <td>Age</td>
+		    <td>Mail</td>
+		    <td>Phone</td>
+		    <td>Registration date</td>
+		    <td>View</td>
+		    <td>Ban</td>
+		    <td>Activated</td>
+		    <td>Admin</td>
+		  </tr>
+		 <%
+			for (User usver : users) {
+		 %>
+		  <tr>
+		  	<%
+		  		String phone = (usver.getPhone() == null) ? "----------" : usver.getPhone();
+		  	 %>
+		    <td><%=usver.getId() %></td>
+		    <td><%=usver.getLogin() %></td>
+		    <td><%=usver.getName() %></td>		
+		    <td><%=usver.getSecondName() %></td>
+		    <td><%=usver.getAge() %></td>	
+		    <td><%=usver.geteMail() %></td>	
+		    <td><%=phone %></td>	
+		    <td><%=usver.getRegistrationDate() %></td>
+		    <td><a href="user?id=<%= usver.getId() %>">View</a></td>
+		    <td><input type="checkbox" name="ban" <% if (usver.isBanned()) { %> checked <%} %> value=<%=usver.getId() %> ></td>
+		    <td><input type="checkbox" name=<%="activated" %> onclick="return false" <% if (usver.isActivated()) { %> checked <%} %>></td>
+		    <td><input type="checkbox" name=<%="admin" %> onclick="return false" <% if (usver.isAdmin()) { %> checked <%} %>></td>
+		  </tr>
+			<% } %>
+		</table>
+		<br>
+		<center><input type="submit" name="saveUsers" value="Ban Selected" /></center>
+		<br>
+	</form>
+</div>
 <br>
 
-<%= CategoriesTree.printCategories(categories) %>
-
-Categories name: <input type="text" id="categoryName" size="10" maxlength="30">
-
+<div class="tableStyle">
+	<center><h1>PRODUCTS</h1></center>
+	<form action="admin" method="POST">
+		<table border="1" style="width:100%">
+		  <tr>
+		    <td>ID</td>
+		    <td>Name</td>
+		    <td>Description</td>
+		    <td>StartPrice</td>
+		    <td>BuyoutPrice</td>
+		    <td>CurrentPrice</td>
+		    <td>Start Date</td>
+		    <td>End Date</td>
+		    <td>Seller ID</td>
+		    <td>Buyer ID</td>
+		    <td>Status</td>
+		    <td>View</td>
+			<td>Delete</td>
+		  </tr>
+		 <%
+			for (Product product : products) {
+		 %>
+		  <tr>
+		    <td><%=product.getId() %></td>
+		    <td><%=product.getName() %></td>
+		    <td><%=product.getDescription() %></td>
+		    <td><%=product.getStartPrice() %></td>
+		    <td><%=product.getBuyoutPrice() %></td>
+		    <td><%=product.getCurrentPrice() %></td>
+		    <td><%=product.getStartDate() %></td>
+		    <td><%=product.getEndDate() %></td>
+		    <td><%=product.getSellerID() %></td>
+		    <td><%=product.getCurrentBuyerID() %></td>
+		    <td><% if (product.isActive()) {%> active <% } else { %> disactive <% } %> </td>
+		    <td><a href="product?id=<%= product.getId() %>">View</a></td>
+		    <td><input type="checkbox" name="deleteCheckBox" value=<%=product.getId() %> ></td>
+		  </tr>
+			<% } %>
+		</table>
+		<br>
+		<center><input type="submit" name="deleteProduct" value="Delete Selected" /></center>
+		<br>
+	</form>
+</div>
 <br>
 
-<button onclick="sendCategoryData('create', $('#categoryName').val(), window.location.href);"> Create </button>
-<button onclick="sendCategoryData('change', $('#categoryName').val(), window.location.href);"> Change </button>
-<button onclick="sendCategoryData('delete', $('#categoryName').val(), window.location.href);"> Delete </button>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
 <script>
 $(document).ready(function () {
 $('#multi-derevo li:has("ul")').find('a:first').prepend('<em class="marker"></em>');
@@ -139,12 +159,6 @@ $('#multi-derevo li span').click(function () {
 });
 });
 </script>
-
-<br><br>
-
-<form action="admin" method="POST">
-	<input type="submit" name="BackButton" value="Back" />
-</form>	
 	
 </body>
 </html>
