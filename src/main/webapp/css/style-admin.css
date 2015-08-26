@@ -89,6 +89,20 @@
      border-color: gray transparent transparent transparent;
      border-width: .5em .25em 0 .25em;  
    }
+   
+   .tableStyle {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
 
   * html #multi-derevo * { height: 1%;}
   * html .marker { border-style: dotted dotted dotted solid; }
