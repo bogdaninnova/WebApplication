@@ -23,7 +23,7 @@ public class AdminFilter implements Filter {
 			(session == null) ||
 			(session.getAttribute("user") == null) ||
 			!((User) session.getAttribute("user")).isAdmin())
-				;//res.sendError(403);
+				res.sendError(403);
 
 		chain.doFilter(request, response);
 	}
