@@ -22,8 +22,8 @@ public class AdminFilter implements Filter {
 		if (
 			(session == null) ||
 			(session.getAttribute("user") == null) ||
-			!((User) session.getAttribute("user")).isAdmin())  
-				res.sendError(HttpServletResponse.SC_FORBIDDEN);
+			!((User) session.getAttribute("user")).isAdmin())
+				;//res.sendError(403);
 
 		chain.doFilter(request, response);
 	}
