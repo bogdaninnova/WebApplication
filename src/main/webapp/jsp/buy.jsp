@@ -5,18 +5,18 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="./css/style-product.css"/>
-    <script src="./js/bootstrap.js"></script>
     <script src="./js/jquery-2.1.3.js"></script>
     <script src="./js/product.js"></script>
     <title>Buy it now a product</title>
 </head>
 <body>
+<%@include file="../jspf/user-header.jspf" %>
     <div class="container-product">
         <h2>Credit Card Payment</h2>
         <h4>Enter your credit card details</h4>
         <% Product product = (Product) request.getAttribute("product");
-            User user = (User) session.getAttribute("user");
             if (product != null){ %>
         <table align="center">
             <form>
@@ -76,7 +76,9 @@
                 <td><br></td>
             </tr>
         </table>
+        <% } %>
+<%@include file="../jspf/user-footer.jspf"%>
     </div>
-    <% } %>
+
 </body>
 </html>

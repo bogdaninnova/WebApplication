@@ -8,13 +8,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/style-product.css"/>
-    <script src="js/bootstrap.js"></script>
     <script src="js/jquery-2.1.3.js"></script>
     <script src="js/product.js"></script>
     <title>Product</title>
 </head>
 <body>
+<%@include file="../jspf/user-header.jspf" %>
 <div class="container-product">
     <% Product product = (Product) request.getAttribute("product");
         List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");%>
@@ -41,7 +42,6 @@
                         <div class="product-bet-price">
                             Max bet
                             <% int currentPrice;
-                                User user = (User) session.getAttribute("user");
                                 int age = user.getAge();
                             %>
                             <% if (product.getCurrentPrice() > 0) {
@@ -111,13 +111,11 @@
                 <%= product.getDescription()%>
             </div>
             <br>
-            <div class="product-back">
-                <a href="index" style="text-decoration: none">[<b>Back</b>]</a>
-            </div>
             <br><br>
         </div>
     </footer>
     <% } %>
+<%@include file="../jspf/user-footer.jspf"%>
 </div>
 </body>
 </html>

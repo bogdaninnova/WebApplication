@@ -5,13 +5,13 @@ body {
     min-width: 450px;
     position: relative;
     margin-left: 10%;
-    margin-top: 5%;
+    /*margin-top: 5%;*/
 }
 
-label:hover {
-    color: grey;
-    cursor: pointer;
-}
+/*label:hover {*/
+    /*color: grey;*/
+    /*cursor: pointer;*/
+/*}*/
 
 footer {
     clear: both;

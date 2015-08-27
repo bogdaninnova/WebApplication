@@ -46,10 +46,10 @@ body {
     box-shadow: 1px 0px 2px rgba(0,0,0,0.2);
 }
 
-label:hover {
-    color: yellow;
-    cursor: pointer;
-}
+/*label:hover {*/
+    /*color: yellow;*/
+    /*cursor: pointer;*/
+/*}*/
 
 #block-logo {
     width: 100px;
