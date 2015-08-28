@@ -1,0 +1,78 @@
+<section class="container-section-nav">
+    <header>
+        <div align="center">
+            <form>
+                <br>
+                <input type="text" id="find" size="7" maxlength="30" required>
+                <button onclick="clickFind($('#find').val());">find</button>
+            </form>
+        </div>
+    </header>
+
+    <div align="center">
+        <%! List<Category> categoryList;%>
+        <% categoryList = (List<Category>) request.getAttribute("list"); %>
+        <%! private StringBuilder menuHTML;
+
+        %>
+        <% List<Category> rootCategories = new ArrayList<Category>();
+            menuHTML = new StringBuilder();
+            for (Category c : categoryList) {
+                if (c.getParentID() == 0) {
+                    rootCategories.add(c);
+                }
+            }
+
+            categoryListToHTML(0, rootCategories);
+        %>
+        <%! private void categoryListToHTML(int level, List<Category> childsList) {
+            if (level == 0) {
+                menuHTML.append("<ul class = \"topnav\">");
+                menuHTML.append("<li><a href=\"#\" onClick=\"getProductByCategory('0');\">All products</a></li>");
+            } else {
+                menuHTML.append("<ul>");
+            }
+            for (Category currentCat : childsList) {
+                List<Category> listOfChildrens = new ArrayList<Category>();
+                Iterator<Category> iterCat = categoryList.iterator();
+                int count = 0;
+                while (iterCat.hasNext()) {
+                    Category current = iterCat.next();
+
+                    if (currentCat.getId() == current.getParentID()) {
+                        if (count == 0) {
+                            menuHTML.append("<li>");
+                            menuHTML.append("<a href=\"#\">" + currentCat.getName() + "</a>");
+                            count += 1;
+                        }
+                        listOfChildrens.add(current);
+                        iterCat.remove();
+                    }
+                }
+                if (!listOfChildrens.isEmpty()) {
+                    categoryListToHTML(++level, listOfChildrens);
+                } else {
+                    menuHTML.append("<li>");
+                    menuHTML.append("<a href=\"#\" onClick=\"getProductByCategory('" + currentCat.getId() + "');\">" + currentCat.getName() + "</a>");
+                }
+                menuHTML.append("</li>");
+            }
+            menuHTML.append("</ul>");
+        }%>
+        <%= menuHTML.toString() %>
+    </div>
+
+    <footer>
+        <h4 align="center">Options:</h4>
+
+        <div align="center">
+            <form>
+                Price ($):<br>
+                <input type="text" id="min_price" size="3" maxlength="10">
+                - <input type="text" id="max_price" size="3" maxlength="10"><br>
+                <br>
+            </form>
+                <button onclick="">Sort</button>
+        </div>
+    </footer>
+</section>

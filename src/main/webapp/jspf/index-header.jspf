@@ -1,21 +1,23 @@
 <div class="container">
     <div class="form-top" align="right">
+
         <tr>
             <% User user = (User) session.getAttribute("user");
                 String userName = "";
                 String userSecondName = "";
+                boolean userStatus = false;
                 if (user != null) {
                     userName = user.getName();
                     userSecondName = user.getSecondName();
+                    userStatus = user.isAdmin();
                 }
             %>
-            <td>Welcome to cabinet, </td>
-            <td> <%= userSecondName%> </td>
-            <td> <%= userName%> </td>
-            <td><a href="index" style="text-decoration: none;color: white;"
-                   onmouseover="this.style.color='yellow';"
-                   onmouseout="this.style.color='white';">
-                [<b>Home</b>]</a></td>
+
+            <script>var user_name = '<%= userName %>';
+            var user_second_name = '<%= userSecondName %>';
+            var userStatus = '<%= userStatus%>'.toString();
+            createForm(user_name, user_second_name, userStatus);</script>
+
         </tr>
     </div>
     <header>

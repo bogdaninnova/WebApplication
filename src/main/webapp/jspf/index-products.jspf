@@ -1,0 +1,72 @@
+<aside class="container-section-lot">
+
+    <%--<% if (user != null) {--%>
+    <%--}%>--%>
+    <header>
+        <div align="center">
+            <% List<Product> products = (List<Product>) request.getAttribute("products");
+                if (products != null) { %>
+            <% for (Product product : products) { %>
+            <div class="container-lots" onClick='location.href="product?id=<%=product.getId()%>"'>
+
+                <div class="container-lots-image">
+                    <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>
+                    <% String image = "./images/no_image.png"; %>
+                    <% if (pictures != null) {
+                        for (Picture picture : pictures) {
+                            if (picture.getProductID() == product.getId()) {
+                                image = picture.getURL();%>
+                    <% }
+                    }
+                    } %>
+                    <img src="<%= image%>" alt="No photo" width="150" height="100">
+                </div>
+                <div class="container-lots-price">
+                    <% if (product.getCurrentPrice() != 0) { %>
+                    <%=product.getCurrentPrice()%> $
+                    <% } else {%>
+                    <%=product.getStartPrice()%> $
+                    <% } %>
+                </div>
+                <header>
+                    <%=product.getName()%>
+                </header>
+                <assaid>
+                    <div class="container-lots-description" align="left">
+                        <%=product.getDescription()%>
+                    </div>
+                </assaid>
+                <footer>
+                    <div class="container-lots-time">
+                        <% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
+                        Close : <%= dateFormat.format(product.getEndDate()) %>
+                    </div>
+                    <div class="container-lots-buyer">
+                        <% if (product.getCurrentBuyerID() != 0) {
+                            List<User> users = (List<User>) request.getAttribute("users");
+                            String nameBuyer = null;
+                            if (users != null) {%>
+                        <% for (User userBuyer : users) {
+                            if (product.getCurrentBuyerID() == userBuyer.getId())
+                                nameBuyer = userBuyer.getLogin();
+                        }%>
+                        <%=nameBuyer%>
+                        <% }
+                        } %>
+                    </div>
+                </footer>
+                <br><br>
+            </div>
+
+            <% } %>
+            <%
+                }
+            %>
+        </div>
+    </header>
+    <footer>
+        <div align="center">
+
+        </div>
+    </footer>
+</aside>

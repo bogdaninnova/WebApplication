@@ -12,7 +12,7 @@
     <title>Buy it now a product</title>
 </head>
 <body>
-<%@include file="../jspf/user-header.jspf" %>
+<%@include file="../jspf/product-header.jspf" %>
     <div class="container-product">
         <h2>Credit Card Payment</h2>
         <h4>Enter your credit card details</h4>

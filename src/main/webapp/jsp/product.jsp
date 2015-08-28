@@ -15,7 +15,7 @@
     <title>Product</title>
 </head>
 <body>
-<%@include file="../jspf/user-header.jspf" %>
+<%@include file="../jspf/product-header.jspf" %>
 <div class="container-product">
     <% Product product = (Product) request.getAttribute("product");
         List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");%>
