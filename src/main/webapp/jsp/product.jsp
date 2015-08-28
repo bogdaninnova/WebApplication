@@ -23,7 +23,7 @@
     <% if (product != null) { %>
     <header>
         <div class="product-header">
-            <duv class="product-img">
+            <div class="product-img" align="center">
 
                 <% if (pictures != null) {
                     for (Picture picture : pictures) {
@@ -32,9 +32,8 @@
                 <% }
                 }
                 } %>
-
-                <img src="<%= image%>" alt="No photo" width="400" height="300">
-            </duv>
+                <img src="<%= image%>" alt="No photo" height="100%">
+            </div>
             <h1><%= product.getName()%></h1>
             <div class="product-buy">
                 <div align="center">

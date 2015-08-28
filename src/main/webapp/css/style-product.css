@@ -8,11 +8,6 @@ body {
     /*margin-top: 5%;*/
 }
 
-/*label:hover {*/
-    /*color: grey;*/
-    /*cursor: pointer;*/
-/*}*/
-
 footer {
     clear: both;
 }
@@ -45,6 +40,8 @@ td {
 }
 
 .product-img {
+    width: 400px;
+    height: 300px;
     float: left;
     margin: 0% 2% 2% 2%;
     border: 1px solid lightgrey;
