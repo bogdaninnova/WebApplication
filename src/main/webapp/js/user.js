@@ -495,10 +495,12 @@ $(document).ready(function () {
 });
 
 function activateButton() {
-    var isFile = document.getElementById("sampleFile").files[0];
-    if (isFile != null && isFile != "") {
-        document.getElementById("addImageButton").disabled = false;
-    } else {
-        document.getElementById("addImageButton").disabled = true;
+    if (document.getElementById("sampleFile") != null) {
+        var isFile = document.getElementById("sampleFile").files[0];
+        if (isFile != null && isFile != "") {
+            document.getElementById("addImageButton").disabled = false;
+        } else {
+            document.getElementById("addImageButton").disabled = true;
+        }
     }
 }

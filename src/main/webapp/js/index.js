@@ -103,27 +103,6 @@ function clickFind(find) {
     });
 }
 
-function clickProduct(prodid) {
-    $.ajax({
-        dataType: "xml",
-        url: url,
-        type: "POST",
-        data: {
-            action: "product",
-            prodID: parseInt(prodid)
-        }
-        ,
-        success: function (data) {
-            if ("ok" === $(data).find("result").text().toLowerCase()) {
-                window.location.replace("product");
-            }
-        },
-        error: function () {
-
-        }
-    });
-}
-
 function clickCabinet() {
     $.ajax({
         dataType: "xml",
@@ -151,17 +130,17 @@ function createForm(user_name, user_second_name, userStatus) {
         document.write(user_second_name);
         document.write(" ");
         document.write(user_name);
-        document.write("<label onclick=\"clickCabinet();\">[ <b>Cabinet</b> ]</Label>");
+        document.write("<a href=\"javascript:clickCabinet()\" style=\"text-decoration: none;color: white;\" onmouseover=\"this.style.color='yellow';\" onmouseout=\"this.style.color='white';\">[<b>Cabinet</b>]</a>");
         if (userStatus == "true") {
-            document.write("<label onclick=\"clickAdmin();\">[ <b>Admin</b> ]</Label>");
+            document.write("<a href=\"javascript:clickAdmin()\" style=\"text-decoration: none;color: white;\" onmouseover=\"this.style.color='yellow';\" onmouseout=\"this.style.color='white';\">[<b>Admin</b>]</a>");
         }
-        document.write("<label onclick=\"logOut();\">[ <b>LogOut</b> ]</Label>");
+        document.write("<a href=\"javascript:logOut()\" style=\"text-decoration: none;color: white;\" onmouseover=\"this.style.color='yellow';\" onmouseout=\"this.style.color='white';\">[<b>LogOut</b>]</a>");
         document.write(" ");
         document.write("</td>");
     } else {
         document.write("<td>Please </td>");
-        document.write("<td><label onclick=\"clickLogin();\">[ <b>Login</b> ]</Label></td>");
-        document.write("<td><label onclick=\"clickRegister();\">[ <b>Register</b> ]</Label></td>");
+        document.write("<td><a href=\"javascript:clickLogin()\" style=\"text-decoration: none;color: white;\" onmouseover=\"this.style.color='yellow';\" onmouseout=\"this.style.color='white';\">[<b>Login</b>]</a></td>");
+        document.write("<td><a href=\"javascript:clickRegister()\" style=\"text-decoration: none;color: white;\" onmouseover=\"this.style.color='yellow';\" onmouseout=\"this.style.color='white';\">[<b>Register</b>]</a></td>");
     }
 }
 
