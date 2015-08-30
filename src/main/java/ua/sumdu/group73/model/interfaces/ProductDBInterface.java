@@ -50,4 +50,19 @@ public interface ProductDBInterface {
 	 * maxPrice: 0 for infinity.
 	 * */
 	public int getCount(int categoryID, int minPrice, int maxPrice);
+	
+	/**
+	 * position: start with 1. Every page has LOTS_ON_PAGE lots
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity;
+	 * keyWord: for search.
+	 * */
+	public List<Product> getProductsFind(int postiton, int minPrice, int maxPrice, String keyWord);
+
+	/**
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity;
+	 * keyWord: for search.
+	 * */
+	public int getCountFind(int minPrice, int maxPrice, String keyWord);
 }
