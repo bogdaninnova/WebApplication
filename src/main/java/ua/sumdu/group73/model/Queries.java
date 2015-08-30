@@ -342,6 +342,48 @@ public class Queries {
 	}
 	
 	
+		public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCT_CATEGORY PC ");
+		sb.append(" LEFT JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS P ON P.ID = PC.PRODUCT_ID ");
+		sb.append(" WHERE START_PRICE BETWEEN ");
+		sb.append(minPrice);
+		
+		if (maxPrice == 0)
+			sb.append(" AND BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(" AND " + maxPrice );
+		sb.append(" AND (IS_ACTIVE = 'active')");
+		sb.append(" AND ((LOWER(P.DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(P.NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		 return sb.toString();
+	}
+	
+	public  static String getProductsFindQuery(int postiton, int minPrice, int maxPrice, String keyWord) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM (  ");
+		sb.append(" SELECT P.* FROM PRODUCT_CATEGORY PC ");
+		sb.append(" LEFT JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID ");
+		sb.append(" LEFT JOIN PRODUCTS P ON P.ID = PC.PRODUCT_ID WHERE ");
+		sb.append(" START_PRICE BETWEEN ");
+		sb.append(minPrice);
+		if (maxPrice == 0)
+			sb.append(" AND BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(" AND " + maxPrice);
+		sb.append(" AND (IS_ACTIVE = 'active') ");
+		sb.append(" AND ((LOWER(P.DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(P.NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		sb.append(" ) T) ");
+		
+		sb.append(" WHERE (RN > (" + ProductDBInterface.LOTS_ON_PAGE + " * " + postiton + " - " + ProductDBInterface.LOTS_ON_PAGE + ") ");
+		sb.append(" AND (RN <= " + postiton + " * " + ProductDBInterface.LOTS_ON_PAGE + ")) ");
+		sb.append(" ORDER BY ID DESC ");
+		
+		return sb.toString();
+	}
+	
+	
 	
 	
     //------------------------------------------------------
