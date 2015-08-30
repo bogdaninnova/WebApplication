@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,18 +29,15 @@ public class IndexServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(IndexServlet.class);
     private List<Category> categoryList;
     private List<Product> products;
-    private List<Product> showProduct;
     private List<Picture> pictures;
     private List<User> users;
+    private int countProduct;
+    private int categoryID;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         log.info("Init UserServlet");
         ServerTimerTask.run();
-        products = null;
-        products = OracleDataBase.getInstance().getAllActiveProducts();
-        log.info("Init products");
-        showProduct = new ArrayList<Product>();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,17 +51,6 @@ public class IndexServlet extends HttpServlet {
         if ("registerForm".equals(request.getParameter("action"))) {
             log.info("Click register");
             sendResponse(response, "<result>OK</result>");
-        } else if ("find".equals(request.getParameter("action"))) {
-            log.info("Click find with query - " + request.getParameter("text"));
-            if (request.getParameter("text").length() > 2) {
-                products = null;
-                products = OracleDataBase.getInstance().findProducts(request.getParameter("text"));
-                request.setAttribute("products", products);
-                sendResponse(response, "<result>OK</result>");
-            } else {
-                sendResponse(response, "<result>Short find request</result>");
-            }
-
         } else if ("login".equals(request.getParameter("action"))) {
             log.info("Click login");
             sendResponse(response, "<result>OK</result>");
@@ -74,21 +59,6 @@ public class IndexServlet extends HttpServlet {
                 request.getSession().setAttribute("user", null);
                 sendResponse(response, "<result>OK</result>");
             }
-        } else if ("getProducts".equals(request.getParameter("action"))) {
-            log.info("Click getProducts");
-            if (Integer.parseInt(request.getParameter("id")) > 0) {
-                products = null;
-                products = OracleDataBase.getInstance().getProductsByCategory(Integer.parseInt(request.getParameter("id")));
-                request.setAttribute("products", products);
-            } else {
-                products = null;
-                products = OracleDataBase.getInstance().getAllActiveProducts();
-            }
-            sendResponse(response, "<result>OK</result>");
-//        } else if ("product".equals(request.getParameter("action"))) {
-//            log.info("Click product");
-//            request.getSession().setAttribute("prodID", Integer.parseInt(request.getParameter("prodID")));
-//            sendResponse(response, "<result>OK</result>");
         } else if ("admin".equals(request.getParameter("action"))) {
             log.info("Click admin");
             sendResponse(response, "<result>OK</result>");
@@ -99,29 +69,47 @@ public class IndexServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	showProduct.clear();
-    	if (products != null) {
-            for (Product product : products) {
-                if (OracleDataBase.getInstance().isProductActive(product.getId())) {
-                    showProduct.add(OracleDataBase.getInstance().getProduct(product.getId()));
+        response.setContentType("text/html");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
+        RequestDispatcher rd;
+        products = null;
+        countProduct = 0;
+        if (request.getParameter("category") != null && request.getParameter("category") != "" && request.getParameter("category").length() > 0) {
+            if ("find".equals(request.getParameter("category"))) {
+                if (request.getParameter("text") != null && request.getParameter("text") != "" &&request.getParameter("text").length() > 2) {
+                    products = OracleDataBase.getInstance().findProducts(request.getParameter("text"));
                 }
+            } else if (request.getParameter("page") != null && request.getParameter("page") != "") {
+                countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), 0, 0);
+                categoryID = Integer.parseInt(request.getParameter("category"));
+                products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
+            } else {
+                countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), 0, 0);
+                categoryID = Integer.parseInt(request.getParameter("category"));
+                products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
             }
+        } else {
+            categoryID = 0;
+            countProduct = OracleDataBase.getInstance().getCount(0, 0, 0);
+            products = OracleDataBase.getInstance().getProducts(1, 0, 0, 0);
         }
 
         categoryList = null;
         users = null;
         pictures = null;
         categoryList = OracleDataBase.getInstance().getAllCategories();
-        log.info("Init categoryList" + categoryList);
         users = OracleDataBase.getInstance().getAllUsers();
         pictures = OracleDataBase.getInstance().getAllPictures();
-        log.info("Init pictures");
-        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
-        request.setAttribute("products", showProduct);
+        request.setAttribute("countProduct", countProduct);
+        request.setAttribute("categoryID", categoryID);
+        request.setAttribute("products", products);
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
         rd.forward(request, response);
+
     }
     
     public void destroy() {

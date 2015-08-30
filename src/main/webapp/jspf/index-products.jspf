@@ -1,7 +1,4 @@
 <aside class="container-section-lot">
-
-    <%--<% if (user != null) {--%>
-    <%--}%>--%>
     <header>
         <div align="center">
             <% List<Product> products = (List<Product>) request.getAttribute("products");
@@ -59,14 +56,23 @@
             </div>
 
             <% } %>
-            <%
-                }
-            %>
+            <% } %>
         </div>
     </header>
     <footer>
         <div align="center">
-
+            <% int categoryID = (Integer) request.getAttribute("categoryID");%>
+            <% if (request.getAttribute("countProduct") != null) { %>
+                <% int countProduct = (Integer) request.getAttribute("countProduct");%>
+                <% if (countProduct > 1) { %>
+                    <% int countPage = (int) Math.ceil((double)countProduct/10); %>
+                        <% if (countPage > 1) {%>
+                            <% for(int i = 1; i <= countPage; i++) { %>
+                                <a href="index?category=<%=categoryID%>&page=<%=i%>" style="text-decoration: none;"> <%= i%> </a>
+                            <% } %>
+                        <% } %>
+                <% } %>
+            <% } %>
         </div>
     </footer>
 </aside>

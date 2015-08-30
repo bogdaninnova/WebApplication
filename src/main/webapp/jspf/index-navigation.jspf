@@ -1,10 +1,10 @@
 <section class="container-section-nav">
     <header>
         <div align="center">
-            <form>
+            <form onsubmit="return false">
                 <br>
                 <input type="text" id="find" size="7" maxlength="30" required>
-                <button onclick="clickFind($('#find').val());">find</button>
+                <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val()">Find</button>
             </form>
         </div>
     </header>
@@ -28,7 +28,7 @@
         <%! private void categoryListToHTML(int level, List<Category> childsList) {
             if (level == 0) {
                 menuHTML.append("<ul class = \"topnav\">");
-                menuHTML.append("<li><a href=\"#\" onClick=\"getProductByCategory('0');\">All products</a></li>");
+                menuHTML.append("<li><a href=\"index?category=0\">All products</a></li>");
             } else {
                 menuHTML.append("<ul>");
             }
@@ -53,7 +53,9 @@
                     categoryListToHTML(++level, listOfChildrens);
                 } else {
                     menuHTML.append("<li>");
-                    menuHTML.append("<a href=\"#\" onClick=\"getProductByCategory('" + currentCat.getId() + "');\">" + currentCat.getName() + "</a>");
+                    menuHTML.append("<a href=\"index?category=");
+                    menuHTML.append(currentCat.getId());
+                    menuHTML.append("\"+ <>" + currentCat.getName() + "</a>");
                 }
                 menuHTML.append("</li>");
             }
