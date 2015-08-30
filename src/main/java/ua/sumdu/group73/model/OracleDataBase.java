@@ -1072,6 +1072,71 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         }
         return count;
 	}
+	
+		/**
+	 * position: start with 1. Every page has LOTS_ON_PAGE lots
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity;
+	 * keyWord: for search.
+	 * */
+@Override
+	public List<Product> getProductsFind(int postiton, int minPrice, int maxPrice, String keyWord) {
+    	log.info("Method getPages starts.....");
+    	List<Product> list = new ArrayList<Product>();
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.getProductsFindQuery(postiton, minPrice, maxPrice, keyWord))) {
+            try(ResultSet rs = preparedStatement.executeQuery()){
+
+	            while (rs.next()) {
+	            	list.add(
+	                		new Product(
+	                				rs.getInt("ID"),
+	                				rs.getInt("SELLER_ID"),
+	                				rs.getString("NAME"),
+	                				rs.getString("DESCRIPTION"),
+	                				addTimeZoneDif(rs.getTimestamp("START_DATE")),
+	                				addTimeZoneDif(rs.getTimestamp("END_DATE")),
+	                				rs.getInt("START_PRICE"),
+	                				rs.getInt("BUYOUT_PRICE"),
+	                				rs.getInt("CURRENT_PRICE"),
+	                				rs.getInt("CURRENT_BUYER_ID"),
+	                				true)//is active
+	                		);
+	            }
+            	
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getPages()", e);
+        } finally {
+        	closeConnection();
+        }
+        return list;
+	}
+
+	/**
+	 * minPrice: 0 if without minimal price;
+	 * maxPrice: 0 for infinity;
+	 * keyWord: for search.
+	 * */
+	@Override
+	public int getCountFind(int minPrice, int maxPrice, String keyWord) {
+    	log.info("Method getPages starts.....");
+    	int count = -1;
+    	initConnection();
+        try (PreparedStatement preparedStatement = conn.prepareStatement(
+        		Queries.getCountFindQuery(minPrice, maxPrice, keyWord))) {
+            try(ResultSet rs = preparedStatement.executeQuery()){
+	            rs.next();
+	            count = rs.getInt("COUNT");
+            }
+        } catch (SQLException e) {
+            log.error("SQLException in getPages()", e);
+        } finally {
+        	closeConnection();
+        }
+        return count;
+	}
 
 
     //------------------------------------------------------
