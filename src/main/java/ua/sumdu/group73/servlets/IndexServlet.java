@@ -32,6 +32,8 @@ public class IndexServlet extends HttpServlet {
     private List<Picture> pictures;
     private List<User> users;
     private int countProduct;
+    private int countFind;
+    private String textFind;
     private int categoryID;
 
     public void init(ServletConfig config) throws ServletException {
@@ -75,19 +77,28 @@ public class IndexServlet extends HttpServlet {
         RequestDispatcher rd;
         products = null;
         countProduct = 0;
+        countFind = 0;
+        textFind = null;
         if (request.getParameter("category") != null && request.getParameter("category") != "" && request.getParameter("category").length() > 0) {
             if ("find".equals(request.getParameter("category"))) {
-                if (request.getParameter("text") != null && request.getParameter("text") != "" &&request.getParameter("text").length() > 2) {
-                    products = OracleDataBase.getInstance().findProducts(request.getParameter("text"));
+                if (request.getParameter("text") != null && request.getParameter("text") != "" && request.getParameter("text").length() > 2) {
+                    if (request.getParameter("page") != null && request.getParameter("page") != "" && request.getParameter("page").length() > 0) {
+                        products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")), 0, 0, request.getParameter("text"));
+                    } else {
+                        products = OracleDataBase.getInstance().getProductsFind(1, 0, 0, request.getParameter("text"));
+                    }
+                    countFind = OracleDataBase.getInstance().getCountFind(0, 0, request.getParameter("text"));
+                    textFind = request.getParameter("text");
                 }
-            } else if (request.getParameter("page") != null && request.getParameter("page") != "") {
-                countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), 0, 0);
-                categoryID = Integer.parseInt(request.getParameter("category"));
-                products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
+
             } else {
+                if (request.getParameter("page") != null && request.getParameter("page") != "") {
+                    products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
+                } else {
+                    products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
+                }
                 countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), 0, 0);
                 categoryID = Integer.parseInt(request.getParameter("category"));
-                products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
             }
         } else {
             categoryID = 0;
@@ -104,6 +115,8 @@ public class IndexServlet extends HttpServlet {
         rd = request.getRequestDispatcher("index.jsp");
         request.setAttribute("list", categoryList);
         request.setAttribute("countProduct", countProduct);
+        request.setAttribute("countFind", countFind);
+        request.setAttribute("textFind", textFind);
         request.setAttribute("categoryID", categoryID);
         request.setAttribute("products", products);
         request.setAttribute("pictures", pictures);

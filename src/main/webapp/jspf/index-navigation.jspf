@@ -4,7 +4,7 @@
             <form onsubmit="return false">
                 <br>
                 <input type="text" id="find" size="7" maxlength="30" required>
-                <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val()">Find</button>
+                <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val() + '&page=0'">Find</button>
             </form>
         </div>
     </header>
