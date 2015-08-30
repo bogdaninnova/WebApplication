@@ -312,6 +312,7 @@ public class Queries {
 			sb.append("BINARY_DOUBLE_INFINITY)");
 		else
 			sb.append(maxPrice + ")");
+		sb.append(" AND (IS_ACTIVE = 'active')");
 		return sb.toString();
 	}
 	
