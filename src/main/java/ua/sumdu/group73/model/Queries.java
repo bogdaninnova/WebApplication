@@ -342,11 +342,9 @@ public class Queries {
 	}
 	
 	
-		public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
+	public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCT_CATEGORY PC ");
-		sb.append(" LEFT JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID ");
-		sb.append(" LEFT JOIN PRODUCTS P ON P.ID = PC.PRODUCT_ID ");
+		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCTS ");
 		sb.append(" WHERE START_PRICE BETWEEN ");
 		sb.append(minPrice);
 		
@@ -355,8 +353,8 @@ public class Queries {
 		else
 			sb.append(" AND " + maxPrice );
 		sb.append(" AND (IS_ACTIVE = 'active')");
-		sb.append(" AND ((LOWER(P.DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(P.NAME) LIKE LOWER('%" + keyWord + "%'))) ");
-		 return sb.toString();
+		sb.append(" AND ((LOWER(DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		return sb.toString();
 	}
 	
 	public  static String getProductsFindQuery(int postiton, int minPrice, int maxPrice, String keyWord) {
