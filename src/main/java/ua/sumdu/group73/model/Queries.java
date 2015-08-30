@@ -361,17 +361,15 @@ public class Queries {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM (  ");
-		sb.append(" SELECT P.* FROM PRODUCT_CATEGORY PC ");
-		sb.append(" LEFT JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID ");
-		sb.append(" LEFT JOIN PRODUCTS P ON P.ID = PC.PRODUCT_ID WHERE ");
-		sb.append(" START_PRICE BETWEEN ");
+		sb.append(" SELECT * FROM PRODUCTS ");
+		sb.append(" WHERE START_PRICE BETWEEN ");
 		sb.append(minPrice);
 		if (maxPrice == 0)
 			sb.append(" AND BINARY_DOUBLE_INFINITY ");
 		else
 			sb.append(" AND " + maxPrice);
 		sb.append(" AND (IS_ACTIVE = 'active') ");
-		sb.append(" AND ((LOWER(P.DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(P.NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		sb.append(" AND ((LOWER(DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(NAME) LIKE LOWER('%" + keyWord + "%'))) ");
 		sb.append(" ) T) ");
 		
 		sb.append(" WHERE (RN > (" + ProductDBInterface.LOTS_ON_PAGE + " * " + postiton + " - " + ProductDBInterface.LOTS_ON_PAGE + ") ");
