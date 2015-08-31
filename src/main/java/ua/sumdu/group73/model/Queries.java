@@ -298,11 +298,50 @@ public class Queries {
 			+ " JOIN PRODUCTS ON USERS.ID = PRODUCTS.SELLER_ID"
 			+ " WHERE PRODUCTS.ID = ?";
 
+
+	
+		public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT COUNT(DISTINCT ID) AS COUNT FROM PRODUCTS ");
+		sb.append(" WHERE START_PRICE BETWEEN ");
+		sb.append(minPrice);
+		
+		if (maxPrice == 0)
+			sb.append(" AND BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(" AND " + maxPrice );
+		sb.append(" AND (IS_ACTIVE = 'active')");
+		sb.append(" AND ((LOWER(DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		 return sb.toString();
+	}
+	
+	public  static String getProductsFindQuery(int postiton, int minPrice, int maxPrice, String keyWord) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM (  ");
+		sb.append(" SELECT * FROM PRODUCTS ");
+		sb.append(" WHERE START_PRICE BETWEEN ");
+		sb.append(minPrice);
+		if (maxPrice == 0)
+			sb.append(" AND BINARY_DOUBLE_INFINITY ");
+		else
+			sb.append(" AND " + maxPrice);
+		sb.append(" AND (IS_ACTIVE = 'active') ");
+		sb.append(" AND ((LOWER(DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(NAME) LIKE LOWER('%" + keyWord + "%'))) ");
+		sb.append(" ) T) ");
+		
+		sb.append(" WHERE (RN > (" + ProductDBInterface.LOTS_ON_PAGE + " * " + postiton + " - " + ProductDBInterface.LOTS_ON_PAGE + ") ");
+		sb.append(" AND (RN <= " + postiton + " * " + ProductDBInterface.LOTS_ON_PAGE + ")) ");
+		sb.append(" ORDER BY ID DESC ");
+		
+		return sb.toString();
+	}
+	
 	public static String getProductCountQuery(int categoryID, int minPrice, int maxPrice) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCT_CATEGORY ");
+		sb.append(" SELECT COUNT(DISTINCT PRODUCTS.ID) AS COUNT FROM PRODUCT_CATEGORY  ");
 		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
-		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE ");
+		sb.append(" FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE ");
 
 		if (categoryID != 0)
 			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND");
@@ -316,14 +355,15 @@ public class Queries {
 		return sb.toString();
 	}
 	
-	public static String getProductsQuery(
-			int categoryID, int minPrice, int maxPrice, int position) {
+	public static String getProductsQuery(int categoryID, int minPrice, int maxPrice, int position) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( ");
+		sb.append(" SELECT DISTINCT ID, SELLER_ID, NAME, DESCRIPTION, START_DATE, END_DATE, START_PRICE, ");
+		sb.append(" BUYOUT_PRICE, CURRENT_PRICE, CURRENT_BUYER_ID, IS_ACTIVE FROM ( SELECT T.*, ROWNUM RN FROM ( "); 
+		
 		sb.append(" SELECT PRODUCTS.* FROM PRODUCT_CATEGORY ");
 		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
-		sb.append(" LEFT JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE");
+		sb.append(" FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE");
 		if (categoryID != 0)
 			sb.append(" (CATEGORIES.ID = " + categoryID + ") AND ");
 		sb.append(" (START_PRICE BETWEEN " + minPrice + " AND ");
@@ -340,48 +380,6 @@ public class Queries {
 		return sb.toString();
 				
 	}
-	
-	
-	public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT COUNT(*) AS COUNT FROM PRODUCTS ");
-		sb.append(" WHERE START_PRICE BETWEEN ");
-		sb.append(minPrice);
-		
-		if (maxPrice == 0)
-			sb.append(" AND BINARY_DOUBLE_INFINITY ");
-		else
-			sb.append(" AND " + maxPrice );
-		sb.append(" AND (IS_ACTIVE = 'active')");
-		sb.append(" AND ((LOWER(DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(NAME) LIKE LOWER('%" + keyWord + "%'))) ");
-		return sb.toString();
-	}
-	
-	public  static String getProductsFindQuery(int postiton, int minPrice, int maxPrice, String keyWord) {
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM (  ");
-		sb.append(" SELECT P.* FROM PRODUCT_CATEGORY PC ");
-		sb.append(" LEFT JOIN CATEGORIES C ON C.ID = PC.CATEGORY_ID ");
-		sb.append(" LEFT JOIN PRODUCTS P ON P.ID = PC.PRODUCT_ID WHERE ");
-		sb.append(" START_PRICE BETWEEN ");
-		sb.append(minPrice);
-		if (maxPrice == 0)
-			sb.append(" AND BINARY_DOUBLE_INFINITY ");
-		else
-			sb.append(" AND " + maxPrice);
-		sb.append(" AND (IS_ACTIVE = 'active') ");
-		sb.append(" AND ((LOWER(P.DESCRIPTION) LIKE LOWER('%" + keyWord + "%')) OR (LOWER(P.NAME) LIKE LOWER('%" + keyWord + "%'))) ");
-		sb.append(" ) T) ");
-		
-		sb.append(" WHERE (RN > (" + ProductDBInterface.LOTS_ON_PAGE + " * " + postiton + " - " + ProductDBInterface.LOTS_ON_PAGE + ") ");
-		sb.append(" AND (RN <= " + postiton + " * " + ProductDBInterface.LOTS_ON_PAGE + ")) ");
-		sb.append(" ORDER BY ID DESC ");
-		
-		return sb.toString();
-	}
-	
-	
 	
 	
     //------------------------------------------------------
