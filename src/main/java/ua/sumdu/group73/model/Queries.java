@@ -300,7 +300,7 @@ public class Queries {
 
 
 	
-		public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
+	public static String getCountFindQuery(int minPrice, int maxPrice, String keyWord) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT COUNT(DISTINCT ID) AS COUNT FROM PRODUCTS ");
 		sb.append(" WHERE START_PRICE BETWEEN ");
@@ -358,10 +358,9 @@ public class Queries {
 	public static String getProductsQuery(int categoryID, int minPrice, int maxPrice, int position) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(" SELECT DISTINCT ID, SELLER_ID, NAME, DESCRIPTION, START_DATE, END_DATE, START_PRICE, ");
-		sb.append(" BUYOUT_PRICE, CURRENT_PRICE, CURRENT_BUYER_ID, IS_ACTIVE FROM ( SELECT T.*, ROWNUM RN FROM ( "); 
+		sb.append(" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( "); 
 		
-		sb.append(" SELECT PRODUCTS.* FROM PRODUCT_CATEGORY ");
+		sb.append(" SELECT DISTINCT PRODUCTS.* FROM PRODUCT_CATEGORY ");
 		sb.append(" LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID ");
 		sb.append(" FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID WHERE");
 		if (categoryID != 0)
@@ -380,6 +379,7 @@ public class Queries {
 		return sb.toString();
 				
 	}
+
 	
 	
     //------------------------------------------------------
