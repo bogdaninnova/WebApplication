@@ -4,7 +4,7 @@
             <form onsubmit="return false">
                 <br>
                 <input type="text" id="find" size="7" maxlength="30" required>
-                <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val() + '&page=0'">Find</button>
+                <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val() + '&page=1'">Find</button>
             </form>
         </div>
     </header>
@@ -72,9 +72,15 @@
                 Price ($):<br>
                 <input type="text" id="min_price" size="3" maxlength="10">
                 - <input type="text" id="max_price" size="3" maxlength="10"><br>
-                <br>
             </form>
-                <button onclick="">Sort</button>
+
+            <% if (request.getAttribute("textFind") != null && request.getAttribute("textFind") != "") { %>
+                <% String find = (String) request.getAttribute("textFind"); %>
+                <button onclick="var categoryID='find'; validSortFind(categoryID, <%=find%>, 1, $('#min_price').val(), $('#max_price').val());">Sort</button>
+            <% } else if (request.getAttribute("categoryID") != null && request.getAttribute("categoryID") != "") { %>
+                <% int id = (Integer) request.getAttribute("categoryID"); %>
+                <button onclick="validSortCategory(<%=id%>, 1, $('#min_price').val(), $('#max_price').val());">Sort</button>
+            <% } %>
         </div>
     </footer>
 </section>

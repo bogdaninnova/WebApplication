@@ -83,7 +83,13 @@ public class IndexServlet extends HttpServlet {
             if ("find".equals(request.getParameter("category"))) {
                 if (request.getParameter("text") != null && request.getParameter("text") != "" && request.getParameter("text").length() > 2) {
                     if (request.getParameter("page") != null && request.getParameter("page") != "" && request.getParameter("page").length() > 0) {
-                        products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")), 0, 0, request.getParameter("text"));
+                        if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != "" && request.getParameter("minPrice").length() > 0
+                                && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != "" && request.getParameter("maxPrice").length() > 0) {
+                            products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")),
+                                    Integer.parseInt(request.getParameter("minPrice")), Integer.parseInt(request.getParameter("maxPrice")),
+                                    request.getParameter("text"));
+                        } else
+                            products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")), 0, 0, request.getParameter("text"));
                     } else {
                         products = OracleDataBase.getInstance().getProductsFind(1, 0, 0, request.getParameter("text"));
                     }
@@ -92,8 +98,13 @@ public class IndexServlet extends HttpServlet {
                 }
 
             } else {
-                if (request.getParameter("page") != null && request.getParameter("page") != "") {
-                    products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
+                if (request.getParameter("page") != null && request.getParameter("page") != "" && request.getParameter("page").length() > 0) {
+                    if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != "" && request.getParameter("minPrice").length() > 0
+                            && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != "" && request.getParameter("maxPrice").length() > 0) {
+                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")),
+                                Integer.parseInt(request.getParameter("minPrice")), Integer.parseInt(request.getParameter("maxPrice")));
+                    } else
+                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
                 } else {
                     products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
                 }

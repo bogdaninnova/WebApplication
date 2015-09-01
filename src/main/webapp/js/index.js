@@ -80,29 +80,6 @@ function logOut() {
     });
 }
 
-
-//function clickFind(find) {
-//    $.ajax({
-//        dataType: "xml",
-//        url: url,
-//        type: "POST",
-//        data: {
-//            action: "find",
-//            text: find
-//        },
-//        success: function (data) {
-//            if ("ok" === $(data).find("result").text().toLowerCase()) {
-//                window.location.replace(url);
-//            } else {
-//                alert($(data).find("result").text());
-//            }
-//        },
-//        error: function () {
-//            alert("Error while send find data.");
-//        }
-//    });
-//}
-
 function clickCabinet() {
     $.ajax({
         dataType: "xml",
@@ -144,22 +121,28 @@ function createForm(user_name, user_second_name, userStatus) {
     }
 }
 
-//function getProductByCategory(categoryID) {
-//    $.ajax({
-//        dataType: "xml",
-//        url: url,
-//        type: "POST",
-//        data: {
-//            action: "getProducts",
-//            id: parseInt(categoryID)
-//        },
-//        success: function (data) {
-//            if ("ok" === $(data).find("result").text().toLowerCase()) {
-//                window.location.replace(url);
-//            }
-//        },
-//        error: function () {
-//            alert("Error while send register data.");
-//        }
-//    });
-//}
+function validSortFind(categoryID, find, page, minPrice, maxPrice) {
+    if (minPrice != null && minPrice != "" && minPrice.length > 0 &&
+        maxPrice != null && maxPrice != "" && maxPrice.length > 0) {
+        location.href='index?category=' + categoryID + '&text=' + find + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+    } else if (minPrice != null && minPrice != "" && minPrice.length > 0 && maxPrice.length == 0) {
+        location.href='index?category=' + categoryID + '&text=' + find + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
+    } else if (maxPrice != null && maxPrice != "" && maxPrice.length > 0 && minPrice.length == 0) {
+        location.href='index?category=' + categoryID + '&text=' + find + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
+    } else {
+        alert("Enter the desired value.");
+    }
+}
+
+function validSortCategory(categoryID, page, minPrice, maxPrice) {
+    if (minPrice != null && minPrice != "" && minPrice.length > 0 &&
+        maxPrice != null && maxPrice != "" && maxPrice.length > 0) {
+        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+    } else if (minPrice != null && minPrice != "" && minPrice.length > 0 && maxPrice.length == 0) {
+        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
+    } else if (maxPrice != null && maxPrice != "" && maxPrice.length > 0 && minPrice.length == 0) {
+        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
+    } else {
+        alert("Enter the desired value.");
+    }
+}
