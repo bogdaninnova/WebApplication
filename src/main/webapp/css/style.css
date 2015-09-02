@@ -121,6 +121,7 @@ body {
     height : 100px;
     margin: 15px;
     float: left;
+    overflow : hidden;
 }
 
 .container-lots-price{
