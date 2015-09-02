@@ -33,7 +33,11 @@
             </header>
             <assaid>
                 <div class="container-lots-description" align="left">
-                    <%=purchasedProduct.getDescription()%>
+                    <% if (purchasedProduct.getDescription().length() >= 85) { %>
+                    <%= purchasedProduct.getDescription().substring(0, 85)%>...
+                    <% } else { %>
+                    <%= purchasedProduct.getDescription()%>
+                    <% } %>
                 </div>
             </assaid>
             <br><br>

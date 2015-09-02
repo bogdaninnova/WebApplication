@@ -114,6 +114,7 @@ td {
     background-color: white;
     border-top-style: solid;
     border-top-width: 1px;
+    word-wrap: break-word;
 }
 
 .product-back {

@@ -20,9 +20,9 @@
                 </div>
                 <div class="container-lots-price">
                     <% if (product.getCurrentPrice() != 0) { %>
-                    <%=product.getCurrentPrice()%> $
+                        <%=product.getCurrentPrice()%> $
                     <% } else {%>
-                    <%=product.getStartPrice()%> $
+                        <%=product.getStartPrice()%> $
                     <% } %>
                 </div>
                 <header>
@@ -30,7 +30,11 @@
                 </header>
                 <assaid>
                     <div class="container-lots-description" align="left">
-                        <%=product.getDescription()%>
+                        <% if (product.getDescription().length() >= 85) { %>
+                            <%= product.getDescription().substring(0, 85)%>...
+                        <% } else { %>
+                            <%= product.getDescription()%>
+                        <% } %>
                     </div>
                 </assaid>
                 <footer>

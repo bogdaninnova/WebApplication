@@ -145,6 +145,9 @@ body {
 
 .container-lots-description {
     height : 80px;
+    width : 44%;
+    margin-left : 70px;
+    word-wrap: break-word;
 }
 
 .container-user {

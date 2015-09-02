@@ -35,7 +35,11 @@
             </header>
             <assaid>
                 <div class="container-lots-description" align="left">
-                    <%=goodsForSale.getDescription()%>
+                    <% if (goodsForSale.getDescription().length() >= 85) { %>
+                        <%= goodsForSale.getDescription().substring(0, 85)%>...
+                    <% } else { %>
+                        <%= goodsForSale.getDescription()%>
+                    <% } %>
                 </div>
             </assaid>
             <footer>
