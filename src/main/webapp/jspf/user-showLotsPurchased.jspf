@@ -7,7 +7,7 @@
         <% List<Product> purchasedList = (List<Product>) request.getAttribute("purchasedList");
             if (purchasedList != null) { %>
         <% for (Product purchasedProduct : purchasedList) { %>
-        <div class="container-lots" onclick="">
+        <div class="container-lots" onClick='location.href="product?id=<%=purchasedProduct.getId()%>"'>
 
             <div class="container-lots-image">
                 <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures"); %>

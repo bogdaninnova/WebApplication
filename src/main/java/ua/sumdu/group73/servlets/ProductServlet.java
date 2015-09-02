@@ -55,7 +55,7 @@ public class ProductServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         RequestDispatcher rd;
             if (request.getParameter("id") != null && !request.getParameter("id").equals("") &&
-                    OracleDataBase.getInstance().isProductActive(Integer.parseInt(request.getParameter("id")))) {
+                    OracleDataBase.getInstance().getProduct(Integer.parseInt(request.getParameter("id"))) != null) {
                 product = OracleDataBase.getInstance().getProduct(Integer.parseInt(request.getParameter("id")));
                 pictures = OracleDataBase.getInstance().getPictures(Integer.parseInt(request.getParameter("id")));
                 users = OracleDataBase.getInstance().getAllUsers();

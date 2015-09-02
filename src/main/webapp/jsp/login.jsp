@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="./css/style-register.css"/>
-    <script src="./js/bootstrap.js"></script>
     <script src="./js/jquery-2.1.3.js"></script>
     <script src="./js/md5.js"></script>
     <script src="./js/login.js"></script>

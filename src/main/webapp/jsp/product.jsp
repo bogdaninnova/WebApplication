@@ -35,6 +35,7 @@
                 <img src="<%= image%>" alt="No photo" height="100%">
             </div>
             <h2><%= product.getName()%></h2>
+            <% if (product.isActive()) { %>
             <div class="product-buy">
                 <div align="center">
                     <div class="product-bet-container">
@@ -99,6 +100,25 @@
                     Close time : <%= dateFormat.format(product.getEndDate()) %>
                 </div>
             </div>
+            <% } else { %>
+            <div class="product-status">
+                <div class="product-status-leader">
+                    <% if (product.getCurrentBuyerID() > 0) { %>
+                    <% List<User> users = (List<User>) request.getAttribute("users");
+                        String nickBuyer = null;
+                        if (users != null) {%>
+                    <% for (User userBuyer : users) {
+                        if (product.getCurrentBuyerID() == userBuyer.getId())
+                            nickBuyer = userBuyer.getLogin();
+                    }%>
+                    <p>Buyer : <%= nickBuyer %></p>
+                    <p>Price : <%= product.getBuyoutPrice()%> $</p>
+                    <p>Lot status : closed</p>
+                    <% }} %>
+
+                </div>
+            </div>
+            <% } %>
         </div>
     </header>
     <footer>
