@@ -95,8 +95,6 @@
                     <% } %>
                 </div>
                 <div class="product-status-closeTime">
-                    <br>
-
                     <% SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy hh:mm");%>
                     Close time : <%= dateFormat.format(product.getEndDate()) %>
                 </div>

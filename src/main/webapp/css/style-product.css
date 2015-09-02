@@ -1,10 +1,9 @@
 body {
     background: #ddd url(../images/background.jpg);
     color: black;
-    width: 80%;
+    width: 90%;
     min-width: 450px;
     position: relative;
-    margin-left: 10%;
 }
 
 footer {
@@ -50,8 +49,8 @@ td {
 
 .product-buy {
     float: left;
-    width : 235px;
-    height : 170px;
+    width : 350px;
+    height : 180px;
     background-color: lightgray;
     border-radius: 5px;
 }
@@ -62,33 +61,36 @@ td {
 }
 
 .product-bet-price {
-    width : 80px;
+    width : 120px;
     float: left;
 }
 
 .product-bet-yourprice {
+    width : 130px;
     float: left;
 }
 
 .product-bet {
-    margin-top: 17%;
+    margin-top: 13%;
     margin-left: 30px;
     float: left;
 }
 
 .product-buy-container {
+    float: left;
     margin: 5px;
 }
 
 .product-buy-price {
-    margin-left: 80px;
+    margin-left: 120px;
+    width : 130px;
     float: left;
 }
 
 .product-buy-button {
     margin-top: 10%;
     margin-left: 30px;
-    float: right;
+    float: left;
 }
 
 .product-status {
