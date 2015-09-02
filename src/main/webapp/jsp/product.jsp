@@ -34,7 +34,14 @@
                 } %>
                 <img src="<%= image%>" alt="No photo" height="100%">
             </div>
-            <h2><%= product.getName()%></h2>
+            <div class="product-title">
+                <% if (product.getName().length() >= 100) { %>
+                    <p style="font-size: 14pt;"><b><%= product.getName()%></b></p>
+                <% } else { %>
+                    <p style="font-size: 16pt;"><b><%= product.getName()%></b></p>
+                    <br>
+                <% } %>
+            </div>
             <% if (product.isActive()) { %>
             <div class="product-buy">
                 <div align="center">
@@ -81,7 +88,6 @@
             </div>
             <div class="product-status">
                 <div class="product-status-leader">
-                    <br>
                     <% if (product.getCurrentBuyerID() > 0) { %>
                     <% List<User> users = (List<User>) request.getAttribute("users");
                     String nickBuyer = null;
@@ -122,6 +128,7 @@
         </div>
     </header>
     <footer>
+        <br>
         <div class="product-footer">
             <h2 align="center">Description</h2>
             <div class="product-description">

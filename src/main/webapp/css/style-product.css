@@ -41,7 +41,7 @@ td {
     width: 400px;
     height: 300px;
     float: left;
-    margin: 0% 2% 2% 2%;
+    margin: 4% 2% 2% 2%;
     border: 1px solid lightgrey;
     border-radius: 20px;
     overflow : hidden;
@@ -53,6 +53,11 @@ td {
     height : 180px;
     background-color: lightgray;
     border-radius: 5px;
+}
+.product-title {
+    width: 350px;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .product-bet-container {

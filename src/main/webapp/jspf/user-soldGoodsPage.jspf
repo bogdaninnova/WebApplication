@@ -30,7 +30,13 @@
                 <% } %>
             </div>
             <header>
-                <%=soldGoods.getName()%>
+                <div class="container-lots-title">
+                    <% if (soldGoods.getName().length() >= 20) { %>
+                        <b><%= soldGoods.getName().substring(0, 20)%></b>
+                    <% } else { %>
+                        <b><%= soldGoods.getName()%></b>
+                    <% } %>
+                </div>
             </header>
             <assaid>
                 <div class="container-lots-description" align="left">

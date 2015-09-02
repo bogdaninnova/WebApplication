@@ -143,7 +143,11 @@ body {
     font-size: 80%;
     float: right;
 }
-
+.container-lots-title {
+    width : 44%;
+    margin-left : 70px;
+    word-wrap: break-word;
+}
 .container-lots-description {
     height : 80px;
     width : 44%;
