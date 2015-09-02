@@ -34,7 +34,7 @@
                 } %>
                 <img src="<%= image%>" alt="No photo" height="100%">
             </div>
-            <h1><%= product.getName()%></h1>
+            <h2><%= product.getName()%></h2>
             <div class="product-buy">
                 <div align="center">
                     <div class="product-bet-container">

@@ -94,6 +94,7 @@ body {
     border-bottom-style: solid;
     border-bottom-width: 2px;
     border-bottom-color: lightgrey;
+    border-radius: 10px;
 }
 
 .container-lots:hover {
@@ -110,11 +111,12 @@ body {
     border-bottom-style: solid;
     border-bottom-width: 2px;
     border-bottom-color: grey;
+    border-radius: 10px;
 }
 
 .container-lots-image{
-    background-color: lightgray;
-    border :1px solid black;
+    border :1px solid lightgrey;
+    border-radius: 5px;
     width : 150px;
     height : 100px;
     margin: 15px;

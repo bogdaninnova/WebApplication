@@ -19,7 +19,7 @@
                 <% }
                 }
                 } %>
-                <img src="<%= image%>" alt="No photo" width="150" height="100">
+                <img src="<%= image%>" alt="No photo" height="100%">
             </div>
             <div class="container-lots-price">
                 <% if (purchasedProduct.getCurrentPrice() != 0) { %>
