@@ -26,4 +26,12 @@
         <td></td>
         <td><br></td>
     </tr>
+    <tr>
+        <td><button id="nextLot" onclick="clickNewLot();">New lot</button> </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><br></td>
+        <td></td>
+    </tr>
 </table>
