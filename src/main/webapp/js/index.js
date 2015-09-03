@@ -137,11 +137,11 @@ function validSortFind(categoryID, find, page, minPrice, maxPrice) {
 function validSortCategory(categoryID, page, minPrice, maxPrice) {
     if (minPrice != null && minPrice != "" && minPrice.length > 0 &&
         maxPrice != null && maxPrice != "" && maxPrice.length > 0) {
-        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
     } else if (minPrice != null && minPrice != "" && minPrice.length > 0 && maxPrice.length == 0) {
-        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
+        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
     } else if (maxPrice != null && maxPrice != "" && maxPrice.length > 0 && minPrice.length == 0) {
-        location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
+        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
     } else {
         alert("Enter the desired value.");
     }

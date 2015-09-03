@@ -75,12 +75,14 @@
             <% if (request.getAttribute("countProduct") != null && request.getAttribute("countFind") != null) { %>
                 <% int countProduct = (Integer) request.getAttribute("countProduct");%>
                 <% int countFind = (Integer) request.getAttribute("countFind");%>
+                <% int minPrice = (Integer) request.getAttribute("minPrice"); %>
+                <% int maxPrice = (Integer) request.getAttribute("maxPrice"); %>
 
                 <% if (countProduct > 1) { %>
                     <% int countPage = (int) Math.ceil((double)countProduct/10); %>
                         <% if (countPage > 1) {%>
                             <% for(int i = 1; i <= countPage; i++) { %>
-                                <a href="index?category=<%=categoryID%>&page=<%=i%>" style="text-decoration: none;"> <%= i%> </a>
+                                <a href="index?category=<%=categoryID%>&page=<%=i%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>" style="text-decoration: none;"> <%= i%> </a>
                             <% } %>
                         <% } %>
                 <% } else if (countFind > 1) { %>
@@ -88,7 +90,7 @@
                     <% int countPage = (int) Math.ceil((double)countFind/10); %>
                         <% if (countPage > 1) {%>
                              <% for(int i = 1; i <= countPage; i++) { %>
-                                <a href="index?category=find&text=<%= textFind%>&page=<%= i%>" style="text-decoration: none;"> <%= i%> </a>
+                                <a href="index?category=find&text=<%= textFind%>&page=<%= i%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>" style="text-decoration: none;"> <%= i%> </a>
                              <% } %>
                         <% } %>
                 <% } %>

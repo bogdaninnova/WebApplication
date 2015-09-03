@@ -272,6 +272,10 @@ function clickAddLotPage() {
 }
 
 function validLot(title, description, endDate, hours, minutes, startPrice, buyOutPrice) {
+    var timeInMs = Date.now();
+    var timeZone = - new Date().getTimezoneOffset()/60;
+    var timeCloseLot = Date.parse(endDate) + (hours - timeZone)* 3600000 + minutes * 60000;
+    var maxCloseDate = Date.now() + 1209600000;
     if (title.length > 0 && description.length > 0 && endDate.length > 0 &&
             hours.length > 0 && minutes.length > 0 &&
             startPrice.length > 0 && buyOutPrice.length > 0) {
@@ -279,6 +283,12 @@ function validLot(title, description, endDate, hours, minutes, startPrice, buyOu
             alert("Short title.");
         } else if(description.length < 3) {
             alert("Short description.");
+        } else if (timeCloseLot < timeInMs || timeCloseLot > maxCloseDate) {
+            if (timeCloseLot < timeInMs) {
+                alert("Incorrect date.");
+            } else if (timeCloseLot > maxCloseDate) {
+                alert("The end date not more than two weeks.");
+            }
         } else {
             clickAddLot(title, description, Date.parse(endDate), hours, minutes, startPrice, buyOutPrice);
         }

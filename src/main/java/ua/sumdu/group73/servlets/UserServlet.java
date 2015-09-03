@@ -96,7 +96,8 @@ public class UserServlet extends HttpServlet {
         } else if ("clickChangePassword".equals(request.getParameter("action"))) {
             if (request.getSession().getAttribute("user") != null) {
                 User user = (User) request.getSession().getAttribute("user");
-                if (OracleDataBase.getInstance().changePassword(user.getId(), request.getParameter("oldPassword"), request.getParameter("newPassword"))) {
+                if (OracleDataBase.getInstance().changePassword(user.getId(),
+                    request.getParameter("oldPassword"), request.getParameter("newPassword"))) {
                     sendResponse(response, "<result>OK</result>");
                 }
             } else {
@@ -137,9 +138,12 @@ public class UserServlet extends HttpServlet {
                         if (Integer.parseInt(request.getParameter("startPrice")) > 0 &&
                                 Integer.parseInt(request.getParameter("buyOutPrice")) > 0) {
                             if (Integer.parseInt(request.getParameter("buyOutPrice")) > Integer.parseInt(request.getParameter("startPrice"))) {
-                                int productID = OracleDataBase.getInstance().addProduct(user.getId(), request.getParameter("title"),
-                                        request.getParameter("description"), Long.parseLong(request.getParameter("endDate")) + hours * 3600000 + minutes * 60000,
-                                        Integer.parseInt(request.getParameter("startPrice")), Integer.parseInt(request.getParameter("buyOutPrice")));
+                                int productID = OracleDataBase.getInstance().addProduct(user.getId(),
+                                        request.getParameter("title"),
+                                        request.getParameter("description"),
+                                        Long.parseLong(request.getParameter("endDate")) + hours * 3600000 + minutes * 60000,
+                                        Integer.parseInt(request.getParameter("startPrice")),
+                                        Integer.parseInt(request.getParameter("buyOutPrice")));
                                 if (productID != -1 && productID != 0) {
                                     product = null;
                                     product = OracleDataBase.getInstance().getProduct(productID);
@@ -195,7 +199,8 @@ public class UserServlet extends HttpServlet {
             categoryID.add(Integer.parseInt(request.getParameter("categoryID")));
             sendResponse(response, "<result>OK</result>");
         } else if ("clickAddCategories".equals(request.getParameter("action"))) {
-            if (OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")), categoryID)) {
+            if (OracleDataBase.getInstance().addCategoriesToProduct(Integer.parseInt(request.getParameter("productID")),
+                    categoryID)) {
                 categoryList = null;
                 step2 = true;
                 sendResponse(response, "<result>OK</result>");

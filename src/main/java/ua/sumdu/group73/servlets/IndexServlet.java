@@ -35,6 +35,8 @@ public class IndexServlet extends HttpServlet {
     private int countFind;
     private String textFind;
     private int categoryID;
+    private int minPrice;
+    private int maxPrice;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -79,15 +81,23 @@ public class IndexServlet extends HttpServlet {
         countProduct = 0;
         countFind = 0;
         textFind = null;
-        if (request.getParameter("category") != null && request.getParameter("category") != "" && request.getParameter("category").length() > 0) {
+        minPrice = 0;
+        maxPrice = 0;
+        if (request.getParameter("category") != null && request.getParameter("category") != "" &&
+                request.getParameter("category").length() > 0) {
             if ("find".equals(request.getParameter("category"))) {
-                if (request.getParameter("text") != null && request.getParameter("text") != "" && request.getParameter("text").length() > 2) {
-                    if (request.getParameter("page") != null && request.getParameter("page") != "" && request.getParameter("page").length() > 0) {
-                        if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != "" && request.getParameter("minPrice").length() > 0
-                                && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != "" && request.getParameter("maxPrice").length() > 0) {
+                if (request.getParameter("text") != null && request.getParameter("text") != "" &&
+                        request.getParameter("text").length() >= 2) {
+                    if (request.getParameter("page") != null && request.getParameter("page") != "" &&
+                            request.getParameter("page").length() > 0) {
+                        if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != "" &&
+                                request.getParameter("minPrice").length() > 0
+                                && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != "" &&
+                                request.getParameter("maxPrice").length() > 0) {
+                            minPrice = Integer.parseInt(request.getParameter("minPrice"));
+                            maxPrice = Integer.parseInt(request.getParameter("maxPrice"));
                             products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")),
-                                    Integer.parseInt(request.getParameter("minPrice")), Integer.parseInt(request.getParameter("maxPrice")),
-                                    request.getParameter("text"));
+                                    minPrice, maxPrice, request.getParameter("text"));
                         } else
                             products = OracleDataBase.getInstance().getProductsFind(Integer.parseInt(request.getParameter("page")), 0, 0, request.getParameter("text"));
                     } else {
@@ -98,13 +108,19 @@ public class IndexServlet extends HttpServlet {
                 }
 
             } else {
-                if (request.getParameter("page") != null && request.getParameter("page") != "" && request.getParameter("page").length() > 0) {
-                    if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != "" && request.getParameter("minPrice").length() > 0
-                            && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != "" && request.getParameter("maxPrice").length() > 0) {
-                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")),
-                                Integer.parseInt(request.getParameter("minPrice")), Integer.parseInt(request.getParameter("maxPrice")));
+                if (request.getParameter("page") != null && request.getParameter("page") != ""
+                        && request.getParameter("page").length() > 0) {
+                    if (request.getParameter("minPrice") != null && request.getParameter("minPrice") != ""
+                            && request.getParameter("minPrice").length() > 0
+                            && request.getParameter("maxPrice") != null && request.getParameter("maxPrice") != ""
+                            && request.getParameter("maxPrice").length() > 0) {
+                        minPrice = Integer.parseInt(request.getParameter("minPrice"));
+                        maxPrice = Integer.parseInt(request.getParameter("maxPrice"));
+                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")),
+                                Integer.parseInt(request.getParameter("category")), minPrice, maxPrice);
                     } else
-                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")), Integer.parseInt(request.getParameter("category")), 0, 0);
+                        products = OracleDataBase.getInstance().getProducts(Integer.parseInt(request.getParameter("page")),
+                                Integer.parseInt(request.getParameter("category")), 0, 0);
                 } else {
                     products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
                 }
@@ -132,6 +148,8 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("products", products);
         request.setAttribute("pictures", pictures);
         request.setAttribute("users", users);
+        request.setAttribute("minPrice", minPrice);
+        request.setAttribute("maxPrice", maxPrice);
         rd.forward(request, response);
 
     }

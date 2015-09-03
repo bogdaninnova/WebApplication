@@ -73,10 +73,9 @@
                 <input type="text" id="min_price" size="3" maxlength="10">
                 - <input type="text" id="max_price" size="3" maxlength="10"><br>
             </form>
-
             <% if (request.getAttribute("textFind") != null && request.getAttribute("textFind") != "") { %>
                 <% String find = (String) request.getAttribute("textFind"); %>
-                <button onclick="var categoryID='find'; validSortFind(categoryID, <%=find%>, 1, $('#min_price').val(), $('#max_price').val());">Sort</button>
+                <button onclick="validSortFind('find', '<%=find%>', 1, $('#min_price').val(), $('#max_price').val());">Sort</button>
             <% } else if (request.getAttribute("categoryID") != null && request.getAttribute("categoryID") != "") { %>
                 <% int id = (Integer) request.getAttribute("categoryID"); %>
                 <button onclick="validSortCategory(<%=id%>, 1, $('#min_price').val(), $('#max_price').val());">Sort</button>
