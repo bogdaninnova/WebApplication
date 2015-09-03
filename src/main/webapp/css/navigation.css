@@ -10,9 +10,11 @@ ul.topnav {
     list-style: none outside none;
     margin: 0;
     padding: 0;
+    word-wrap: break-word;
 }
 ul.topnav li {
     list-style: none;
+    word-wrap: break-word;
 }
 ul.topnav li a {
     color: #000;
@@ -44,6 +46,7 @@ ul.topnav ul li a {
     font-weight: normal;
     outline: 0 none;
     padding-left: 20px;
+    word-wrap: break-word;
 }
 ul.topnav ul li a:hover {
     background-color: #DCDCDC;
@@ -52,6 +55,7 @@ ul.topnav ul li a:hover {
 ul.topnav ul ul li a {
     color: silver;
     padding-left: 40px;
+    word-wrap: break-word;
 }
 ul.topnav ul ul li a:hover {
     background-color: #D7D7D7;

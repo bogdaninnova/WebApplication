@@ -43,12 +43,14 @@
                         if (!listOfChildrens.isEmpty()) {
                             categoryListToHTML(++level, listOfChildrens);
                         } else {
+                            menuHTML.append("<label>");
                             menuHTML.append("<input type=\"checkbox\" id=\"");
                             menuHTML.append(currentCat.getId());
                             menuHTML.append("\" name=\"checkBoxSelect\" value=\"");
                             menuHTML.append(currentCat.getId());
                             menuHTML.append("\">");
                             menuHTML.append(currentCat.getName());
+                            menuHTML.append("</label>");
                             menuHTML.append(" ");
                         }
                     }
