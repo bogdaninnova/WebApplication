@@ -66,6 +66,15 @@ public class UserServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         if ("clickBack".equals(request.getParameter("action"))) {
             log.info("Click exit");
+            showContent = "information";
+            purchasedList = null;
+            followingList = null;
+            pictures = null;
+            users = null;
+            goods = null;
+            product = null;
+            step2 = false;
+            step3 = false;
             sendResponse(response, "<result>OK</result>");
         } else if ("clickInform".equals(request.getParameter("action"))) {
             log.info("Click Information");

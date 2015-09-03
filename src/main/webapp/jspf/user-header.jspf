@@ -12,7 +12,7 @@
             <td>Welcome to cabinet, </td>
             <td> <%= userSecondName%> </td>
             <td> <%= userName%> </td>
-            <td><a href="index" style="text-decoration: none;color: white;"
+            <td><a href="javascript:clickBack();" style="text-decoration: none;color: white;"
                    onmouseover="this.style.color='yellow';"
                    onmouseout="this.style.color='white';">
                 [<b>Home</b>]</a></td>
