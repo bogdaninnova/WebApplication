@@ -4,16 +4,20 @@
 
 var url = "product";
 
-function validData(bet, currentPrice, age, productID, buyerID) {
+function validData(bet, currentPrice, buyOutPrice, age, productID, buyerID) {
     if(isBet(bet) && bet > currentPrice) {
-        if (age > 18) {
-            if (productID != null && productID != "" && buyerID != null && buyerID != "") {
-                clickBet(productID, buyerID, bet);
-            } else {
-                alert("Can not get data.")
-            }
+        if (bet > buyOutPrice) {
+            location.href="product?id=" + productID + "&page=buy"
         } else {
-            alert("Young age to bet.");
+            if (age > 18) {
+                if (productID != null && productID != "" && buyerID != null && buyerID != "") {
+                    clickBet(productID, buyerID, bet);
+                } else {
+                    alert("Can not get data.")
+                }
+            } else {
+                alert("Young age to bet.");
+            }
         }
     } else {
         alert("Incorrect Bet");

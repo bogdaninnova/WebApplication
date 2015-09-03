@@ -69,7 +69,7 @@
                             </form>
                         </div>
                         <div class="product-bet">
-                            <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%= age%>,
+                            <button onclick="validData($('#yourPrice').val(), <%= currentPrice%>, <%=product.getBuyoutPrice()%>,<%= age%>,
                                 <%= product.getId()%>, <%= user.getId()%>);">Bet</button>
                         </div>
 
