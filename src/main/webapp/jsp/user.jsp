@@ -4,6 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="Greenberg Dima">
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
     <script src="js/jquery-2.1.3.js"></script>

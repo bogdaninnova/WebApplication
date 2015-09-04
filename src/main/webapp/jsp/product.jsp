@@ -8,6 +8,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <% Product product = (Product) request.getAttribute("product"); %>
+    <% if (product != null) { %>
+        <meta name="description" content="<%=product.getName()%>">
+        <meta name="keywords" content="<%=product.getDescription()%>">
+    <% } %>
+    <meta name="author" content="Greenberg Dima">
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/style-product.css"/>
     <script src="js/jquery-2.1.3.js"></script>
@@ -17,8 +23,7 @@
 <body>
 <%@include file="../jspf/product-header.jspf" %>
 <div class="container-product">
-    <% Product product = (Product) request.getAttribute("product");
-        List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");%>
+        <% List<Picture> pictures = (List<Picture>) request.getAttribute("pictures");%>
         <% String image = "./images/no_image.png"; %>
     <% if (product != null) { %>
     <header>

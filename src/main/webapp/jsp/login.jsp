@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="Greenberg Dima">
     <link rel="stylesheet" type="text/css" href="./css/style-register.css"/>
     <script src="./js/jquery-2.1.3.js"></script>
     <script src="./js/md5.js"></script>
