@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="form-top" align="right">
+        <tr>
+            <td><a href="index" style="text-decoration: none;color: white;"
+                   onmouseover="this.style.color='yellow';"
+                   onmouseout="this.style.color='white';">
+                [<b>MAIN</b>]</a></td>
+            <td><a href="admin" style="text-decoration: none;color: white;"
+                   onmouseover="this.style.color='yellow';"
+                   onmouseout="this.style.color='white';">
+                [<b>ADMIN</b>]</a></td>
+            <td><a href="javascript:history.back()" style="text-decoration: none;color: white;"
+                   onmouseover="this.style.color='yellow';"
+                   onmouseout="this.style.color='white';">
+                [<b>BACK</b>]</a></td>
+        </tr>
+    </div>
+    <header>
+        <div id="block-logo"><img src="images/logo.png" width="80" height="80" alt="Logo"></div>
+        <div id="block-contact">
+            tel. XXX XXX XX XX<br>
+            tel. XXX XXX XX XX<br><br><br>
+            group7.3@sumy.ua
+        </div>
+        <div id="block-name-site">
+            <h1 align="center"><strong>AUCTION</strong></h1>
+        </div>
+    </header>
+</div>

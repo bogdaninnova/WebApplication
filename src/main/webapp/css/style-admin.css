@@ -1,4 +1,70 @@
-  body {font-family: Arial, Tahoma, sans-serif; margin: 2em; font-size: 62.5%;}
+body {
+    background: #ddd url(../images/background.jpg);
+    color: black;
+    width: 90%;
+    min-width: 800px;
+    position: relative;
+    margin-left: 5%;
+}
+
+#footer {
+    clear: both;
+}
+
+.container {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.container-footer {
+    width: 100%;
+    position: relative;
+    background-color: white;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+.form-top {
+    line-height: 24px;
+    font-size: 12px;
+    background: black;
+    color: white;
+    z-index: 9999;
+    position: relative;
+    font-family: Cambria, Georgia, serif;
+    box-shadow: 1px 0px 2px rgba(0,0,0,0.2);
+}
+
+#block-logo {
+    width: 100px;
+    float: left;
+    margin-left: 50px;
+}
+
+#block-name-site {
+    width: 100%;
+    height: 100px;
+}
+
+#block-contact {
+    width: 140px;
+    font-size: 13px;
+    float: right;
+}
+
+
+
   p {
    font-size: 1.2em;
   }
@@ -22,7 +88,7 @@
   }
 
   #multi-derevo {
-   width: 220px;
+   width: 50%;
    border: solid;
    border-color: silver gray gray silver;
    border-width: 2px;

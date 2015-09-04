@@ -5,6 +5,8 @@ import ua.sumdu.group73.model.objects.Category;
 
 public class CategoriesTree {
 
+	private static final int MAX_NAME_LENGTH = 20;
+	
 	private CategoriesTree() {}
 	
 	public static boolean isCategoryChild(Category category, int categoryID, List<Category> list) {
@@ -44,7 +46,16 @@ public class CategoriesTree {
 		map.put(category, false);
 		boolean hasSubcategory = getSubcategory(map, category) != null;
 		sb.append("<li>\n");
-		sb.append("<span><a href=\"#" + category.getId() + "\">" + category.getName() + "</a></span>\n");
+		sb.append("<span><a href=\"#" + category.getId() + "\">");
+
+		String name = category.getName();
+		
+		if (name.length() > MAX_NAME_LENGTH)
+			name = name.substring(0, MAX_NAME_LENGTH) + "...";
+
+		sb.append(name);
+		sb.append("</a></span>\n");
+		
 		if (hasSubcategory)
 			sb.append("<ul>\n");
 		while (getSubcategory(map, category) != null)

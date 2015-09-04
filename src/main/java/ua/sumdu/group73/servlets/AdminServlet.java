@@ -23,7 +23,6 @@ import java.util.*;
 public class AdminServlet extends HttpServlet {
     
 	private static final Logger log = Logger.getLogger(AdminServlet.class);
-    private HttpSession session;
 	
     private List<Category> categoryList = null;
     private List<Product> products = null;
@@ -103,23 +102,16 @@ public class AdminServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
-    	
-        if (session != null) {
-            log.info("HttpSession isn't null");
-        } else {
-            session = request.getSession();
-            log.info("Create HttpSession in UserServlet");
-        }
         
        	categoryList = OracleDataBase.getInstance().getAllCategories();
        	users = OracleDataBase.getInstance().getAllUsers();
        	products = OracleDataBase.getInstance().getAllProducts();
        	pictures = OracleDataBase.getInstance().getAllPictures();
         
-        request.setAttribute("categories", categoryList);
-        request.setAttribute("products", products);
-        request.setAttribute("pictures", pictures);
-        request.setAttribute("users", users);
+       	request.getSession().setAttribute("categories", categoryList);
+       	request.getSession().setAttribute("products", products);
+       	request.getSession().setAttribute("pictures", pictures);
+       	request.getSession().setAttribute("users", users);
         
         RequestDispatcher rd = request.getRequestDispatcher("jsp/admin.jsp");
         rd.forward(request, response);
