@@ -5,7 +5,8 @@
         <form>
             <tr>
                 <td>New E-mail :</td>
-                <td><input type="text" id="changeEmail" size="15" maxlength="50" required autofocus ></td>
+                <td><input type="text" id="changeEmail" size="15" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" required autofocus ></td>
             </tr>
         </form>
         <tr>

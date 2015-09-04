@@ -14,12 +14,14 @@
             <tr>
                 <td>Name :</td>
                 <td><%= user.getName()%></td>
-                <td><input type="text" id="changeName" size="15" maxlength="50" required autofocus></td>
+                <td><input type="text" id="changeName" size="15" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" required autofocus></td>
             </tr>
             <tr>
                 <td>Second Name :</td>
                 <td><%= user.getSecondName()%></td>
-                <td><input type="text" id="changeSecondName" size="15" maxlength="50" required ></td>
+                <td><input type="text" id="changeSecondName" size="15" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" required ></td>
             </tr>
             <tr>
                 <td>Date birthday :</td>
@@ -33,7 +35,8 @@
                 <% } else { %>
                 <td>not yet</td>
                 <% } %>
-                <td><input type="text" id="changePhone" size="15" maxlength="20"></td>
+                <td><input type="text" id="changePhone" size="15" maxlength="20"
+                           onkeyup="return checkOnHTML(this);"></td>
             </tr>
         </form>
         <tr>
