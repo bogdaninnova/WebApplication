@@ -594,8 +594,8 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		int result = -1;
 		if (addProductIntoBD(sellerID, name, description, endDate, startPrice, buyoutPrice)) {
 	    	initConnection();
-	        try (PreparedStatement preparedStatement = conn.prepareStatement(
-	        		Queries.getProductCurrVal())) {
+	        try (PreparedStatement preparedStatement = 
+	        		conn.prepareStatement(Queries.PRODUCT_CURVAL)) {
 	            try(ResultSet rs = preparedStatement.executeQuery()) {
 		            rs.next();
 		            result = rs.getInt("CURRVAL");
@@ -724,6 +724,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     public boolean makeBet(int productID, int buyerID, int price) {
     	log.info("Method makeBet starts.....");
     	Product product = getProduct(productID);
+    	
+    	if ((product.getCurrentPrice() > price) || (!product.isActive()))
+    		return false;
+    	
     	if (price >= product.getBuyoutPrice()) 
     		return buyout(productID, buyerID);
     	
@@ -771,11 +775,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     }
     
     public boolean buyout(int productID, int buyerID) {
-    	if (buyoutProduct(productID, buyerID))
-    		if(finishProductFollowings(productID)) {
-    			Messager.sendEndAuctionMessage(productID);
-    			return true;
-    		}
+    	if (getProduct(productID).isActive())
+	    	if (buyoutProduct(productID, buyerID))
+	    		if (finishProductFollowings(productID)) {
+	    			Messager.sendEndAuctionMessage(productID);
+	    			return true;
+	    		}
     	return false;
     }
 
@@ -942,7 +947,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		this.deleteProductsFOLLOWINGS(productsID);
 		this.deleteProductsPICTURES(productsID);
 		this.deleteProductsPRODUCT_CATEGORY(productsID);
-		this.deleteProductsTRANSACTIONS(productsID);
 		return this.deleteProductsPRODUCTS(productsID);
 	}
 	
@@ -960,19 +964,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	closeConnection();
         }
         return result;
-	}
-	
-	private void deleteProductsTRANSACTIONS(List<Integer> productsID) {
-    	log.info("Method deleteProductsTRANSACTIONS starts.....");
-    	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsByIdFromTRANSACTIONS(productsID))) {
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("SQLException in deleteProductsTRANSACTIONS()", e);
-        } finally {
-        	closeConnection();
-        }
 	}
 	
 	private void deleteProductsPRODUCT_CATEGORY(List<Integer> productsID) {
@@ -1019,8 +1010,56 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method getPages starts.....");
     	List<Product> list = new ArrayList<Product>();
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.getProductsQuery(categoryID, minPrice, maxPrice, postiton))) {
+    	
+    	String query;
+    	
+    	if ((categoryID != 0) && (maxPrice != 0)) {
+    		query = Queries.SELECT_PRODUCTS_WITH_MAX_PRICE_AND_CATEGORIES;
+    	} else if ((categoryID == 0) && (maxPrice != 0)) {
+    		query = Queries.SELECT_PRODUCTS_WITH_MAX_PRICE;
+    	} else if ((categoryID != 0) && (maxPrice == 0)) {
+    		query = Queries.SELECT_PRODUCTS_WITH_CATEGORIES;
+    	} else {
+    		query = Queries.SELECT_PRODUCTS;
+    	}
+    	
+        try (PreparedStatement preparedStatement = 
+        		conn.prepareStatement(query)) {
+        	
+        	if ((categoryID != 0) && (maxPrice != 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, maxPrice);
+        		preparedStatement.setInt(3, categoryID);
+        		preparedStatement.setInt(4, LOTS_ON_PAGE);
+        		preparedStatement.setInt(5, postiton);
+        		preparedStatement.setInt(6, LOTS_ON_PAGE);
+        		preparedStatement.setInt(7, postiton);
+        		preparedStatement.setInt(8, LOTS_ON_PAGE);
+        	} else if ((categoryID == 0) && (maxPrice != 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, maxPrice);
+        		preparedStatement.setInt(3, LOTS_ON_PAGE);
+        		preparedStatement.setInt(4, postiton);
+        		preparedStatement.setInt(5, LOTS_ON_PAGE);
+        		preparedStatement.setInt(6, postiton);
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
+        	} else if ((categoryID != 0) && (maxPrice == 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, categoryID);
+        		preparedStatement.setInt(3, LOTS_ON_PAGE);
+        		preparedStatement.setInt(4, postiton);
+        		preparedStatement.setInt(5, LOTS_ON_PAGE);
+        		preparedStatement.setInt(6, postiton);
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
+        	} else {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, LOTS_ON_PAGE);
+        		preparedStatement.setInt(3, postiton);
+        		preparedStatement.setInt(4, LOTS_ON_PAGE);
+        		preparedStatement.setInt(5, postiton);
+        		preparedStatement.setInt(6, LOTS_ON_PAGE);
+        	}
+        	
             try(ResultSet rs = preparedStatement.executeQuery()){
 
 	            while (rs.next()) {
@@ -1059,8 +1098,37 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method getPages starts.....");
     	int count = -1;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.getProductCountQuery(categoryID, minPrice, maxPrice))) {
+    	
+    	String query;
+    	
+    	if ((categoryID != 0) && (maxPrice != 0)) {
+    		query = Queries.SELECT_PRODUCT_COUNT_WITH_CATEGORY_AND_MAX_PRICE;
+    	} else if ((categoryID == 0) && (maxPrice != 0)) {
+    		query = Queries.SELECT_PRODUCT_COUNT_WITH_MAX_PRICE;
+    	} else if ((categoryID != 0) && (maxPrice == 0)) {
+    		query = Queries.SELECT_PRODUCT_COUNT_WITH_CATEGORY;
+    	} else {
+    		query = Queries.SELECT_PRODUCT_COUNT;
+    	}
+    	
+    	
+        try (PreparedStatement preparedStatement =
+        		conn.prepareStatement(query)) {
+        	
+        	if ((categoryID != 0) && (maxPrice != 0)) {
+        		preparedStatement.setInt(1, categoryID);
+        		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, maxPrice);
+        	} else if ((categoryID == 0) && (maxPrice != 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, maxPrice);
+        	} else if ((categoryID != 0) && (maxPrice == 0)) {
+        		preparedStatement.setInt(1, categoryID);
+        		preparedStatement.setInt(2, minPrice);
+        	} else {
+        		preparedStatement.setInt(1, minPrice);
+        	}
+        	
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            rs.next();
 	            count = rs.getInt("COUNT");
@@ -1084,8 +1152,38 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method getPages starts.....");
     	List<Product> list = new ArrayList<Product>();
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.getProductsFindQuery(postiton, minPrice, maxPrice, keyWord))) {
+    	
+    	String query;
+    	if (maxPrice == 0) {
+    		query = Queries.SELECT_PRODUCTS_FIND;
+    	} else {
+    		query = Queries.SELECT_PRODUCTS_FIND_WITH_MAX;
+    	}
+    	
+        try (PreparedStatement preparedStatement =
+        		conn.prepareStatement(query)) {
+        	
+        	if (maxPrice == 0) {
+            	preparedStatement.setInt(1, minPrice);
+            	preparedStatement.setString(2, "%" + keyWord + "%");
+            	preparedStatement.setString(3, "%" + keyWord + "%");
+        		preparedStatement.setInt(4, LOTS_ON_PAGE);
+        		preparedStatement.setInt(5, postiton);
+        		preparedStatement.setInt(6, LOTS_ON_PAGE);
+        		preparedStatement.setInt(7, postiton);
+        		preparedStatement.setInt(8, LOTS_ON_PAGE);
+        	} else {
+            	preparedStatement.setInt(1, minPrice);
+            	preparedStatement.setInt(2, maxPrice);
+            	preparedStatement.setString(3, "%" + keyWord + "%");
+            	preparedStatement.setString(4, "%" + keyWord + "%");
+        		preparedStatement.setInt(5, LOTS_ON_PAGE);
+        		preparedStatement.setInt(6, postiton);
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
+        		preparedStatement.setInt(8, postiton);
+        		preparedStatement.setInt(9, LOTS_ON_PAGE);
+        	}
+        	
             try(ResultSet rs = preparedStatement.executeQuery()){
 
 	            while (rs.next()) {
@@ -1124,8 +1222,27 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method getPages starts.....");
     	int count = -1;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.getCountFindQuery(minPrice, maxPrice, keyWord))) {
+    	
+    	String query;
+    	if (maxPrice == 0) {
+    		query = Queries.SELECT_COUNT_FIND;
+    	} else {
+    		query = Queries.SELECT_COUNT_FIND_WITH_MAX;
+    	}
+        try (PreparedStatement preparedStatement = 
+        		conn.prepareStatement(query)) {
+        	
+        	if (maxPrice == 0) {
+            	preparedStatement.setString(1, "%" + keyWord + "%");
+            	preparedStatement.setString(2, "%" + keyWord + "%");
+            	preparedStatement.setInt(3, minPrice);
+        	} else {
+            	preparedStatement.setString(1, "%" + keyWord + "%");
+            	preparedStatement.setString(2, "%" + keyWord + "%");
+            	preparedStatement.setInt(3, minPrice);
+            	preparedStatement.setInt(4, maxPrice);
+        	}
+        	
             try(ResultSet rs = preparedStatement.executeQuery()){
 	            rs.next();
 	            count = rs.getInt("COUNT");
@@ -1411,9 +1528,15 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method addPicturesToProduct starts.....");
     	boolean result = false;
     	initConnection();
-    	try (PreparedStatement preparedStatement = conn.prepareStatement(
-    			Queries.addPicturesToProduct(productID, picturesURL))) {    		
-            preparedStatement.executeUpdate();
+    	try (PreparedStatement preparedStatement =
+    			conn.prepareStatement(Queries.addPicturesToProduct(picturesURL.size()))) {    		
+            
+    		for (int i = 0; i < picturesURL.size(); i++) {
+    			preparedStatement.setInt(2 * i + 1, productID);
+    			preparedStatement.setString(2 * i + 2, picturesURL.get(i));
+    		}
+    		
+    		preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
             log.error("SQLException in addPicturesToProduct()", e);

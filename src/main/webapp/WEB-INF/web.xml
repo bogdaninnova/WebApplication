@@ -12,14 +12,10 @@
   </filter>
   <filter>
   	<filter-name>AdminFilter</filter-name>
-  	<display-name>AdminFilter</display-name>
-  	<description></description>
   	<filter-class>ua.sumdu.group73.servlets.filters.AdminFilter</filter-class>
   </filter>
   <filter>
   	<filter-name>CharEncodingFilter</filter-name>
-  	<display-name>CharEncodingFilter</display-name>
-  	<description></description>
   	<filter-class>ua.sumdu.group73.servlets.filters.CharEncodingFilter</filter-class>
   </filter>
   <filter-mapping>
@@ -33,6 +29,10 @@
   <filter-mapping>
   	<filter-name>AdminFilter</filter-name>
   	<url-pattern>/admin</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+  	<filter-name>AdminFilter</filter-name>
+  	<url-pattern>/lookUser</url-pattern>
   </filter-mapping>
   <filter-mapping>
   	<filter-name>CharEncodingFilter</filter-name>
@@ -62,8 +62,6 @@
     </servlet>
     <servlet>
     	<servlet-name>VerificationServlet</servlet-name>
-    	<display-name>VerificationServlet</display-name>
-    	<description></description>
     	<servlet-class>ua.sumdu.group73.servlets.VerificationServlet</servlet-class>
     </servlet>
     <servlet>
@@ -74,7 +72,11 @@
         <servlet-name>ImageCaptchaServlet</servlet-name>
         <servlet-class>ua.sumdu.group73.servlets.ImageCaptchaServlet</servlet-class>
   		<load-on-startup>0</load-on-startup>
-    </servlet> 
+    </servlet>
+	<servlet>
+		<servlet-name>LookUserServlet</servlet-name>
+		<servlet-class>ua.sumdu.group73.servlets.LookUserServlet</servlet-class>
+	</servlet> 
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -86,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/lookUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -106,6 +112,10 @@
     <servlet-mapping>
     	<servlet-name>VerificationServlet</servlet-name>
     	<url-pattern>/Verification</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>LookUserServlet</servlet-name>
+    	<url-pattern>/lookUser</url-pattern>
     </servlet-mapping>
     
     <welcome-file-list>
