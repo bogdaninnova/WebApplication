@@ -30,7 +30,7 @@
                 <% } %>
             </div>
             <header>
-                <div class="container-lots-title">
+                <div class="container-lots-title" title="<%= soldGoods.getName()%>">
                     <% if (soldGoods.getName().length() >= 20) { %>
                         <b><%= soldGoods.getName().substring(0, 20)%></b>
                     <% } else { %>
