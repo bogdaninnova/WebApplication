@@ -6,7 +6,7 @@ var url = "product";
 
 function validData(bet, currentPrice, buyOutPrice, age, productID, buyerID) {
     if(isBet(bet) && bet > currentPrice) {
-        if (bet > buyOutPrice) {
+        if (bet >= buyOutPrice) {
             location.href="product?id=" + productID + "&page=buy"
         } else {
             if (age > 18) {
@@ -68,6 +68,7 @@ function realBuy(productID, userID) {
                 window.location.replace("product?id=" + productID);
             } else {
                 alert($(data).find("result").text());
+                window.location.replace("product?id=" + productID);
             }
         },
         error: function () {
