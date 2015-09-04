@@ -3,7 +3,8 @@
         <div align="center">
             <form onsubmit="return false">
                 <br>
-                <input type="text" id="find" size="7" maxlength="30" required>
+                <input type="text" id="find" size="7" maxlength="30"
+                       onkeyup="return checkOnHTML(this);" required>
                 <button onclick="javascript:location.href='index?category=find&text=' + $('#find').val() + '&page=1'">Find</button>
             </form>
         </div>

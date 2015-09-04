@@ -8,16 +8,19 @@
         </tr>
         <tr>
             <td>Title :</td>
-            <td><input type="text" id="addTitle" size="15" maxlength="100" required autofocus></td>
+            <td><input type="text" id="addTitle" size="15" maxlength="100"
+                       onkeyup="return checkOnHTML(this);" required autofocus></td>
         </tr>
         <tr>
             <td>Description :</td>
             <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500"
-                          style="max-width: 400px; max-height: 300px;" required></textarea></td>
+                          style="max-width: 400px; max-height: 300px;"
+                          onkeyup="return checkOnHTML(this);" required></textarea></td>
         </tr>
         <tr>
             <td>End date :</td>
-            <td><input type="date" id="addAge" size="10" maxlength="50" required></td>
+            <td><input type="date" id="addAge" size="10" maxlength="50"
+                       onkeyup="return checkOnHTML(this);" required></td>
         </tr>
         <tr>
             <td>Hours :</td>

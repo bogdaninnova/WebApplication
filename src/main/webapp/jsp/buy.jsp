@@ -28,7 +28,8 @@
                 <tr>
                     <td><img src="./images/creditcards.png" width="150" height="30"></td>
                     <td>The owner cards :</td>
-                    <td><input type="text" id="name" size="15" maxlength="30" required autofocus></td>
+                    <td><input type="text" id="name" size="15" maxlength="30"
+                               onkeyup="return checkOnHTML(this);" required autofocus></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -41,12 +42,14 @@
                 <tr>
                     <td></td>
                     <td>Card number :</td>
-                    <td><input type="text" id="numberCard" size="15" maxlength="30" required></td>
+                    <td><input type="text" id="numberCard" size="15" maxlength="30"
+                               onkeyup="return checkOnHTML(this);" required></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Verification code</td>
-                    <td><input type="text" id="verNumberCard" size="15" maxlength="30" required></td>
+                    <td><input type="text" id="verNumberCard" size="15" maxlength="30"
+                               onkeyup="return checkOnHTML(this);"required></td>
                 </tr>
                 <tr>
                     <td></td>

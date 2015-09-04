@@ -16,11 +16,16 @@
         <form>
             <tr>
                 <td>Login:</td>
-                <td><input type="text" id="login" size="15" maxlength="30" autofocus placeholder="login or email"></td>
+                <td><input type="text" id="login" size="15" maxlength="30"
+                           onkeyup="return checkOnHTML(this);" autofocus
+                           placeholder="login or email">
+                </td>
             </tr>
             <tr>
                 <td>Password:</td>
-                <td><input type="password" id="password" size="15" maxlength="128" placeholder="password"></td>
+                <td><input type="password" id="password" size="15" maxlength="128"
+                           onkeyup="return checkOnHTML(this);" placeholder="password">
+                </td>
             </tr>
         </form>
         <tr>
@@ -41,7 +46,7 @@
 </div>
 
 <% if (request.getAttribute("Verification") != null) {%>
-<center><h3><%=request.getAttribute("Verification") %></h3></center>
+<h3 align="center"><%=request.getAttribute("Verification") %></h3>
 <% } %>
 
 </body>

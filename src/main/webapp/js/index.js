@@ -137,12 +137,39 @@ function validSortFind(categoryID, find, page, minPrice, maxPrice) {
 function validSortCategory(categoryID, page, minPrice, maxPrice) {
     if (minPrice != null && minPrice != "" && minPrice.length > 0 &&
         maxPrice != null && maxPrice != "" && maxPrice.length > 0) {
-        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+        if (isNumber(minPrice) && isNumber(maxPrice)) {
+            window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice;
+        } else {
+            alert("Incorrect parameters.");
+        }
     } else if (minPrice != null && minPrice != "" && minPrice.length > 0 && maxPrice.length == 0) {
-        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
+        if (isNumber(minPrice)) {
+            window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=' + minPrice + '&maxPrice=0';
+        } else {
+            alert("Incorrect minimal price.");
+        }
     } else if (maxPrice != null && maxPrice != "" && maxPrice.length > 0 && minPrice.length == 0) {
-        window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
+        if (isNumber(maxPrice)) {
+            window.location.href='index?category=' + categoryID + '&page=' + page + '&minPrice=0' + '&maxPrice=' + maxPrice;
+        } else {
+            alert("Incorrect maximal price.");
+        }
     } else {
         alert("Enter the desired value.");
     }
 }
+
+function isNumber(number) {
+    var re = /^\d+$/;
+    return re.test(number);
+}
+
+function checkOnHTML(input) {
+    var value = input.value;
+    var rep = /[-\/<>&"']/;
+    if (rep.test(value)) {
+        value = value.replace(rep, '');
+        input.value = value;
+    }
+}
+
