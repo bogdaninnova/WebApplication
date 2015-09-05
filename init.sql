@@ -78,28 +78,4 @@ CREATE TABLE PRODUCT_CATEGORY
   CONSTRAINT CATEGORY_ID_FK FOREIGN KEY(CATEGORY_ID) REFERENCES CATEGORIES(ID)
 );
 
-INSERT INTO USERS(
-    ID,
-    LOGIN,
-    PASSWORD,
-    NAME,
-    SECOND_NAME,
-    BIRTH,
-    EMAIL,
-    PHONE,
-    REGISTRATION_DATE,
-    STATUS
-)VALUES(
-    0,
-    'admin',
-    '73acd9a5972130b75066c82595a1fae3',
-    'admin',
-    'admin',
-    TO_DATE('1990/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),
-    'admin@gmail.com',
-    '00000000',
-    SYSDATE,
-    'admin'
-);
-
 commit;

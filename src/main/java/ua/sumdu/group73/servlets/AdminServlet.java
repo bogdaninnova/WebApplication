@@ -108,10 +108,10 @@ public class AdminServlet extends HttpServlet {
        	products = OracleDataBase.getInstance().getAllProducts();
        	pictures = OracleDataBase.getInstance().getAllPictures();
         
-       	request.getSession().setAttribute("categories", categoryList);
-       	request.getSession().setAttribute("products", products);
-       	request.getSession().setAttribute("pictures", pictures);
-       	request.getSession().setAttribute("users", users);
+       	request.setAttribute("categories", categoryList);
+       	request.setAttribute("products", products);
+       	request.setAttribute("pictures", pictures);;
+       	request.setAttribute("users", users);
         
         RequestDispatcher rd = request.getRequestDispatcher("jsp/admin.jsp");
         rd.forward(request, response);

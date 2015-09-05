@@ -19,10 +19,10 @@
  <%@include file="../jspf/admin-header.jspf" %>
 		
 	<%
-		List<User> users = (ArrayList<User>) session.getAttribute("users");
-		List<Category> categories = (ArrayList<Category>) session.getAttribute("categories");
-    	List<Product> products = (ArrayList<Product>) session.getAttribute("products");
-    	List<Picture> pictures = (ArrayList<Picture>) session.getAttribute("pictures");
+		List<User> users = (ArrayList<User>) request.getAttribute("users");
+		List<Category> categories = (ArrayList<Category>) request.getAttribute("categories");
+    	List<Product> products = (ArrayList<Product>) request.getAttribute("products");
+    	List<Picture> pictures = (ArrayList<Picture>) request.getAttribute("pictures");
 	 %>
 	
 	<%! java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd MMM yyyy hh:mm");%>
@@ -56,7 +56,7 @@
 		<button onclick="sendCategoryData('change', $('#categoryName').val(), window.location.href);"> Change </button>
 		<button onclick="sendCategoryData('delete', $('#categoryName').val(), window.location.href);"> Delete </button>
 		<br><br>
-		Categories name: <input type="text" id="categoryName" size="10" maxlength="30">
+		Categories name: <input type="text" id="categoryName" size="10" maxlength="30" onkeyup="return checkOnHTML(this);">
 		<br><br><br>
 		<%= CategoriesTree.printCategories(categories) %>
 		<br><br>
