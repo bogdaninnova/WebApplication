@@ -28,7 +28,7 @@ public class CategoriesTree {
 	 public static String printCategories(List<Category> list) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div id=\"multi-derevo\">\n");
-		sb.append("<a href=\"#\">CATEGORIES</a>\n");
+		sb.append("<li><span><a href=\"javascript: saveCategoryID(-1);\">CATEGORIES</a></li></span>\n");
 		sb.append("<ul>\n");
 		Map<Category, Boolean> map = new HashMap<Category, Boolean>();
 		for (Category category : list)
@@ -46,7 +46,7 @@ public class CategoriesTree {
 		map.put(category, false);
 		boolean hasSubcategory = getSubcategory(map, category) != null;
 		sb.append("<li>\n");
-		sb.append("<span><a href=\"#" + category.getId() + "\">");
+		sb.append("<span align=\"left\"><a href=\"javascript: saveCategoryID(" + category.getId() + ");\">");
 
 		String name = category.getName();
 		

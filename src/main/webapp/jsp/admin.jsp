@@ -36,27 +36,18 @@
 		}
 	 %>
 	 
-	<%!
-		public static User getUserByID(List<User> list, int ID) {
-			for (User user : list)
-				if (user.getId() == ID)
-					return user;
-			return null;
-	 	}
-	 %>
 <br>
+
 
 <div class="tableStyle">
 	<center>
+		<input type="hidden" id="hiddenCategoryID" value="-1">
 		<h1>CATEGORIES</h1>
 		<br>
-		<button onclick="sendCategoryData('create', $('#categoryName').val(), window.location.href);"> Create Child Category </button>
-		<button onclick="sendCategoryData('createRoot', $('#categoryName').val(), window.location.href);"> Create Root Category  </button>
-		<br><br>
-		<button onclick="sendCategoryData('change', $('#categoryName').val(), window.location.href);"> Change </button>
-		<button onclick="sendCategoryData('delete', $('#categoryName').val(), window.location.href);"> Delete </button>
-		<br><br>
-		Categories name: <input type="text" id="categoryName" size="10" maxlength="30" onkeyup="return checkOnHTML(this);">
+		Name: <input type="text" id="categoryName" size="20" maxlength="50" onkeyup="isEmpty();return checkOnHTML(this);">
+		<button id="create" disabled onclick="sendCategoryData('create', $('#categoryName').val(), $('#hiddenCategoryID').val());"> Create </button>
+		<button id="change" disabled onclick="sendCategoryData('change', $('#categoryName').val(), $('#hiddenCategoryID').val());"> Change </button>
+		<button id="delete" disabled onclick="sendCategoryData('delete', $('#categoryName').val(), $('#hiddenCategoryID').val());"> Delete </button>
 		<br><br><br>
 		<%= CategoriesTree.printCategories(categories) %>
 		<br><br>
@@ -86,16 +77,13 @@
 			for (User usver : users) {
 		 %>
 		  <tr>
-		  	<%
-		  		String phone = (usver.getPhone() == null) ? "----------" : usver.getPhone();
-		  	 %>
 		    <td align="center"><%=cut(usver.getId(), 6) %></td>
 		    <td align="center"><a href="lookUser?id=<%= usver.getId() %>"><%=cut(usver.getLogin(), 15) %></a></td>
 		    <td align="center"><%=cut(usver.getName(), 15) %></td>		
 		    <td align="center"><%=cut(usver.getSecondName(), 15) %></td>
 		    <td align="center"><%=cut(usver.getAge(), 3) %></td>	
 		    <td align="center"><%=cut(usver.geteMail(), 30) %></td>	
-		    <td align="center"><%=cut(phone, 15) %></td>	
+		    <td align="center"><%=(usver.getPhone() == null) ? "----------" : cut(usver.getPhone(), 15) %></td>	
 		    <td align="center"><%=dateFormat.format(usver.getRegistrationDate()) %></td>
 		    <td align="center"><input type="checkbox" name="ban" <% if (usver.isBanned()) { %> checked <%} %> value=<%=usver.getId() %> ></td>
 		    <td align="center"><input type="checkbox" name=<%="activated" %> onclick="return false" <% if (usver.isActivated()) { %> checked <%} %>></td>
@@ -138,10 +126,10 @@
 		    <td align="center"><%=cut(product.getCurrentPrice(), 6) %></td>
 		    <td align="center"><%=dateFormat.format(product.getStartDate()) %></td>
 		    <td align="center"><%=dateFormat.format(product.getEndDate()) %></td>
-		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
+		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(User.getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
 
 			<% if (product.getCurrentBuyerID() != 0) { %>
-			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
+			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(User.getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
 			<% } else { %>
 			    <td align="center">-</td>
 			<% } %>

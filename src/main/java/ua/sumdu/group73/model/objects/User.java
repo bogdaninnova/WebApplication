@@ -1,6 +1,7 @@
 package ua.sumdu.group73.model.objects;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class User {
@@ -148,4 +149,11 @@ public class User {
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
 	}
+	
+	public static User getUserByID(List<User> list, int ID) {
+		for (User user : list)
+			if (user.getId() == ID)
+				return user;
+		return null;
+ 	}
 }

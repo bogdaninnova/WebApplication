@@ -1484,7 +1484,7 @@ INSERT INTO PICTURES (
     URL
 ) VALUES (
     PRODUCT_ID_S.CURRVAL,
-    'images/product-images/coffe.jpeg'
+    'images/product-images/coffee.jpeg'
 );
     
 INSERT INTO PRODUCT_CATEGORY (

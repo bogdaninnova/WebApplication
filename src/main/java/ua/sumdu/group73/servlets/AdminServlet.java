@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -58,26 +57,34 @@ public class AdminServlet extends HttpServlet {
 		else if (request.getParameter("categories") != null) {
 			
 			boolean result = false;
+			String error = "UNKNOWN ERROR";
+			
 			String categoryName = request.getParameter("catName");
-			int categoryID = getCategoryID(request.getParameter("catID"));
+			int categoryID = Integer.valueOf(request.getParameter("catID"));
+			
+			boolean isEmpty = categoryName.equals("");
+			boolean isChoosed = categoryID != -1;
 			
 			if ("create".equals(request.getParameter("categories"))) {
-				if ((!categoryName.equals("")) && (categoryID != -1)) 
-					result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
-			} else if ("createRoot".equals(request.getParameter("categories"))) {
-				if (!categoryName.equals(""))
-					result = OracleDataBase.getInstance().addCategory(categoryName);
+				if (!isEmpty) {
+					if (!isChoosed)
+						result = OracleDataBase.getInstance().addCategory(categoryName);
+					else
+						result = OracleDataBase.getInstance().addCategory(categoryID, categoryName);
+				} else error = isEmpty ? "Empty text field" : "Don't chosed category";
 			} else if ("change".equals(request.getParameter("categories"))) {
-				if ((categoryID != -1) && (!categoryName.equals(""))) 
+				if (isChoosed && !isEmpty) 
 					result = OracleDataBase.getInstance().changeCategory(categoryID, categoryName);
+				else error = isEmpty ? "Empty text field" : "Don't chosed category";
 			} else if ("delete".equals(request.getParameter("categories"))) {
-				if (categoryID != -1) 
+				if (isChoosed) 
 					result = OracleDataBase.getInstance().deleteCategory(categoryID, categoryList);
+				else error = "Don't chosed category";
 			}
 			if (result)
 				sendResponse(response, "<result>OK</result>");
 			else
-				sendResponse(response, "<result>ERROR</result>");
+				sendResponse(response, "<result>" + error + "</result>");
 		}
 		
 	}
@@ -89,16 +96,6 @@ public class AdminServlet extends HttpServlet {
             log.error(e);
         }
     }
-	
-	private static int getCategoryID(String link) {
-		if (!link.contains("#"))
-			return -1;
-		int position = link.lastIndexOf('#');
-		String id = link.substring(position + 1);
-		if (id.equals(""))
-			return -1;
-		return Integer.valueOf(id);
-	}
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
