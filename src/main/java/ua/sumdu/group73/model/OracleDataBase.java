@@ -1007,7 +1007,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	
 	@Override
 	public List<Product> getProducts(int postiton, int categoryID, int minPrice, int maxPrice) {
-    	log.info("Method getPages starts.....");
+    	log.info("Method getProducts starts.....");
     	List<Product> list = new ArrayList<Product>();
     	initConnection();
     	
@@ -1081,10 +1081,15 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	
             }
         } catch (SQLException e) {
-            log.error("SQLException in getPages()", e);
+            log.error("SQLException in getProducts()", e);
         } finally {
         	closeConnection();
         }
+        log.debug("IN: postiton = " + postiton + ","
+        		+ "categoryID = " + categoryID + ","
+        		+ " minPrice = " + minPrice + ","
+        		+ " maxPrice = " + maxPrice + "."
+        		+ "OUT: list size = " + list.size());
         return list;
 	}
 
@@ -1095,7 +1100,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	 * */
 	@Override
 	public int getCount(int categoryID, int minPrice, int maxPrice) {
-    	log.info("Method getPages starts.....");
+    	log.info("Method getCount starts.....");
     	int count = -1;
     	initConnection();
     	
@@ -1110,7 +1115,6 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	} else {
     		query = Queries.SELECT_PRODUCT_COUNT;
     	}
-    	
     	
         try (PreparedStatement preparedStatement =
         		conn.prepareStatement(query)) {
@@ -1134,10 +1138,14 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            count = rs.getInt("COUNT");
             }
         } catch (SQLException e) {
-            log.error("SQLException in getPages()", e);
+            log.error("SQLException in getCount()", e);
         } finally {
         	closeConnection();
         }
+        log.debug("IN: categoryID = " + categoryID +","
+        		+ " minPrice = " + minPrice + ","
+        		+ " maxPrice = " + maxPrice + "."
+        		+ "OUT: count = " + count);
         return count;
 	}
 	
@@ -1149,7 +1157,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	 * */
 @Override
 	public List<Product> getProductsFind(int postiton, int minPrice, int maxPrice, String keyWord) {
-    	log.info("Method getPages starts.....");
+    	log.info("Method getProductsFind starts.....");
     	List<Product> list = new ArrayList<Product>();
     	initConnection();
     	
@@ -1205,10 +1213,15 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	
             }
         } catch (SQLException e) {
-            log.error("SQLException in getPages()", e);
+            log.error("SQLException in getProductsFind()", e);
         } finally {
         	closeConnection();
         }
+        log.debug("IN: postiton = " + postiton + ","
+        		+ " keyWord = " + keyWord + ","
+        		+ " minPrice = " + minPrice + ","
+        		+ " maxPrice = " + maxPrice + "."
+        		+ "OUT: list size = " + list.size());
         return list;
 	}
 
@@ -1219,7 +1232,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	 * */
 	@Override
 	public int getCountFind(int minPrice, int maxPrice, String keyWord) {
-    	log.info("Method getPages starts.....");
+    	log.info("Method getCountFind starts.....");
     	int count = -1;
     	initConnection();
     	
@@ -1248,10 +1261,16 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 	            count = rs.getInt("COUNT");
             }
         } catch (SQLException e) {
-            log.error("SQLException in getPages()", e);
+            log.error("SQLException in getCountFind()", e);
         } finally {
         	closeConnection();
         }
+        
+        log.debug("IN: "
+        		+ " keyWord = " + keyWord + ","
+        		+ " minPrice = " + minPrice + ","
+        		+ " maxPrice = " + maxPrice + "."
+        		+ "OUT: count = " + count);
         return count;
 	}
 
