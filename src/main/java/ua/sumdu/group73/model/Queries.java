@@ -115,14 +115,14 @@ public class Queries {
 	public static final String ACTIVATE_USER =
 			"UPDATE USERS SET STATUS = 'user' WHERE LOGIN = ?";
 		
-	public static String setUserBanQuery(List<Integer> usersID) {
+	public static final String setUserBanQuery(int num) {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE USERS SET STATUS = 'banned' WHERE ID IN ( ");
 		
-		for (int i = 0; i < usersID.size() - 1; i++)
-			sb.append(usersID.get(i) + ", ");
-		sb.append(usersID.get(usersID.size() - 1));	
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?");	
 		sb.append(") AND STATUS != 'admin' AND STATUS != 'unactivated'");
 		return sb.toString();
 	}
@@ -243,39 +243,39 @@ public class Queries {
 				+ " OR "
 					+ "LOWER(NAME) LIKE LOWER(?)";
     
-	public static final String deleteProductsByIdFromPRODUCTS(List<Integer> productsID) {
+	public static final String deleteProductsByIdFromPRODUCTS(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM PRODUCTS WHERE ID IN ( ");
-		for (int i = 0; i < productsID.size() - 1; i++)
-			sb.append(productsID.get(i) + ", ");
-		sb.append(productsID.get(productsID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	
-	public static final String deleteProductsByIdFromPICTURES(List<Integer> productsID) {
+	public static final String deleteProductsByIdFromPICTURES(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM PICTURES WHERE PRODUCT_ID IN ( ");
-		for (int i = 0; i < productsID.size() - 1; i++)
-			sb.append(productsID.get(i) + ", ");
-		sb.append(productsID.get(productsID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	
-	public static final String deleteProductsByIdFromFOLLOWINGS(List<Integer> productsID) {
+	public static final String deleteProductsByIdFromFOLLOWINGS(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM FOLLOWINGS WHERE PRODUCT_ID IN ( ");
-		for (int i = 0; i < productsID.size() - 1; i++)
-			sb.append(productsID.get(i) + ", ");
-		sb.append(productsID.get(productsID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	
-	public static final String deleteProductsByIdFromPRODUCT_CATEGORY(List<Integer> productsID) {
+	public static final String deleteProductsByIdFromPRODUCT_CATEGORY(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM PRODUCT_CATEGORY WHERE PRODUCT_ID IN ( ");
-		for (int i = 0; i < productsID.size() - 1; i++)
-			sb.append(productsID.get(i) + ", ");
-		sb.append(productsID.get(productsID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	
@@ -289,25 +289,27 @@ public class Queries {
 			+ " WHERE IS_ACTIVE = 'active'"
 			+ " AND (LOWER(DESCRIPTION) LIKE LOWER(?)"
 			+ " OR LOWER(NAME) LIKE LOWER(?))"
-			+ " AND START_PRICE >= ?";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?))";
 	
 	public static final String SELECT_COUNT_FIND_WITH_MAX =
 			"SELECT COUNT(DISTINCT ID) AS COUNT FROM PRODUCTS"
 			+ " WHERE IS_ACTIVE = 'active'"
 			+ " AND (LOWER(DESCRIPTION) LIKE LOWER(?)"
 			+ " OR LOWER(NAME) LIKE LOWER(?))"
-			+ " AND START_PRICE BETWEEN ? AND ?";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?))"
+			+ " AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0)))";
 	
 	public static final String SELECT_PRODUCTS_FIND = 
-			"SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ("
-			+ " SELECT * FROM PRODUCTS WHERE START_PRICE >= ?"
+			"SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( SELECT * FROM PRODUCTS "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?))"
 			+ " AND (IS_ACTIVE = 'active')"
 			+ " AND ((LOWER(DESCRIPTION) LIKE LOWER(?)) OR (LOWER(NAME) LIKE LOWER(?))) ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC";
 	
 	public static final String SELECT_PRODUCTS_FIND_WITH_MAX = 
-			"SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ("
-			+ " SELECT * FROM PRODUCTS WHERE START_PRICE BETWEEN ? AND ?"
+			"SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( SELECT * FROM PRODUCTS "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
+			+ "   AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0)))"
 			+ " AND (IS_ACTIVE = 'active')"
 			+ " AND ((LOWER(DESCRIPTION) LIKE LOWER(?)) OR (LOWER(NAME) LIKE LOWER(?))) ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC";
@@ -318,8 +320,8 @@ public class Queries {
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID"
 			+ " WHERE IS_ACTIVE = 'active' "
 			+ " AND CATEGORIES.ID = ? "
-			+ " AND START_PRICE > ? "
-			+ " AND START_PRICE < ? ";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
+			+ " AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0))) ";
 	
 	public static final String SELECT_PRODUCT_COUNT_WITH_CATEGORY =
 			" SELECT COUNT(DISTINCT PRODUCTS.ID) AS COUNT FROM PRODUCT_CATEGORY "
@@ -327,30 +329,30 @@ public class Queries {
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID"
 			+ " WHERE IS_ACTIVE = 'active' "
 			+ " AND CATEGORIES.ID = ? "
-			+ " AND START_PRICE > ? ";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) ";
 	
 	public static final String SELECT_PRODUCT_COUNT_WITH_MAX_PRICE =
 			" SELECT COUNT(DISTINCT PRODUCTS.ID) AS COUNT FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID"
 			+ " WHERE IS_ACTIVE = 'active' "
-			+ " AND START_PRICE > ? "
-			+ " AND START_PRICE < ? ";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
+			+ " AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0)) ";
 	
 	public static final String SELECT_PRODUCT_COUNT =
 			" SELECT COUNT(DISTINCT PRODUCTS.ID) AS COUNT FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID"
 			+ " WHERE IS_ACTIVE = 'active' "
-			+ " AND START_PRICE > ? ";
+			+ " AND ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) ";
 	
 	public static final String SELECT_PRODUCTS_WITH_MAX_PRICE_AND_CATEGORIES =
 			" SELECT * FROM ( SELECT T.*, ROWNUM RN FROM ( "
 			+ " SELECT DISTINCT PRODUCTS.* FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID "
-			+ " WHERE START_PRICE > ? "
-			+ " AND START_PRICE < ? "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
+			+ " AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0))) "
 			+ " AND CATEGORIES.ID = ? "
 			+ " AND IS_ACTIVE = 'active' ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC ";
@@ -360,7 +362,7 @@ public class Queries {
 			+ " SELECT DISTINCT PRODUCTS.* FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID "
-			+ " WHERE START_PRICE > ? "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
 			+ " AND IS_ACTIVE = 'active' ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC ";
 	
@@ -369,8 +371,8 @@ public class Queries {
 			+ " SELECT DISTINCT PRODUCTS.* FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID "
-			+ " WHERE START_PRICE > ? "
-			+ " AND START_PRICE < ? "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
+			+ "   AND ((START_PRICE <= ? AND CURRENT_PRICE = 0) OR ((CURRENT_PRICE < ?) AND (CURRENT_PRICE != 0))) "
 			+ " AND IS_ACTIVE = 'active' ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC ";
 	
@@ -379,7 +381,7 @@ public class Queries {
 			+ " SELECT DISTINCT PRODUCTS.* FROM PRODUCT_CATEGORY "
 			+ " LEFT JOIN CATEGORIES ON CATEGORIES.ID = PRODUCT_CATEGORY.CATEGORY_ID "
 			+ " FULL OUTER JOIN PRODUCTS ON PRODUCTS.ID = PRODUCT_CATEGORY.PRODUCT_ID "
-			+ " WHERE START_PRICE > ? "
+			+ " WHERE ((START_PRICE >= ? AND CURRENT_PRICE = 0) OR (CURRENT_PRICE > ?)) "
 			+ " AND CATEGORIES.ID = ? "
 			+ " AND IS_ACTIVE = 'active' ) T) "
 			+ " WHERE (RN > (? * ? - ?) AND (RN <= ? * ?)) ORDER BY ID DESC ";
@@ -428,11 +430,11 @@ public class Queries {
 				+ " LEFT JOIN PRODUCTS ON PRODUCTS.ID ="
 						+ " PRODUCT_CATEGORY.PRODUCT_ID WHERE PRODUCTS.ID = ?";
     
-	public static final String setCategoriesToProductQuery(int productID, List<Integer> categories) {
+	public static String setCategoriesToProductQuery(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("INSERT ALL ");
-		for (int categoryID : categories)
-			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (" + categoryID +", " + productID + ") ");
+		for (int i = 0; i < num; i++)
+			sb.append("INTO PRODUCT_CATEGORY (CATEGORY_ID, PRODUCT_ID) VALUES (?, ?) ");
 		sb.append("SELECT * FROM dual");
 		return sb.toString();
 	}
@@ -440,21 +442,21 @@ public class Queries {
 	public static final String CHANGE_CATEGORY =
 			"UPDATE CATEGORIES SET NAME = ? WHERE ID = ?";
 			
-	public static final String deleteCategories(List<Integer> categoriesID) {
+	public static final String deleteCategories(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM CATEGORIES WHERE ID IN ( ");
-		for (int i = 0; i < categoriesID.size() - 1; i++)
-			sb.append(categoriesID.get(i) + ", ");
-		sb.append(categoriesID.get(categoriesID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	
-	public static final String deleteProductsCategories(List<Integer> categoriesID) {
+	public static final String deleteProductsCategories(int num) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM PRODUCT_CATEGORY WHERE CATEGORY_ID IN ( ");
-		for (int i = 0; i < categoriesID.size() - 1; i++)
-			sb.append(categoriesID.get(i) + ", ");
-		sb.append(categoriesID.get(categoriesID.size() - 1) + " )");
+		for (int i = 0; i < num - 1; i++)
+			sb.append("?, ");
+		sb.append("?)");
 		return sb.toString();
 	}
 	

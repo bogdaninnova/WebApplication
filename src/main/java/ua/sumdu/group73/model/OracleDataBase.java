@@ -376,8 +376,12 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method setUserBan starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(Queries.setUserBanQuery(usersID))) {
-            preparedStatement.executeUpdate();
+        try (PreparedStatement preparedStatement =
+        		conn.prepareStatement(Queries.setUserBanQuery(usersID.size()))) {
+        	int i = 0;
+        	for (int id : usersID) 
+        		preparedStatement.setInt(++i, id);
+        	preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
             log.error("SQLException in setUserBan()", e);
@@ -955,7 +959,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsByIdFromPRODUCTS(productsID))) {
+        		Queries.deleteProductsByIdFromPRODUCTS(productsID.size()))) {
+            int i = 0;
+        	for (int id : productsID)
+        		preparedStatement.setInt(++i, id);
             int res = preparedStatement.executeUpdate();
             result = res != 0;
         } catch (SQLException e) {
@@ -970,7 +977,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method deleteProductsPRODUCT_CATEGORY starts.....");
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsByIdFromPRODUCT_CATEGORY(productsID))) {
+        		Queries.deleteProductsByIdFromPRODUCT_CATEGORY(productsID.size()))) {
+            int i = 0;
+        	for (int id : productsID)
+        		preparedStatement.setInt(++i, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             log.error("SQLException in deleteProductsPRODUCT_CATEGORY()", e);
@@ -983,7 +993,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method deleteProductsPICTURES starts.....");
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsByIdFromPICTURES(productsID))) {
+        		Queries.deleteProductsByIdFromPICTURES(productsID.size()))) {
+            int i = 0;
+        	for (int id : productsID)
+        		preparedStatement.setInt(++i, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             log.error("SQLException in deleteProductsPICTURES()", e);
@@ -996,7 +1009,10 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	log.info("Method deleteProductsFOLLOWINGS starts.....");
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsByIdFromFOLLOWINGS(productsID))) {
+        		Queries.deleteProductsByIdFromFOLLOWINGS(productsID.size()))) {
+            int i = 0;
+        	for (int id : productsID)
+        		preparedStatement.setInt(++i, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             log.error("SQLException in deleteProductsFOLLOWINGS()", e);
@@ -1028,36 +1044,42 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	
         	if ((categoryID != 0) && (maxPrice != 0)) {
         		preparedStatement.setInt(1, minPrice);
-        		preparedStatement.setInt(2, maxPrice);
+        		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, maxPrice);
+        		preparedStatement.setInt(4, maxPrice);
+        		preparedStatement.setInt(5, categoryID);
+        		preparedStatement.setInt(6, LOTS_ON_PAGE);
+        		preparedStatement.setInt(7, postiton);
+        		preparedStatement.setInt(8, LOTS_ON_PAGE);
+        		preparedStatement.setInt(9, postiton);
+        		preparedStatement.setInt(10, LOTS_ON_PAGE);
+        	} else if ((categoryID == 0) && (maxPrice != 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, maxPrice);
+        		preparedStatement.setInt(4, maxPrice);
+        		preparedStatement.setInt(5, LOTS_ON_PAGE);
+        		preparedStatement.setInt(6, postiton);
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
+        		preparedStatement.setInt(8, postiton);
+        		preparedStatement.setInt(9, LOTS_ON_PAGE);
+        	} else if ((categoryID != 0) && (maxPrice == 0)) {
+        		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, minPrice);
         		preparedStatement.setInt(3, categoryID);
         		preparedStatement.setInt(4, LOTS_ON_PAGE);
         		preparedStatement.setInt(5, postiton);
         		preparedStatement.setInt(6, LOTS_ON_PAGE);
         		preparedStatement.setInt(7, postiton);
         		preparedStatement.setInt(8, LOTS_ON_PAGE);
-        	} else if ((categoryID == 0) && (maxPrice != 0)) {
-        		preparedStatement.setInt(1, minPrice);
-        		preparedStatement.setInt(2, maxPrice);
-        		preparedStatement.setInt(3, LOTS_ON_PAGE);
-        		preparedStatement.setInt(4, postiton);
-        		preparedStatement.setInt(5, LOTS_ON_PAGE);
-        		preparedStatement.setInt(6, postiton);
-        		preparedStatement.setInt(7, LOTS_ON_PAGE);
-        	} else if ((categoryID != 0) && (maxPrice == 0)) {
-        		preparedStatement.setInt(1, minPrice);
-        		preparedStatement.setInt(2, categoryID);
-        		preparedStatement.setInt(3, LOTS_ON_PAGE);
-        		preparedStatement.setInt(4, postiton);
-        		preparedStatement.setInt(5, LOTS_ON_PAGE);
-        		preparedStatement.setInt(6, postiton);
-        		preparedStatement.setInt(7, LOTS_ON_PAGE);
         	} else {
         		preparedStatement.setInt(1, minPrice);
-        		preparedStatement.setInt(2, LOTS_ON_PAGE);
-        		preparedStatement.setInt(3, postiton);
-        		preparedStatement.setInt(4, LOTS_ON_PAGE);
-        		preparedStatement.setInt(5, postiton);
-        		preparedStatement.setInt(6, LOTS_ON_PAGE);
+        		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, LOTS_ON_PAGE);
+        		preparedStatement.setInt(4, postiton);
+        		preparedStatement.setInt(5, LOTS_ON_PAGE);
+        		preparedStatement.setInt(6, postiton);
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
         	}
         	
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -1122,15 +1144,21 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	if ((categoryID != 0) && (maxPrice != 0)) {
         		preparedStatement.setInt(1, categoryID);
         		preparedStatement.setInt(2, minPrice);
-        		preparedStatement.setInt(3, maxPrice);
+        		preparedStatement.setInt(3, minPrice);
+        		preparedStatement.setInt(4, maxPrice);
+        		preparedStatement.setInt(5, maxPrice);
         	} else if ((categoryID == 0) && (maxPrice != 0)) {
         		preparedStatement.setInt(1, minPrice);
-        		preparedStatement.setInt(2, maxPrice);
+        		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, maxPrice);
+        		preparedStatement.setInt(4, maxPrice);
         	} else if ((categoryID != 0) && (maxPrice == 0)) {
         		preparedStatement.setInt(1, categoryID);
         		preparedStatement.setInt(2, minPrice);
+        		preparedStatement.setInt(3, minPrice);
         	} else {
         		preparedStatement.setInt(1, minPrice);
+        		preparedStatement.setInt(2, minPrice);
         	}
         	
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -1173,16 +1201,7 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         	
         	if (maxPrice == 0) {
             	preparedStatement.setInt(1, minPrice);
-            	preparedStatement.setString(2, "%" + keyWord + "%");
-            	preparedStatement.setString(3, "%" + keyWord + "%");
-        		preparedStatement.setInt(4, LOTS_ON_PAGE);
-        		preparedStatement.setInt(5, postiton);
-        		preparedStatement.setInt(6, LOTS_ON_PAGE);
-        		preparedStatement.setInt(7, postiton);
-        		preparedStatement.setInt(8, LOTS_ON_PAGE);
-        	} else {
-            	preparedStatement.setInt(1, minPrice);
-            	preparedStatement.setInt(2, maxPrice);
+            	preparedStatement.setInt(2, minPrice);
             	preparedStatement.setString(3, "%" + keyWord + "%");
             	preparedStatement.setString(4, "%" + keyWord + "%");
         		preparedStatement.setInt(5, LOTS_ON_PAGE);
@@ -1190,6 +1209,18 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
         		preparedStatement.setInt(7, LOTS_ON_PAGE);
         		preparedStatement.setInt(8, postiton);
         		preparedStatement.setInt(9, LOTS_ON_PAGE);
+        	} else {
+            	preparedStatement.setInt(1, minPrice);
+            	preparedStatement.setInt(2, minPrice);
+            	preparedStatement.setInt(3, maxPrice);
+            	preparedStatement.setInt(4, maxPrice);
+            	preparedStatement.setString(5, "%" + keyWord + "%");
+            	preparedStatement.setString(6, "%" + keyWord + "%");
+        		preparedStatement.setInt(7, LOTS_ON_PAGE);
+        		preparedStatement.setInt(8, postiton);
+        		preparedStatement.setInt(9, LOTS_ON_PAGE);
+        		preparedStatement.setInt(10, postiton);
+        		preparedStatement.setInt(11, LOTS_ON_PAGE);
         	}
         	
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -1249,11 +1280,14 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
             	preparedStatement.setString(1, "%" + keyWord + "%");
             	preparedStatement.setString(2, "%" + keyWord + "%");
             	preparedStatement.setInt(3, minPrice);
+            	preparedStatement.setInt(4, minPrice);
         	} else {
             	preparedStatement.setString(1, "%" + keyWord + "%");
             	preparedStatement.setString(2, "%" + keyWord + "%");
             	preparedStatement.setInt(3, minPrice);
-            	preparedStatement.setInt(4, maxPrice);
+            	preparedStatement.setInt(4, minPrice);
+            	preparedStatement.setInt(5, maxPrice);
+            	preparedStatement.setInt(6, maxPrice);
         	}
         	
             try(ResultSet rs = preparedStatement.executeQuery()){
@@ -1419,8 +1453,14 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     		return true;
     	initConnection();
     	try (PreparedStatement preparedStatement = conn.prepareStatement(
-    			Queries.setCategoriesToProductQuery(productID, categories))) {    		
-            preparedStatement.executeUpdate();
+    			Queries.setCategoriesToProductQuery(categories.size()))) {    		
+            
+    		for (int i = 0; i < categories.size(); i++) {
+    			preparedStatement.setInt(2 * i + 1, categories.get(i));
+    			preparedStatement.setInt(2 * i + 2, productID);
+    		}
+    		
+    		preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
             log.error("SQLException in addCategoriesToProduct()", e);
@@ -1467,8 +1507,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
 		log.info("Method deleteCategoryFromCategories starts.....");
     	boolean result = false;
     	initConnection();
-        try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteCategories(list))) {
+        try (PreparedStatement preparedStatement =
+        		conn.prepareStatement(Queries.deleteCategories(list.size()))) {
+            int i = 0;
+        	for (int id : list)
+        		preparedStatement.setInt(++i, id);
             preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
@@ -1484,8 +1527,11 @@ public class OracleDataBase implements UserDBInterface, PicturesDBInterface,
     	boolean result = false;
     	initConnection();
         try (PreparedStatement preparedStatement = conn.prepareStatement(
-        		Queries.deleteProductsCategories(list))) {
-            preparedStatement.executeUpdate();
+        		Queries.deleteProductsCategories(list.size()))) {
+            int i = 0;
+        	for (int id : list)
+        		preparedStatement.setInt(++i, id);
+        	preparedStatement.executeUpdate();
             result = true;
         } catch (SQLException e) {
             log.error("SQLException in deleteCategoryFromCategories()", e);

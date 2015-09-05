@@ -25,15 +25,6 @@
 		List<User> users = (ArrayList<User>) request.getAttribute("users");
 	
  	%>
- 	
- 	<%!
-		public static User getUserByID(List<User> list, int ID) {
-			for (User user : list)
-				if (user.getId() == ID)
-					return user;
-			return null;
-	 	}
-	%>
 	  
 	<br>
 	
@@ -47,11 +38,6 @@
 			return str;
 		}
 	 %>
-	 
-	 <%
-		String phone =
-			(user.getPhone() == null) ? "----------" : user.getPhone();
-	%>
 	 
 <div class="tableStyle">
 	<center><h1>USERS DATA</h1></center>
@@ -83,7 +69,7 @@
 	  </tr>
 	  <tr>
 	    <td align="center">PHONE</td>
-	    <td align="center"><%=cut(phone, 25) %></td>	
+	    <td align="center"><%=(user.getPhone() == null) ? "----------" : cut(user.getPhone(), 25)%></td>	
 	  </tr>
 	  <tr>
 	    <td align="center">REGISTRATION DATE</td>
@@ -136,10 +122,10 @@
 		    <td align="center"><%=cut(product.getCurrentPrice(), 6) %></td>
 		    <td align="center"><%=dateFormat.format(product.getStartDate()) %></td>
 		    <td align="center"><%=dateFormat.format(product.getEndDate()) %></td>
-		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
+		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(User.getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
 
 			<% if (product.getCurrentBuyerID() != 0) { %>
-			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
+			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(User.getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
 			<% } else { %>
 			    <td align="center">-</td>
 			<% } %>
@@ -188,10 +174,10 @@
 		    <td align="center"><%=cut(product.getCurrentPrice(), 6) %></td>
 		    <td align="center"><%=dateFormat.format(product.getStartDate()) %></td>
 		    <td align="center"><%=dateFormat.format(product.getEndDate()) %></td>
-		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
+		    <td align="center"><a href="lookUser?id=<%= product.getSellerID() %>"><%=cut(User.getUserByID(users, product.getSellerID()).getLogin(), 15) %></a></td>
 
 			<% if (product.getCurrentBuyerID() != 0) { %>
-			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
+			    <td align="center"><a href="lookUser?id=<%= product.getCurrentBuyerID() %>"><%=cut(User.getUserByID(users, product.getCurrentBuyerID()).getLogin(), 15) %></a></td>
 			<% } else { %>
 			    <td align="center">-</td>
 			<% } %>
