@@ -19,8 +19,7 @@
         </tr>
         <tr>
             <td>End date :</td>
-            <td><input type="date" id="addAge" size="10" maxlength="50"
-                       onkeyup="return checkOnHTML(this);" required></td>
+            <td><input type="date" id="addAge" size="10" maxlength="50" required></td>
         </tr>
         <tr>
             <td>Hours :</td>
