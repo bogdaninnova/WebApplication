@@ -19,42 +19,42 @@
             <tr>
                 <td><label>*</label></td>
                 <td>Login:</td>
-                <td><input type="text" id="login" size="10" maxlength="30" autofocus required></td>
+                <td><input type="text" id="login" size="16" maxlength="30" placeholder="login" autofocus required></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Password:</td>
-                <td><input type="password" id="password" size="10" maxlength="128"></td>
+                <td><input type="password" id="password" size="16" maxlength="128" placeholder="password"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Confirm:</td>
-                <td><input type="password" id="confirmPassword" size="10" maxlength="128"></td>
+                <td><input type="password" id="confirmPassword" size="16" maxlength="128" placeholder="confirm"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Name:</td>
-                <td><input type="text" id="firstName" size="10" maxlength="50"></td>
+                <td><input type="text" id="firstName" size="16" maxlength="50" placeholder="name"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Second Name:</td>
-                <td><input type="text" id="secondName" size="10" maxlength="50"></td>
+                <td><input type="text" id="secondName" size="16" maxlength="50" placeholder="second name"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Date birthday:</td>
-                <td><input type="date" id="age" size="10" maxlength="50"></td>
+                <td><input type="date" id="age" size="16" maxlength="50" placeholder="birthday"></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>E-mail:</td>
-                <td><input type="text" id="email" size="10" maxlength="50"></td>
+                <td><input type="text" id="email" size="16" maxlength="50" placeholder="e-mail"></td>
             </tr>
             <tr>
                 <td></td>
                 <td>Phone number:</td>
-                <td><input type="text" id="phone" size="10" maxlength="20"></td>
+                <td><input type="text" id="phone" size="16" maxlength="20" placeholder="phone"></td>
             </tr>
             <tr>
 	            <td></td>
@@ -63,7 +63,7 @@
 	            </td>
 	            <td>
 	            	Captcha:<br>
-					<input type="text" id="captcha" size="10" maxlength="20">
+					<input type="text" id="captcha" size="16" maxlength="20" placeholder="captcha">
 	            </td>
 	        </tr>
         </form>
@@ -80,7 +80,7 @@
             </td>
         </tr>
     </table>
-    <br><label>* - Required fields.</label>
+    <br><label>&nbsp &nbsp * - Required fields.</label>
 </div>
 </body>
 </html>

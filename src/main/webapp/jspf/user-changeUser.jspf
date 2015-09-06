@@ -15,13 +15,17 @@
                 <td>Name :</td>
                 <td><%= user.getName()%></td>
                 <td><input type="text" id="changeName" size="15" maxlength="50"
-                           onkeyup="return checkOnHTML(this);" required autofocus></td>
+                           onkeyup="return checkOnHTML(this);" placeholder="name"
+                           required autofocus>
+                </td>
             </tr>
             <tr>
                 <td>Second Name :</td>
                 <td><%= user.getSecondName()%></td>
                 <td><input type="text" id="changeSecondName" size="15" maxlength="50"
-                           onkeyup="return checkOnHTML(this);" required ></td>
+                           onkeyup="return checkOnHTML(this);"
+                           placeholder="second name" required >
+                </td>
             </tr>
             <tr>
                 <td>Date birthday :</td>
@@ -36,9 +40,13 @@
                 <td>not yet</td>
                 <% } %>
                 <td><input type="text" id="changePhone" size="15" maxlength="20"
-                           onkeyup="return checkOnHTML(this);"></td>
+                           onkeyup="return checkOnHTML(this);" placeholder="phone"></td>
             </tr>
         </form>
+        <tr>
+            <td></td>
+            <td><br></td>
+        </tr>
         <tr>
             <td></td>
             <td></td>

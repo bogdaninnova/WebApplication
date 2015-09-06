@@ -9,33 +9,47 @@
         <tr>
             <td>Title :</td>
             <td><input type="text" id="addTitle" size="15" maxlength="100"
-                       onkeyup="return checkOnHTML(this);" required autofocus></td>
+                       onkeyup="return checkOnHTML(this);"
+                       placeholder="title" required autofocus>
+            </td>
         </tr>
         <tr>
             <td>Description :</td>
             <td><textarea rows="10" cols="45" id="addDescription" maxlength="1500"
                           style="max-width: 400px; max-height: 300px;"
-                          onkeyup="return checkOnHTML(this);" required></textarea></td>
+                          onkeyup="return checkOnHTML(this);"
+                          placeholder="description" required>
+                </textarea>
+            </td>
         </tr>
         <tr>
             <td>End date :</td>
-            <td><input type="date" id="addAge" size="10" maxlength="50" required></td>
+            <td><input type="date" id="addAge" size="10" maxlength="50" required>
+            </td>
         </tr>
         <tr>
             <td>Hours :</td>
-            <td><input type="number" id="addTimeHour" size="15" required></td>
+            <td><input type="number" id="addTimeHour" size="15"
+                       placeholder="hours" required>
+            </td>
         </tr>
         <tr>
             <td>Minutes :</td>
-            <td><input type="number" id="addTimeMinute" size="15" required></td>
+            <td><input type="number" id="addTimeMinute" size="15"
+                       placeholder="minutes" required>
+            </td>
         </tr>
         <tr>
             <td>Start price :</td>
-            <td><input type="number" id="addStartPrice" size="15" required> $</td>
+            <td><input type="number" id="addStartPrice" size="15"
+                       placeholder="start price" required> $
+            </td>
         </tr>
         <tr>
             <td>Buy it now price :</td>
-            <td><input type="number" id="addBuyPrice" size="15" required> $</td>
+            <td><input type="number" id="addBuyPrice" size="15"
+                       placeholder="end price" required> $
+            </td>
         </tr>
 
         <tr>
