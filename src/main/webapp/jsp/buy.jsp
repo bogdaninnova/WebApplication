@@ -11,6 +11,10 @@
     <script src="./js/jquery-2.1.3.js"></script>
     <script src="./js/product.js"></script>
     <title>Buy it now a product</title>
+    <!--[if lte IE 8]>
+    <script type="text/javascript">alert("Your web browser is outdated Please upgrade your browser!");
+        window.location.href="http://www.google.com/intl/ru/chrome"</script>
+    <![endif]-->
 </head>
 <body>
 <%@include file="../jspf/product-header.jspf" %>

@@ -31,6 +31,10 @@
     </script>
     <script src="js/index.js"></script>
     <title>Auction</title>
+    <!--[if lte IE 8]>
+        <script type="text/javascript">alert("Your web browser is outdated Please upgrade your browser!");
+            window.location.href="http://www.google.com/intl/ru/chrome"</script>
+    <![endif]-->
 </head>
 <body>
 <%@include file="jspf/index-header.jspf"%>

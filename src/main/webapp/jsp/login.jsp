@@ -9,6 +9,10 @@
     <script src="./js/md5.js"></script>
     <script src="./js/login.js"></script>
     <title>Please login</title>
+    <!--[if lte IE 8]>
+    <script type="text/javascript">alert("Your web browser is outdated Please upgrade your browser!");
+        window.location.href="http://www.google.com/intl/ru/chrome"</script>
+    <![endif]-->
 </head>
 <body>
 <div class="container">
