@@ -1,4 +1,4 @@
-﻿DELETE FROM PRODUCT_CATEGORY;
+DELETE FROM PRODUCT_CATEGORY;
 DELETE FROM CATEGORIES;
 DELETE FROM PICTURES;
 DELETE FROM PRODUCTS;
@@ -312,7 +312,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     20000,
     30764,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -354,7 +354,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     23000,
     29300,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -397,7 +397,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     19000,
     27194,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -441,7 +441,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     17000,
     25899,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -484,7 +484,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     17000,
     25646,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -527,7 +527,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     15000,
     22574,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -570,7 +570,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     15000,
     22574,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -613,7 +613,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     12000,
     19999,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -656,7 +656,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     5000,
     7777,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -699,7 +699,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4500,
     5062,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -742,7 +742,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1500,
     1875,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -785,7 +785,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     2000,
     2226,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -828,7 +828,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     3000,
     3966,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -872,7 +872,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     3300,
     3562,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -915,7 +915,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     3700,
     4000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -958,7 +958,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     17900,
     18900,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1002,7 +1002,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     9000,
     9972,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1045,7 +1045,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     5000,
     7047,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1088,7 +1088,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4000,
     4500,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1131,7 +1131,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4000,
     4500,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1174,7 +1174,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4000,
     4500,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1217,7 +1217,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4200,
     4700,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1261,7 +1261,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1500,
     1600,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1304,7 +1304,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     2500,
     2928,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1347,7 +1347,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     4000,
     4335,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1390,7 +1390,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     5000,
     6000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1432,7 +1432,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1474,7 +1474,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1516,7 +1516,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1558,7 +1558,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1600,7 +1600,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1642,7 +1642,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1684,7 +1684,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1726,7 +1726,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1768,7 +1768,7 @@ INSERT INTO PRODUCTS(
     TO_DATE('2015/09/15 21:00:00', 'yyyy/mm/dd hh24:mi:ss'),
     1,
     10000,
-    NULL,
+    0,
     NULL,
     'active'
 );
@@ -1788,6 +1788,5 @@ INSERT INTO PRODUCT_CATEGORY (
     PRODUCT_ID_S.CURRVAL,
     12
 );
-
 
 commit;
