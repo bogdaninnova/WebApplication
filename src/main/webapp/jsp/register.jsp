@@ -19,42 +19,57 @@
             <tr>
                 <td><label>*</label></td>
                 <td>Login:</td>
-                <td><input type="text" id="login" size="16" maxlength="30" placeholder="login" autofocus required></td>
+                <td><input type="text" id="login" size="16" maxlength="30"
+                           placeholder="login" onkeyup="return checkOnHTML(this);"
+                           autofocus required></td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Password:</td>
-                <td><input type="password" id="password" size="16" maxlength="128" placeholder="password"></td>
+                <td><input type="password" id="password" size="16" maxlength="128"
+                           placeholder="password">
+                </td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Confirm:</td>
-                <td><input type="password" id="confirmPassword" size="16" maxlength="128" placeholder="confirm"></td>
+                <td><input type="password" id="confirmPassword" size="16" maxlength="128"
+                           placeholder="confirm">
+                </td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Name:</td>
-                <td><input type="text" id="firstName" size="16" maxlength="50" placeholder="name"></td>
+                <td><input type="text" id="firstName" size="16" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" placeholder="name">
+                </td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Second Name:</td>
-                <td><input type="text" id="secondName" size="16" maxlength="50" placeholder="second name"></td>
+                <td><input type="text" id="secondName" size="16" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" placeholder="second name">
+                </td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>Date birthday:</td>
-                <td><input type="date" id="age" size="16" maxlength="50" placeholder="birthday"></td>
+                <td><input type="date" id="age" size="16" maxlength="50" placeholder="birthday">
+                </td>
             </tr>
             <tr>
                 <td><label>*</label></td>
                 <td>E-mail:</td>
-                <td><input type="text" id="email" size="16" maxlength="50" placeholder="e-mail"></td>
+                <td><input type="text" id="email" size="16" maxlength="50"
+                           onkeyup="return checkOnHTML(this);" placeholder="e-mail">
+                </td>
             </tr>
             <tr>
                 <td></td>
                 <td>Phone number:</td>
-                <td><input type="text" id="phone" size="16" maxlength="20" placeholder="phone"></td>
+                <td><input type="text" id="phone" size="16" maxlength="20"
+                           onkeyup="return checkOnHTML(this);" placeholder="phone">
+                </td>
             </tr>
             <tr>
 	            <td></td>
