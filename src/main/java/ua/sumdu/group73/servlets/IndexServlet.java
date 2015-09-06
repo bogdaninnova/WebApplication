@@ -103,7 +103,7 @@ public class IndexServlet extends HttpServlet {
                     } else {
                         products = OracleDataBase.getInstance().getProductsFind(1, 0, 0, request.getParameter("text"));
                     }
-                    countFind = OracleDataBase.getInstance().getCountFind(0, 0, request.getParameter("text"));
+                    countFind = OracleDataBase.getInstance().getCountFind(minPrice, maxPrice, request.getParameter("text"));
                     textFind = request.getParameter("text");
                 }
 
@@ -124,7 +124,7 @@ public class IndexServlet extends HttpServlet {
                 } else {
                     products = OracleDataBase.getInstance().getProducts(1, Integer.parseInt(request.getParameter("category")), 0, 0);
                 }
-                countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), 0, 0);
+                countProduct = OracleDataBase.getInstance().getCount(Integer.parseInt(request.getParameter("category")), minPrice, maxPrice);
                 categoryID = Integer.parseInt(request.getParameter("category"));
             }
         } else {
